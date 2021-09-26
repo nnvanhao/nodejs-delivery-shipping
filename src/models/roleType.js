@@ -11,14 +11,14 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            RoleType.hasOne(models.UserRole);
+            RoleType.hasOne(models.userrole);
         }
     };
     RoleType.init({
         name: DataTypes.STRING,
     }, {
         sequelize,
-        modelName: 'RoleType',
+        modelName: 'roletype',
     });
     return RoleType;
 };

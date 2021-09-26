@@ -11,17 +11,17 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
 
-            User.hasOne(models.Province);
+            User.hasOne(models.province);
 
-            User.hasOne(models.UserRole);
+            User.hasOne(models.userrole);
 
-            User.hasMany(models.UserToken);
+            User.hasMany(models.usertoken);
 
-            User.hasMany(models.UserBank);
+            User.hasMany(models.userbank);
 
-            User.hasMany(models.PickupAddress);
+            User.hasMany(models.pickupaddress);
 
-            User.hasMany(models.PaymentTransaction);
+            User.hasMany(models.paymenttransaction);
 
         }
     };
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         isActive: DataTypes.BOOLEAN
     }, {
         sequelize,
-        modelName: 'User',
+        modelName: 'user',
     });
     return User;
 };

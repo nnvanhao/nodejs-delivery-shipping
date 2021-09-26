@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            UserToken.hasOne(models.User);
+            UserToken.hasOne(models.user);
         }
     };
     UserToken.init({
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         isExpired: DataTypes.BOOLEAN
     }, {
         sequelize,
-        modelName: 'UserToken',
+        modelName: 'usertoken',
     });
     return UserToken;
 };

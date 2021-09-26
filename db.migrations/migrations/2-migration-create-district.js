@@ -19,7 +19,7 @@ module.exports = {
             provinceId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'Province',
+                    model: 'province',
                     key: 'id'
                 },
             },

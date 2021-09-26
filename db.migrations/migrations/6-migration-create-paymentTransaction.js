@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('paymentTransaction', {
+        await queryInterface.createTable('paymenttransaction', {
             id: {
                 allowNull: false,
                 primaryKey: true,
@@ -16,14 +16,14 @@ module.exports = {
             userBankId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'UserBank',
+                    model: 'userbank',
                     key: 'id'
                 },
             },
             userId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'Users',
+                    model: 'users',
                     key: 'id'
                 },
             },
@@ -50,6 +50,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('paymentTransaction');
+        await queryInterface.dropTable('paymenttransaction');
     }
 };
