@@ -42,7 +42,6 @@ class MySQLConnection {
             await this.sequelize.authenticate();
         } catch (error) {
             logger.log(`MySQL connect unsuccessful, retry after 5 seconds at: ${new Date()}`, LOGGER_TYPE.ERROR);
-            ++count;
             setTimeout(await this.getConnectStatus(), 5000);
         }
     }

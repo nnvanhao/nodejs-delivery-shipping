@@ -1,9 +1,9 @@
 module.exports = {
     DATABASE: {
         MYSQL_HOST: 'localhost',
-        MYSQL_DATABASE: 'db',
+        MYSQL_DATABASE: 'DeliveryShipping',
         USERNAME: 'root',
-        PASSWORD: '123456',
+        PASSWORD: '12345678x@X',
     },
     PORT: 3600,
     JWT_SECRET: 'myS33!!creeeT',
