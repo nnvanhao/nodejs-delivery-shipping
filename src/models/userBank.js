@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            UserBank.hasOne(models.User);
+            UserBank.hasOne(models.user);
         }
     };
     UserBank.init({
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         isDefault: DataTypes.BOOLEAN
     }, {
         sequelize,
-        modelName: 'UserBank',
+        modelName: 'userbank',
     });
     return UserBank;
 };

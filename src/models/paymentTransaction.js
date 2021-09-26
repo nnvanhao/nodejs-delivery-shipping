@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            PaymentTransaction.hasOne(models.User);
+            PaymentTransaction.hasOne(models.user);
         }
     };
     PaymentTransaction.init({
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         note: DataTypes.STRING
     }, {
         sequelize,
-        modelName: 'PaymentTransaction',
+        modelName: 'paymenttransaction',
     });
     return PaymentTransaction;
 };

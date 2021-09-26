@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            PickupAddress.hasOne(models.User);
+            PickupAddress.hasOne(models.user);
         }
     };
     PickupAddress.init({
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         isDefault: DataTypes.BOOLEAN
     }, {
         sequelize,
-        modelName: 'PickupAddress',
+        modelName: 'pickupaddress',
     });
     return PickupAddress;
 };
