@@ -2,10 +2,10 @@
   "name": "nodejs-smart-build",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
+    "start": "nodemon app.js",
     "start-gg-drive": "nodemon gg.drive.api.js",
     "migration": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate"
   },
