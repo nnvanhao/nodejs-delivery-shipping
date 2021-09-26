@@ -12,11 +12,10 @@ module.exports = {
             },
             userId: {
                 type: Sequelize.UUID,
-                // references: {
-                //     model: 'users',
-                //     key: 'id'
-                // },
-                // unique: true
+                references: {
+                    model: 'users',
+                    key: 'id'
+                },
             },
             address: {
                 type: Sequelize.STRING(128)
