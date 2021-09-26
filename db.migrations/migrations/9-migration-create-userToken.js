@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('userToken', {
+        await queryInterface.createTable('usertoken', {
             id: {
                 allowNull: false,
                 primaryKey: true,
@@ -34,6 +34,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('userToken');
+        await queryInterface.dropTable('usertoken');
     }
 };
