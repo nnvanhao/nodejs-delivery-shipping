@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js",
-    "start-gg-drive": "nodemon gg.drive.api.js"
+    "start-gg-drive": "nodemon gg.drive.api.js",
+    "migration": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate"
   },
   "author": "",
   "license": "ISC",
@@ -39,12 +40,12 @@
     "node-cron": "^2.0.3",
     "nodemon": "^2.0.2",
     "rmdir": "^1.2.0",
-    "sequelize": "^5.21.13",
+    "sequelize": "^6.6.5",
     "swagger-jsdoc": "^4.0.0",
     "swagger-model-validator": "^3.0.19",
     "swagger-ui-express": "^4.1.4",
     "sync-request": "^6.1.0",
-    "uuid": "^3.3.3",
+    "uuid": "^3.4.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0",
     "x-xss-protection": "^1.3.0"
