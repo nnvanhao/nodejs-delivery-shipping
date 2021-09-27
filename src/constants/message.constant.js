@@ -11,6 +11,7 @@ exports.EMAIL_NOT_FOUND = 'Email_Not_Found';
 exports.INVALID_EMAIL_OR_PASSWORD = 'Invalid_E-mail_or_Password';
 exports.EMAIL_ADDRESS_INVALID = 'Email_Address_Invalid';
 exports.EMAIL_ADDRESS_ALREADY_EXISTS = 'Email_Address_Already_Exists';
+exports.PHONE_NUMBER_ALREADY_EXISTS = 'Phone_Number_Already_Exists';
 exports.MISSING_EMAIL_FIELD = 'Missing_Email_Field';
 exports.MISSING_PASSWORD_FIELD = 'Missing_Password_Field';
 exports.PASSWORD_FIELD_MORE_THAN_6_DIGITS = 'Password_Field_More_Than_6_Digits';
@@ -21,3 +22,7 @@ exports.USERNAME_FIELD_MORE_THAN_6_DIGITS = 'Username_Field_More_Than_6_Digits';
 exports.MISSING_FIRSTNAME_FIELD = 'Missing_FirstName_Field';
 exports.MISSING_LASTNAME_FIELD = 'Missing_LastName_Field';
 exports.MISSING_REFRESH_TOKEN_FIELD = 'Missing_Refresh_Token_Field';
+exports.USER_IS_NOT_EXIST = 'User_Is_Not_Exist';
+exports.PASSWORD_IS_INCORRECT = 'Password_Is_Incorrect';
+exports.PHONE_NUMBER_FIELD_MORE_THAN_10_DIGITS = 'Phone_Number_Field_More_Than_10_Digits';
+

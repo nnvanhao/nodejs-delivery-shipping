@@ -11,16 +11,21 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            UserToken.hasOne(models.user);
         }
     };
     UserToken.init({
+        id: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+        },
         userId: DataTypes.UUID,
         token: DataTypes.STRING(1024),
         isExpired: DataTypes.BOOLEAN
     }, {
         sequelize,
-        modelName: 'usertoken',
+        modelName: 'UserToken',
+        timestamps: true,
     });
     return UserToken;
 };

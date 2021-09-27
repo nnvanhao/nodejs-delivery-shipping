@@ -11,15 +11,20 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            UserRole.hasOne(models.roletype);
+            UserRole.hasOne(models.RoleType);
         }
     };
     UserRole.init({
+        id: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+        },
         userId: DataTypes.UUID,
         roleTypeId: DataTypes.UUID,
     }, {
         sequelize,
-        modelName: 'userrole',
+        modelName: 'UserRole',
     });
     return UserRole;
 };

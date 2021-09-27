@@ -11,21 +11,26 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
 
-            User.hasOne(models.province);
+            User.hasOne(models.Province);
 
-            User.hasOne(models.userrole);
+            User.hasOne(models.UserRole);
 
-            User.hasMany(models.usertoken);
+            User.hasMany(models.UserToken);
 
-            User.hasMany(models.userbank);
+            User.hasMany(models.UserBank);
 
-            User.hasMany(models.pickupaddress);
+            User.hasMany(models.PickupAddress);
 
-            User.hasMany(models.paymenttransaction);
+            User.hasMany(models.PaymentTransaction);
 
         }
     };
     User.init({
+        id: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+        },
         email: DataTypes.STRING(50),
         password: DataTypes.STRING, // default 255
         fullName: DataTypes.STRING(128),
@@ -36,10 +41,13 @@ module.exports = (sequelize, DataTypes) => {
         districtId: DataTypes.UUID,
         wardId: DataTypes.UUID,
         address: DataTypes.STRING,
-        isActive: DataTypes.BOOLEAN
+        isActive: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        }
     }, {
         sequelize,
-        modelName: 'user',
+        modelName: 'User',
     });
     return User;
 };

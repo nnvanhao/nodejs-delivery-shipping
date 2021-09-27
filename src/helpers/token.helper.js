@@ -2,15 +2,19 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const config = require('../config/env');
 
-const getToken = (email, password) => {
+const getToken = (email, userId) => {
     let salt = crypto.randomBytes(16).toString('base64');
     const data = {
         email,
-        password,
+        userId,
         refreshKey: salt,
     }
     let token = jwt.sign(data, config.JWT_SECRET, { expiresIn: config.JWT_EXPIRATION_IN_SECONDS });
     return token;
+};
+const decodeToken = (token) => {
+    var decoded = jwt.verify(token, config.JWT_SECRET);
+    return decoded;
 };
 const getRefreshToken = (userId) => {
     let refreshId = userId + config.JWT_SECRET;
@@ -23,4 +27,5 @@ const getRefreshToken = (userId) => {
 module.exports = {
     getToken,
     getRefreshToken,
+    decodeToken
 }

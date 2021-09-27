@@ -11,10 +11,14 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            UserBank.hasOne(models.user);
         }
     };
     UserBank.init({
+        id: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+        },
         userId: DataTypes.UUID,
         name: DataTypes.STRING(128),
         branchName: DataTypes.STRING(128),
@@ -23,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
         isDefault: DataTypes.BOOLEAN
     }, {
         sequelize,
-        modelName: 'userbank',
+        modelName: 'UserBank',
+        timestamps: true,
     });
     return UserBank;
 };

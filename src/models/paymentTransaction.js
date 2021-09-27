@@ -11,10 +11,14 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            PaymentTransaction.hasOne(models.user);
         }
     };
     PaymentTransaction.init({
+        id: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+        },
         code: DataTypes.STRING(32),
         userBankId: DataTypes.UUID,
         userId: DataTypes.UUID,
@@ -24,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
         note: DataTypes.STRING
     }, {
         sequelize,
-        modelName: 'paymenttransaction',
+        modelName: 'PaymentTransaction',
+        timestamps: true,
     });
     return PaymentTransaction;
 };
