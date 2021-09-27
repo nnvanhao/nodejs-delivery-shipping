@@ -21,7 +21,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         userId: DataTypes.UUID,
         token: DataTypes.STRING(1024),
-        isExpired: DataTypes.BOOLEAN
+        isExpired: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        }
     }, {
         sequelize,
         modelName: 'UserToken',

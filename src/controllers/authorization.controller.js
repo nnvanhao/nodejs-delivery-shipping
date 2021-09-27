@@ -2,7 +2,8 @@ const HttpStatus = require("http-status-codes");
 const { sendResponse } = require("./base.controller");
 const {
     signInService,
-    signUpService
+    signUpService,
+    signOutService
 } = require('../services/authorization.service');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 
@@ -18,8 +19,9 @@ const signUpController = async (req, res, next) => {
     sendResponse(result, RESOURCES.AUTHORIZATION, HttpStatus.CREATED, req, res, next);
 };
 
-const signOutController = (req, res, next) => {
-    sendResponse(null, RESOURCES.AUTHORIZATION, HttpStatus.NO_CONTENT, req, res, next);
+const signOutController = async (req, res, next) => {
+    const result = await signOutService(req.headers.authorization);
+    sendResponse(result, RESOURCES.AUTHORIZATION, HttpStatus.NO_CONTENT, req, res, next);
 };
 
 module.exports = {

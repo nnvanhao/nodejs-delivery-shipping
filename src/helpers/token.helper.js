@@ -24,8 +24,14 @@ const getRefreshToken = (userId) => {
     return refreshToken;
 };
 
+const getTokenString = (token) => {
+    const tokenString = token.split(' ').pop();
+    return tokenString;
+};
+
 module.exports = {
     getToken,
     getRefreshToken,
-    decodeToken
+    decodeToken,
+    getTokenString
 }
