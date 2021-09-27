@@ -7,9 +7,10 @@ const Message = require('../constants/message.constant');
 const { buildErrorItem } = require('../helpers/error.helper');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 
 const { User } = db;
+const sequelize = new Sequelize();
 
 const signInService = async (email, password) => {
     try {
@@ -39,6 +40,7 @@ const signUpService = async (data) => {
         ...data,
         password,
     };
+    const t = await sequelize.transaction();
     try {
         const user = await User.findOne({
             where: {
@@ -54,7 +56,8 @@ const signUpService = async (data) => {
             }
             return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.NOT_ACCEPTABLE, message, {});
         } else {
-            await User.create(userInfo);
+            await User.create(userInfo, { transaction: t });
+            await t.commit();
             const signUpData = {
                 email,
                 phoneNumber
@@ -62,6 +65,7 @@ const signUpService = async (data) => {
             return signUpData;
         }
     } catch (error) {
+        await t.rollback();
         return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
 };
