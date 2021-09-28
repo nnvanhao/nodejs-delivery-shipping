@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('usertoken', {
+        await queryInterface.createTable('usertokens', {
             id: {
                 allowNull: false,
                 primaryKey: true,
@@ -31,6 +31,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('usertoken');
+        await queryInterface.dropTable('usertokens');
     }
 };
