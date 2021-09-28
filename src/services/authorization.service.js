@@ -10,12 +10,13 @@ const { buildErrorItem } = require('../helpers/error.helper');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
 const { Op } = require("sequelize");
+const { ROLE_TYPE } = require("../constants/common.constant");
 
-const { User, UserToken, sequelize } = db;
+const { User, UserToken, RoleType, UserRole, sequelize } = db;
 
 const signInService = async (email, password) => {
     try {
-        await sequelize.transaction(async (t) => {
+        return await sequelize.transaction(async (t) => {
             const user = await User.findOne({ where: { email }, attributes: { exclude: ['createdAt', 'updatedAt'] }, raw: true });
             if (!user) {
                 return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_NOT_EXIST, {});
@@ -50,7 +51,7 @@ const signInService = async (email, password) => {
 
 const signUpService = async (data) => {
     try {
-        await sequelize.transaction(async (t) => {
+        return await sequelize.transaction(async (t) => {
             const { email, password, phoneNumber } = data;
             const userInfo = {
                 ...data,
@@ -70,7 +71,11 @@ const signUpService = async (data) => {
                 }
                 return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.NOT_ACCEPTABLE, message, {});
             } else {
-                await User.create(userInfo, { transaction: t });
+                const RoleTypeInfo = await RoleType.findOne({ where: { name: ROLE_TYPE.PARTNER }, raw: true });
+                const userCreate = (await User.create(userInfo, { transaction: t })).get({ plain: true });
+                const { id: userId } = userCreate;
+                const { id: roleTypeId } = RoleTypeInfo;
+                await UserRole.create({ userId, roleTypeId }, { transaction: t });
                 const signUpData = {
                     email,
                     phoneNumber
@@ -88,7 +93,6 @@ const signOutService = async (token) => {
         const tokenFormat = getTokenString(token);
         const { userId } = decodeToken(tokenFormat);
         const tokenInfo = await UserToken.findOne({ where: { [Op.and]: [{ userId }, { isExpired: false }] } });
-        console.log({tokenInfo});
         if (tokenInfo) {
             tokenInfo.isExpired = true;
             await tokenInfo.save();

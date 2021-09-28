@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            RoleType.hasOne(models.UserRole);
+            // RoleType.hasOne(models.UserRole);
         }
     };
     RoleType.init({
@@ -24,6 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         sequelize,
         modelName: 'RoleType',
+        createdAt: false,
+        updatedAt: false
     });
     return RoleType;
 };

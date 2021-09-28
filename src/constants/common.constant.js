@@ -4,4 +4,10 @@ const LOGGER_TYPE = {
     ERROR: 'error',
 }
 
-module.exports = { LOGGER_TYPE };
+const ROLE_TYPE = {
+    ADMIN: 'ADMIN',
+    PARTNER: 'PARTNER',
+    EMPLOYEE: 'EMPLOYEE'
+}
+
+module.exports = { LOGGER_TYPE, ROLE_TYPE };
