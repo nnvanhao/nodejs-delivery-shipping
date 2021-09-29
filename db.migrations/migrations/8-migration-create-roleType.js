@@ -1,14 +1,11 @@
-const { v4: uuidv4 } = require('uuid');
-
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('roletype', {
+        await queryInterface.createTable('roletypes', {
             id: {
                 allowNull: false,
                 primaryKey: true,
                 type: Sequelize.UUID,
-                defaultValue: uuidv4()
             },
             name: {
                 type: Sequelize.STRING,
@@ -16,6 +13,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('roletype');
+        await queryInterface.dropTable('roletypes');
     }
 };

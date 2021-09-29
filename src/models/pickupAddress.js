@@ -11,10 +11,14 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            PickupAddress.hasOne(models.user);
         }
     };
     PickupAddress.init({
+        id: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
+        },
         userId: DataTypes.UUID,
         address: DataTypes.STRING(128),
         phoneNumber: DataTypes.STRING(16),
@@ -24,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
         isDefault: DataTypes.BOOLEAN
     }, {
         sequelize,
-        modelName: 'pickupaddress',
+        modelName: 'PickupAddress',
+        timestamps: true,
     });
     return PickupAddress;
 };
