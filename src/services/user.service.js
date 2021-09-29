@@ -5,7 +5,7 @@ const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
 const { Op } = require("sequelize");
 
-const { User, UserToken, RoleType, UserRole, sequelize } = db;
+const { User, UserBank, RoleType, UserRole, sequelize } = db;
 
 const getUsersService = async (req) => {
     try {
@@ -47,6 +47,30 @@ const getUsersService = async (req) => {
     }
 }
 
+const getUserByIdService = async (req) => {
+    try {
+        const { params } = req;
+        const { id:userId } = params || {};
+        const userInfo = await User.findOne({
+            where: {
+                id: userId
+            },
+            attributes: { exclude: ['password'] },
+            include: [
+                {
+                    model: UserBank,
+                    attributes: ['id', 'userId', 'number', 'holderName', 'branchName', 'isDefault']
+                }
+            ],
+        });
+        return userInfo;
+    } catch (error) {
+        console.log({error});
+        return buildErrorItem(RESOURCES.USER, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
 module.exports = {
     getUsersService,
+    getUserByIdService
 };
