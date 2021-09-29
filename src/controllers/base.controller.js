@@ -6,7 +6,9 @@ const Message = require('../constants/message.constant');
 const sendResponse = (results, resources, httpStatusCode, req, res, next) => {
     try {
         if (!results['resource']) {
-            const response = responseSerializer.formatResponse(results, resources);
+            const { items, total } = results || {};
+            const resultsSelected = items ? items : results;
+            const response = responseSerializer.formatResponse(resultsSelected, resources, total);
             res.status(httpStatusCode).send(response);
         } else {
             sendErrorResponse(results, req, res, next);
