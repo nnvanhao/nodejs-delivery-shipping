@@ -9,14 +9,15 @@ const singleResourceResponse = (data, resource) => {
     }
 }
 
-const collectionResourceResponse = (data, resource) => {
+const collectionResourceResponse = (data, resource, total) => {
     const items = createListItems(data);
 
     return {
         items: items,
         meta: {
             type: resource,
-            count: items.length
+            count: items.length,
+            total
         }
     };
 }
@@ -29,9 +30,9 @@ const createListItems = (data) => {
     return items;
 }
 
-const formatResponse = (results, resource) => {
+const formatResponse = (results, resource, total) => {
     const formattedResponse = Array.isArray(results)
-        ? collectionResourceResponse(results, resource)
+        ? collectionResourceResponse(results, resource, total)
         : singleResourceResponse(results, resource);
     return formattedResponse;
 }
