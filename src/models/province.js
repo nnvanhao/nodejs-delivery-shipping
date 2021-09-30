@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Province.hasMany(models.District);
+            // Province.hasMany(models.District);
+            // Province.belongsTo(models.User);
         }
     };
     Province.init({
@@ -21,6 +22,8 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         sequelize,
         modelName: 'Province',
+        createdAt: false,
+        updatedAt: false
     });
     return Province;
 };

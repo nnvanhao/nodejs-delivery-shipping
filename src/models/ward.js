@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Ward.hasOne(models.District);
+            // Ward.hasOne(models.District);
         }
     };
     Ward.init({
@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         sequelize,
         modelName: 'Ward',
+        createdAt: false,
+        updatedAt: false
     });
     return Ward;
 };

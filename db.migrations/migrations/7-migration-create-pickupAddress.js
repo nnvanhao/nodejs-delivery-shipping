@@ -23,21 +23,21 @@ module.exports = {
             provinceId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'province',
+                    model: 'provinces',
                     key: 'id'
                 },
             },
             districtId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'district',
+                    model: 'districts',
                     key: 'id'
                 },
             },
             wardId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'ward',
+                    model: 'wards',
                     key: 'id'
                 },
             },
