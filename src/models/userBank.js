@@ -25,7 +25,10 @@ module.exports = (sequelize, DataTypes) => {
         branchName: DataTypes.STRING(128),
         holderName: DataTypes.STRING(128),
         number: DataTypes.STRING(64),
-        isDefault: DataTypes.BOOLEAN
+        isDefault: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        }
     }, {
         sequelize,
         modelName: 'UserBank',
