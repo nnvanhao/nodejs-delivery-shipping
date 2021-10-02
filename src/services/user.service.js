@@ -65,7 +65,6 @@ const getUserByIdService = async (req) => {
         });
         return userInfo;
     } catch (error) {
-        console.log({ error });
         return buildErrorItem(RESOURCES.USER, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
 }
@@ -85,10 +84,10 @@ const updateUserService = async (req) => {
             });
             const banksOfUser = await UserBank.findAll({ where: { userId }, raw: true });
             banksOfUser.forEach(bank => {
-                const { number: numberBank, id: idBank } = bank;
+                const { number: numberBank, id: bankId } = bank;
                 banksOfUserBody.forEach(bankBody => {
-                    const { number: numberBody = '', id: idBody = '' } = bankBody || {};
-                    if (numberBank === numberBody && idBank !== idBody) {
+                    const { number: numberBody = '', id: bankBodyId = '' } = bankBody || {};
+                    if (numberBank === numberBody && bankId !== bankBodyId) {
                         errors.push(bankBody);
                     }
                 });
