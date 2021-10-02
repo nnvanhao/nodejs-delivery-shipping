@@ -9,9 +9,7 @@ const {
 const ApiUtils = require('../api/api.router');
 const { validateResult } = require('../validation/base');
 const {
-    validateAuthRules,
-    validateSignUpRules,
-    validateRefreshAuthRules
+    validateCreateUserRules
 } = require('../validation/authorization.validator');
 
 exports.routesConfig = function (app) {
@@ -28,6 +26,8 @@ exports.routesConfig = function (app) {
 
     app.post(ApiUtils.CREATE_USER, [
         VerifyUserMiddleware.validJWTNeeded,
+        validateCreateUserRules(),
+        validateResult,
         createUserByIdController,
     ]);
 

@@ -190,7 +190,6 @@ const createUserService = async (req) => {
             }
         })
     } catch (error) {
-        console.log({error});
         return buildErrorItem(RESOURCES.USER, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
 }
