@@ -12,7 +12,6 @@ const getProvincesService = async () => {
         const provinces = await Province.findAll();
         return provinces
     } catch (error) {
-        console.log({error});
         return buildErrorItem(RESOURCES.USER, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
 }
@@ -24,7 +23,6 @@ const getDistrictsByProvinceService = async (req) => {
         const districts = await District.findAll({ where: { provinceId: id } });
         return districts
     } catch (error) {
-        console.log({error});
         return buildErrorItem(RESOURCES.USER, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
 }

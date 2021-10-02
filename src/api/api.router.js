@@ -7,6 +7,7 @@ exports.SIGN_OUT = '/signout';
 //------User------//
 exports.GET_USERS = '/users';
 exports.GET_USER = '/user/:id';
+exports.UPDATE_USER = '/user/:id';
 
 //------Adress------//
 exports.GET_PROVINCES = '/provinces';

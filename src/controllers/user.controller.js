@@ -2,7 +2,8 @@ const HttpStatus = require("http-status-codes");
 const { sendResponse } = require("./base.controller");
 const {
     getUsersService,
-    getUserByIdService
+    getUserByIdService,
+    updateUserService
 } = require('../services/user.service');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 
@@ -16,7 +17,13 @@ const getUserByIdController = async (req, res, next) => {
     sendResponse(result, RESOURCES.USER, HttpStatus.OK, req, res, next);
 };
 
+const updateUserController = async (req, res, next) => {
+    const result = await updateUserService(req);
+    sendResponse(result, RESOURCES.USER, HttpStatus.OK, req, res, next);
+};
+
 module.exports = {
     getUsersController,
     getUserByIdController,
+    updateUserController
 }

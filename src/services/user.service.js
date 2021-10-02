@@ -19,17 +19,17 @@ const getUsersService = async (req) => {
                     [Op.like]: `%${fullName}%`
                 }
             },
-            include: 
-                {
-                    model: UserRole,
-                    attributes: ['id'],
-                    include: [
-                        {
-                            model: RoleType,
-                            attributes: ['name']
-                        }
-                    ]
-                }
+            include:
+            {
+                model: UserRole,
+                attributes: ['id'],
+                include: [
+                    {
+                        model: RoleType,
+                        attributes: ['name']
+                    }
+                ]
+            }
             ,
             attributes: { exclude: ['password'] },
             offset,
@@ -50,7 +50,7 @@ const getUsersService = async (req) => {
 const getUserByIdService = async (req) => {
     try {
         const { params } = req;
-        const { id:userId } = params || {};
+        const { id: userId } = params || {};
         const userInfo = await User.findOne({
             where: {
                 id: userId
@@ -65,12 +65,70 @@ const getUserByIdService = async (req) => {
         });
         return userInfo;
     } catch (error) {
-        console.log({error});
+        return buildErrorItem(RESOURCES.USER, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
+const updateUserService = async (req) => {
+    try {
+        return await sequelize.transaction(async (t) => {
+            const { params, body } = req;
+            const { userBanks } = body;
+            const { id: userId } = params || {};
+            let errors = [];
+            const banksOfUserBody = [...userBanks].map(bank => {
+                return {
+                    ...bank,
+                    userId
+                }
+            });
+            const banksOfUser = await UserBank.findAll({ where: { userId }, raw: true });
+            banksOfUser.forEach(bank => {
+                const { number: numberBank, id: bankId } = bank;
+                banksOfUserBody.forEach(bankBody => {
+                    const { number: numberBody = '', id: bankBodyId = '' } = bankBody || {};
+                    if (numberBank === numberBody && bankId !== bankBodyId) {
+                        errors.push(bankBody);
+                    }
+                });
+            });
+            if (errors.length) {
+                let extractedErrors = [];
+                errors.forEach(err => {
+                    extractedErrors.push({
+                        param: err.holderName,
+                        msg: Message.BANK_NUMBER_IS_EXIST
+                    })
+                });
+                return buildErrorItem(RESOURCES.USER, null, HttpStatus.NOT_ACCEPTABLE, Message.DATA_IS_EXIST, extractedErrors);
+            }
+            for (let i = 0; i < banksOfUserBody.length; i++) {
+                const data = banksOfUserBody[i] || {};
+                const { id } = data;
+                if (id) {
+                    await UserBank.update(data, { where: { id } }, { transaction: t });
+                } else {
+                    await UserBank.create(data, { transaction: t });
+                }
+            }
+            const userInfo = await User.findOne({
+                where: {
+                    id: userId
+                },
+                attributes: { exclude: ['password'] },
+            });
+            await userInfo.update({
+                ...body
+            }, { transaction: t });
+            return userInfo;
+        });
+    } catch (error) {
         return buildErrorItem(RESOURCES.USER, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
 }
 
 module.exports = {
     getUsersService,
-    getUserByIdService
+    getUserByIdService,
+    updateUserService
 };
