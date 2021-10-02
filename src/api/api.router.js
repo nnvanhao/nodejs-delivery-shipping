@@ -8,6 +8,7 @@ exports.SIGN_OUT = '/signout';
 exports.GET_USERS = '/users';
 exports.GET_USER = '/user/:id';
 exports.UPDATE_USER = '/user/:id';
+exports.CREATE_USER = '/user';
 
 //------Adress------//
 exports.GET_PROVINCES = '/provinces';

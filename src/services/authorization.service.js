@@ -10,9 +10,10 @@ const { buildErrorItem } = require('../helpers/error.helper');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
 const { Op } = require("sequelize");
-const { ROLE_TYPE } = require("../constants/common.constant");
+const { ROLE_TYPE, CUSTOMER_TYPE, USER_CODE } = require("../constants/common.constant");
+const { generateUserCode } = require("../helpers/common.helper");
 
-const { User, UserToken, RoleType, UserRole, sequelize } = db;
+const { User, UserToken, RoleType, UserRole, CustomerType, Customer, sequelize } = db;
 
 const signInService = async (email, password) => {
     try {
@@ -52,11 +53,7 @@ const signInService = async (email, password) => {
 const signUpService = async (data) => {
     try {
         return await sequelize.transaction(async (t) => {
-            const { email, password, phoneNumber } = data;
-            const userInfo = {
-                ...data,
-                password,
-            };
+            const { email, password, phoneNumber, roleType = ROLE_TYPE.CUSTOMER, customerType = CUSTOMER_TYPE.PARTNER } = data;
             const user = await User.findOne({
                 where: {
                     [Op.or]: [{ email }, { phoneNumber }]
@@ -71,14 +68,35 @@ const signUpService = async (data) => {
                 }
                 return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.NOT_ACCEPTABLE, message, {});
             } else {
-                const RoleTypeInfo = await RoleType.findOne({ where: { name: ROLE_TYPE.PARTNER }, raw: true });
+                const lastUser = await User.findOne({
+                    limit: 1,
+                    order: [['createdAt', 'DESC']],
+                    where: {
+                        code: {
+                            [Op.like]: '%' + USER_CODE.KH + '%'
+                        }
+                    },
+                    raw: true
+                });
+                const roleTypeInfo = await RoleType.findOne({ where: { name: roleType }, raw: true });
+                const customerTypeInfo = await CustomerType.findOne({ where: { name: customerType }, raw: true });
+                const code = generateUserCode(lastUser, USER_CODE.KH);
+                const userInfo = {
+                    email,
+                    password,
+                    phoneNumber,
+                    code
+                };
                 const userCreate = (await User.create(userInfo, { transaction: t })).get({ plain: true });
                 const { id: userId } = userCreate;
-                const { id: roleTypeId } = RoleTypeInfo;
+                const { id: roleTypeId } = roleTypeInfo;
+                const { id: customerTypeId } = customerTypeInfo;
                 await UserRole.create({ userId, roleTypeId }, { transaction: t });
+                await Customer.create({ userId, customerTypeId }, { transaction: t });
                 const signUpData = {
                     email,
-                    phoneNumber
+                    phoneNumber,
+                    code
                 };
                 return signUpData;
             }

@@ -15,7 +15,7 @@ module.exports = {
             },
             {
                 id: uuidv4(),
-                name: ROLE_TYPE.PARTNER,
+                name: ROLE_TYPE.CUSTOMER,
             }
         ]);
     },

@@ -4,15 +4,15 @@ const { buildErrorItem } = require('../helpers/error.helper');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
 const { Op } = require("sequelize");
-const { ROLE_TYPE } = require("../constants/common.constant");
-const { getQueryConditionsForGetUsers } = require("../helpers/common.helper");
+const { ROLE_TYPE, USER_CODE } = require("../constants/common.constant");
+const { getQueryConditionsForGetUsers, generateUserCode } = require("../helpers/common.helper");
 
 const { User, UserBank, RoleType, UserRole, sequelize } = db;
 
 const getUsersService = async (req) => {
     try {
         const { query } = req;
-        const { page, pageSize, roleType = [ROLE_TYPE.PARTNER] } = query || {};
+        const { page, pageSize, roleType = [ROLE_TYPE.CUSTOMER] } = query || {};
         const offset = (parseInt(page) - 1) || undefined;
         const limit = parseInt(pageSize) || undefined;
         const conditions = getQueryConditionsForGetUsers(query, ['fullName', 'email', 'phoneNumber'])
@@ -146,9 +146,59 @@ const deleteUserService = async (req) => {
     }
 }
 
+const createUserService = async (req) => {
+    try {
+        return await sequelize.transaction(async (t) => {
+            const { body } = req;
+            const { email, phoneNumber, roleType = ROLE_TYPE.EMPLOYEE } = body;
+            const user = await User.findOne({
+                where: {
+                    [Op.or]: [{ email }, { phoneNumber }]
+                },
+                raw: true,
+            });
+            if (user) {
+                let message = {};
+                if (user.email === email) {
+                    message = Message.EMAIL_ADDRESS_ALREADY_EXISTS;
+                } else if (user.phoneNumber === phoneNumber) {
+                    message = Message.PHONE_NUMBER_ALREADY_EXISTS;
+                }
+                return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.NOT_ACCEPTABLE, message, {});
+            } else {
+                const lastUser = await User.findOne({
+                    limit: 1,
+                    order: [['createdAt', 'DESC']],
+                    where: {
+                        code: {
+                            [Op.like]: '%' + USER_CODE.NV + '%'
+                        }
+                    },
+                    raw: true,
+                });
+                const roleTypeInfo = await RoleType.findOne({ where: { name: roleType }, raw: true });
+                const code = generateUserCode(lastUser, USER_CODE.NV);
+                const userInfo = {
+                    ...body,
+                    code
+                };
+                const userCreate = (await User.create(userInfo, { transaction: t })).get({ plain: true });
+                const { id: userId } = userCreate;
+                const { id: roleTypeId } = roleTypeInfo;
+                await UserRole.create({ userId, roleTypeId }, { transaction: t });
+                return userInfo;
+            }
+        })
+    } catch (error) {
+        console.log({error});
+        return buildErrorItem(RESOURCES.USER, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
 module.exports = {
     getUsersService,
     getUserByIdService,
     updateUserService,
-    deleteUserService
+    deleteUserService,
+    createUserService
 };

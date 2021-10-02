@@ -3,15 +3,16 @@ const {
     getUsersController,
     getUserByIdController,
     updateUserController,
-    deleteUserController
+    deleteUserController,
+    createUserByIdController
 } = require('../controllers/user.controller');
 const ApiUtils = require('../api/api.router');
 const { validateResult } = require('../validation/base');
-const { 
+const {
     validateAuthRules,
     validateSignUpRules,
     validateRefreshAuthRules
- } = require('../validation/authorization.validator');
+} = require('../validation/authorization.validator');
 
 exports.routesConfig = function (app) {
 
@@ -20,17 +21,22 @@ exports.routesConfig = function (app) {
         getUsersController,
     ]);
 
-     app.get(ApiUtils.GET_USER, [
+    app.get(ApiUtils.GET_USER, [
         VerifyUserMiddleware.validJWTNeeded,
         getUserByIdController,
     ]);
 
-     app.put(ApiUtils.UPDATE_USER, [
+    app.post(ApiUtils.CREATE_USER, [
+        VerifyUserMiddleware.validJWTNeeded,
+        createUserByIdController,
+    ]);
+
+    app.put(ApiUtils.UPDATE_USER, [
         VerifyUserMiddleware.validJWTNeeded,
         updateUserController,
     ]);
 
-     app.delete(ApiUtils.GET_USER, [
+    app.delete(ApiUtils.GET_USER, [
         VerifyUserMiddleware.validJWTNeeded,
         deleteUserController,
     ]);
