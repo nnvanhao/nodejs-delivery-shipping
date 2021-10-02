@@ -13,7 +13,7 @@ module.exports = {
             userBankId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'userbank',
+                    model: 'userbanks',
                     key: 'id'
                 },
             },

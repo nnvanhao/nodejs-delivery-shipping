@@ -4,29 +4,35 @@ const { buildErrorItem } = require('../helpers/error.helper');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
 const { Op } = require("sequelize");
+const { ROLE_TYPE } = require("../constants/common.constant");
+const { getQueryConditionsForGetUsers } = require("../helpers/common.helper");
 
 const { User, UserBank, RoleType, UserRole, sequelize } = db;
 
 const getUsersService = async (req) => {
     try {
         const { query } = req;
-        const { page, pageSize, fullName } = query || {};
+        const { page, pageSize, roleType = [ROLE_TYPE.PARTNER] } = query || {};
         const offset = (parseInt(page) - 1) || undefined;
-        const limit = parseInt(pageSize) || undefined;;
+        const limit = parseInt(pageSize) || undefined;
+        const conditions = getQueryConditionsForGetUsers(query, ['fullName', 'email', 'phoneNumber'])
         const { count, rows } = await User.findAndCountAll({
-            where: fullName && {
-                fullName: {
-                    [Op.like]: `%${fullName}%`
-                }
+            where: {
+                ...conditions,
+                isDeleted: false
             },
             include:
             {
                 model: UserRole,
                 attributes: ['id'],
+                required: true,
                 include: [
                     {
                         model: RoleType,
-                        attributes: ['name']
+                        attributes: ['name'],
+                        where: {
+                            name: [roleType]
+                        }
                     }
                 ]
             }
@@ -127,8 +133,22 @@ const updateUserService = async (req) => {
     }
 }
 
+const deleteUserService = async (req) => {
+    try {
+        return await sequelize.transaction(async (t) => {
+            const { params } = req;
+            const { id: userId } = params || {};
+            await User.update({ isDeleted: true }, { where: { id: userId } }, { transaction: t });
+            return {};
+        });
+    } catch (error) {
+        return buildErrorItem(RESOURCES.USER, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
 module.exports = {
     getUsersService,
     getUserByIdService,
-    updateUserService
+    updateUserService,
+    deleteUserService
 };

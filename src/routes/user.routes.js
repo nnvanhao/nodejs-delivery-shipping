@@ -2,7 +2,8 @@ const VerifyUserMiddleware = require('../middlewares/verify.authenticate.middlew
 const {
     getUsersController,
     getUserByIdController,
-    updateUserController
+    updateUserController,
+    deleteUserController
 } = require('../controllers/user.controller');
 const ApiUtils = require('../api/api.router');
 const { validateResult } = require('../validation/base');
@@ -29,4 +30,8 @@ exports.routesConfig = function (app) {
         updateUserController,
     ]);
 
+     app.delete(ApiUtils.GET_USER, [
+        VerifyUserMiddleware.validJWTNeeded,
+        deleteUserController,
+    ]);
 };
