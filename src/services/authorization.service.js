@@ -17,7 +17,7 @@ const { User, UserToken, RoleType, UserRole, sequelize } = db;
 const signInService = async (email, password) => {
     try {
         return await sequelize.transaction(async (t) => {
-            const user = await User.findOne({ where: { email }, attributes: { exclude: ['createdAt', 'updatedAt'] }, raw: true });
+            const user = await User.findOne({ where: { email, isDeleted: false }, attributes: { exclude: ['createdAt', 'updatedAt'] }, raw: true });
             if (!user) {
                 return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_NOT_EXIST, {});
             } else if (user.password !== password) {
