@@ -2,6 +2,7 @@
 const {
     Model
 } = require('sequelize');
+const { USER_STATUS, GENDER } = require('../constants/common.constant');
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
         /**
@@ -35,20 +36,22 @@ module.exports = (sequelize, DataTypes) => {
         password: DataTypes.STRING, // default 255
         fullName: DataTypes.STRING(128),
         phoneNumber: DataTypes.STRING(16),
-        gender: DataTypes.ENUM('Male', 'Female', 'Other'),
+        emergencyPhoneNumber: DataTypes.STRING(16),
+        gender: DataTypes.ENUM(GENDER.MALE, GENDER.FEMALE, GENDER.OTHER),
+        status: {
+            type: DataTypes.ENUM(USER_STATUS.ACTIVE, USER_STATUS.INACTIVE, USER_STATUS.WAITING_VERIFY),
+            defaultValue: USER_STATUS.WAITING_VERIFY
+        },
         birthday: DataTypes.DATE,
         provinceId: DataTypes.UUID,
         districtId: DataTypes.UUID,
         wardId: DataTypes.UUID,
         address: DataTypes.STRING,
-        isActive: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
-        },
         isDeleted: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
-        }
+        },
+        code: DataTypes.STRING,
     }, {
         sequelize,
         modelName: 'User',

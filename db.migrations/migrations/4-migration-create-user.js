@@ -1,4 +1,6 @@
 'use strict';
+const { USER_STATUS, GENDER } = require('../../src/constants/common.constant');
+
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.createTable('users', {
@@ -19,9 +21,16 @@ module.exports = {
             phoneNumber: {
                 type: Sequelize.STRING(16)
             },
+            emergencyPhoneNumber: {
+                type: Sequelize.STRING
+            },
             gender: {
                 type: Sequelize.ENUM,
-                values: ['Male', 'Female', 'Other']
+                values: [GENDER.MALE, GENDER.FEMALE, GENDER.OTHER]
+            },
+            status: {
+                type: Sequelize.ENUM,
+                values: [USER_STATUS.ACTIVE, USER_STATUS.INACTIVE, USER_STATUS.WAITING_VERIFY]
             },
             birthday: {
                 type: Sequelize.DATE
@@ -50,11 +59,11 @@ module.exports = {
             address: {
                 type: Sequelize.STRING // default 255
             },
-            isActive: {
-                type: Sequelize.BOOLEAN
-            },
             isDeleted: {
                 type: Sequelize.BOOLEAN
+            },
+            code: {
+                type: Sequelize.STRING
             },
             createdAt: {
                 allowNull: false,

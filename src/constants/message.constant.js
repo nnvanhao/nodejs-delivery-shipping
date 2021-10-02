@@ -27,5 +27,7 @@ exports.PASSWORD_IS_INCORRECT = 'Password_Is_Incorrect';
 exports.PHONE_NUMBER_FIELD_MORE_THAN_10_DIGITS = 'Phone_Number_Field_More_Than_10_Digits';
 exports.DATA_IS_EXIST = 'Data_Is_Exist';
 exports.BANK_NUMBER_IS_EXIST = 'Bank_Number_Is_Exist';
+exports.MISSING_FULL_NAME_FIELD = 'Missing_Full_Name_Field';
+
 
 
