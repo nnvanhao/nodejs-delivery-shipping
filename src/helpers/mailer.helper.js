@@ -4,7 +4,6 @@ const config = require('../config/env');
 // async..await is not allowed in global scope, must use a wrapper
 const sendEmail = async (from = config.MAILER.FROM, to, subject, text, html) => {
     try {
-
         // create reusable transporter object using the default SMTP transport
         const transporter = nodemailer.createTransport({
             service: 'gmail',
