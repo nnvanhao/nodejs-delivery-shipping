@@ -7,7 +7,7 @@ module.exports = {
     },
     PORT: 3600,
     JWT_SECRET: 'myS33!!creeeT',
-    JWT_EXPIRATION_IN_SECONDS: 3600,
+    JWT_EXPIRATION_IN_SECONDS: 86400,
     ENVIRONMENT: 'staging',
     CLUSTER: false,
 };
