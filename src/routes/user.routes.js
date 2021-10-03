@@ -12,6 +12,7 @@ const { validateResult } = require('../validation/base');
 const {
     validateCreateUserRules
 } = require('../validation/authorization.validator');
+const { ROLE_TYPE } = require('../constants/common.constant');
 
 exports.routesConfig = function (app) {
 
@@ -27,7 +28,7 @@ exports.routesConfig = function (app) {
 
     app.post(ApiUtils.CREATE_USER, [
         VerifyUserMiddleware.validJWTNeeded,
-        VerifyPermissionMiddleware.permissionRequired(['ADMIN']),
+        VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN]),
         validateCreateUserRules(),
         validateResult,
         createUserByIdController,
