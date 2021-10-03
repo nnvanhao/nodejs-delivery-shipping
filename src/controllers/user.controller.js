@@ -5,7 +5,8 @@ const {
     getUserByIdService,
     updateUserService,
     deleteUserService,
-    createUserService
+    createUserService,
+    activateUserService
 } = require('../services/user.service');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 
@@ -34,10 +35,15 @@ const createUserByIdController = async (req, res, next) => {
     sendResponse(result, RESOURCES.USER, HttpStatus.OK, req, res, next);
 };
 
+const activateUserController = async (req, res, next) => {
+    const result = await activateUserService(req, res);
+};
+
 module.exports = {
     getUsersController,
     getUserByIdController,
     updateUserController,
     deleteUserController,
-    createUserByIdController
+    createUserByIdController,
+    activateUserController
 }

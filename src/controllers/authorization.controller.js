@@ -15,7 +15,7 @@ const signInController = async (req, res, next) => {
 
 const signUpController = async (req, res, next) => {
     const data = {...req.body};
-    const result = await signUpService(data);
+    const result = await signUpService(data, req);
     sendResponse(result, RESOURCES.AUTHORIZATION, HttpStatus.CREATED, req, res, next);
 };
 

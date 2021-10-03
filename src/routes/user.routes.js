@@ -5,7 +5,8 @@ const {
     getUserByIdController,
     updateUserController,
     deleteUserController,
-    createUserByIdController
+    createUserByIdController,
+    activateUserController
 } = require('../controllers/user.controller');
 const ApiUtils = require('../api/api.router');
 const { validateResult } = require('../validation/base');
@@ -42,5 +43,10 @@ exports.routesConfig = function (app) {
     app.delete(ApiUtils.GET_USER, [
         VerifyUserMiddleware.validJWTNeeded,
         deleteUserController,
+    ]);
+
+    app.get(ApiUtils.ACTIVATE_USER, [
+        VerifyUserMiddleware.verifyTokenForGetRequest,
+        activateUserController,
     ]);
 };

@@ -92,3 +92,21 @@ exports.validRefreshNeeded = (req, res, next) => {
         sendErrorResponse(errorItem, req, res, next);
     }
 };
+
+exports.verifyTokenForGetRequest = async (req, res, next) => {
+    const { query } = req;
+    const { token } = query || {};
+    let message = '';
+    try {
+        if (!token) {
+            message = Message.UNAUTHORIZED;
+        } else {
+            jwt.verify(token, config.JWT_SECRET);
+            return next();
+        }
+    } catch (error) {
+        message = Message.TOKEN_EXPIRED;
+    }
+    const errorItem = buildErrorItem('validJWTNeeded', null, HttpStatus.UNAUTHORIZED, message, null);
+    sendErrorResponse(errorItem, req, res, next);
+};
