@@ -4,7 +4,7 @@ const { hashPassword } = require('../../src/helpers/password.helper');
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        return queryInterface.bulkInsert('users', [
+        return queryInterface.bulkInsert('Users', [
             {
                 id: uuidv4(),
                 email: 'admin@gmail.com',
@@ -17,6 +17,6 @@ module.exports = {
     },
 
     down: async (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete('users', null, {});
+        return queryInterface.bulkDelete('Users', null, {});
     }
 };

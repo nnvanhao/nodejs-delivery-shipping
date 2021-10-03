@@ -4,7 +4,7 @@ const { CUSTOMER_TYPE } = require('../../src/constants/common.constant');
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        return queryInterface.bulkInsert('customertypes', [
+        return queryInterface.bulkInsert('CustomerTypes', [
             {
                 id: uuidv4(),
                 name: CUSTOMER_TYPE.PARTNER,
@@ -17,6 +17,6 @@ module.exports = {
     },
 
     down: async (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete('customertypes', null, {});
+        return queryInterface.bulkDelete('CustomerTypes', null, {});
     }
 };

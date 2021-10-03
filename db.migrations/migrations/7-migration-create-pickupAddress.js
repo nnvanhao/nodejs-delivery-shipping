@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('pickupaddress', {
+        await queryInterface.createTable('PickupAddress', {
             id: {
                 allowNull: false,
                 primaryKey: true,
@@ -10,7 +10,7 @@ module.exports = {
             userId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'users',
+                    model: 'Users',
                     key: 'id'
                 },
             },
@@ -23,21 +23,21 @@ module.exports = {
             provinceId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'provinces',
+                    model: 'Provinces',
                     key: 'id'
                 },
             },
             districtId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'districts',
+                    model: 'Districts',
                     key: 'id'
                 },
             },
             wardId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'wards',
+                    model: 'Wards',
                     key: 'id'
                 },
             },
@@ -55,6 +55,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('pickupaddress');
+        await queryInterface.dropTable('PickupAddress');
     }
 };
