@@ -4,6 +4,10 @@ const jwt = require('jsonwebtoken');
 const Message = require('../constants/message.constant');
 const { buildErrorItem, sendErrorResponse } = require('../helpers/error.helper');
 const HttpStatus = require('http-status-codes');
+const db = require("../models/index");
+const { getTokenString, decodeToken } = require('../helpers/token.helper');
+
+const { UserToken } = db;
 
 exports.hasAuthValidFields = (req, res, next) => {
     let errors = [];
@@ -51,26 +55,29 @@ exports.verifyRefreshBodyField = (req, res, next) => {
     }
 };
 
-exports.validJWTNeeded = (req, res, next) => {
+exports.validJWTNeeded = async (req, res, next) => {
+    let message = '';
     if (req.headers['authorization']) {
         try {
+            const token = getTokenString(req.headers['authorization']);
+            const tokenInfo = await UserToken.findOne({ where: { token } });
             let authorization = req.headers['authorization'].split(' ');
             if (authorization[0] !== 'Bearer') {
-                const errorItem = buildErrorItem('validJWTNeeded', null, HttpStatus.UNAUTHORIZED, Message.UNAUTHORIZED, null);
-                sendErrorResponse(errorItem, req, res, next);
+                message = Message.UNAUTHORIZED;
+            } else if (tokenInfo.isExpired) {
+                message = Message.TOKEN_EXPIRED;
             } else {
                 req.jwt = jwt.verify(authorization[1], config.JWT_SECRET);
                 return next();
             }
-
         } catch (err) {
-            const errorItem = buildErrorItem('validJWTNeeded', null, HttpStatus.FORBIDDEN, Message.FORBIDDEN, null);
-            sendErrorResponse(errorItem, req, res, next);
+            message = Message.TOKEN_EXPIRED;
         }
     } else {
-        const errorItem = buildErrorItem('validJWTNeeded', null, HttpStatus.UNAUTHORIZED, Message.UNAUTHORIZED, null);
-        sendErrorResponse(errorItem, req, res, next);
+        message = Message.UNAUTHORIZED;
     }
+    const errorItem = buildErrorItem('validJWTNeeded', null, HttpStatus.UNAUTHORIZED, message, null);
+    sendErrorResponse(errorItem, req, res, next);
 };
 
 exports.validRefreshNeeded = (req, res, next) => {
