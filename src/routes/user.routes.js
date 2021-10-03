@@ -1,4 +1,5 @@
 const VerifyUserMiddleware = require('../middlewares/verify.authenticate.middleware');
+const VerifyPermissionMiddleware = require('../middlewares/verify.permission.middleware');
 const {
     getUsersController,
     getUserByIdController,
@@ -26,6 +27,7 @@ exports.routesConfig = function (app) {
 
     app.post(ApiUtils.CREATE_USER, [
         VerifyUserMiddleware.validJWTNeeded,
+        VerifyPermissionMiddleware.permissionRequired(['ADMIN']),
         validateCreateUserRules(),
         validateResult,
         createUserByIdController,
