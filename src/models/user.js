@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
 
-            // User.hasOne(models.Province);
+            User.hasOne(models.Customer);
 
             User.hasOne(models.UserRole);
 

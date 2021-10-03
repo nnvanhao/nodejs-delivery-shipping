@@ -7,36 +7,49 @@ const { Op } = require("sequelize");
 const { ROLE_TYPE, USER_CODE } = require("../constants/common.constant");
 const { getQueryConditionsForGetUsers, generateUserCode } = require("../helpers/common.helper");
 
-const { User, UserBank, RoleType, UserRole, sequelize } = db;
+const { User, UserBank, RoleType, UserRole, Customer, CustomerType, sequelize } = db;
 
 const getUsersService = async (req) => {
     try {
         const { query } = req;
-        const { page, pageSize, roleType = [ROLE_TYPE.CUSTOMER] } = query || {};
+        const { page, pageSize, roleType, customerType } = query || {};
         const offset = (parseInt(page) - 1) || undefined;
         const limit = parseInt(pageSize) || undefined;
-        const conditions = getQueryConditionsForGetUsers(query, ['fullName', 'email', 'phoneNumber'])
+        const conditions = getQueryConditionsForGetUsers(query, ['fullName', 'email', 'phoneNumber', 'code'])
         const { count, rows } = await User.findAndCountAll({
             where: {
                 ...conditions,
                 isDeleted: false
             },
-            include:
-            {
-                model: UserRole,
-                attributes: ['id'],
-                required: true,
-                include: [
-                    {
-                        model: RoleType,
-                        attributes: ['name'],
-                        where: {
-                            name: [roleType]
+            include: [
+                {
+                    model: UserRole,
+                    attributes: ['id'],
+                    required: true,
+                    include: [
+                        {
+                            model: RoleType,
+                            attributes: ['name'],
+                            where: roleType && {
+                                name: roleType
+                            }
                         }
-                    }
-                ]
-            }
-            ,
+                    ]
+                },
+                {
+                    model: Customer,
+                    attributes: ['id'],
+                    include: [
+                        {
+                            model: CustomerType,
+                            attributes: ['name'],
+                            where: customerType && {
+                                name: [customerType]
+                            }
+                        }
+                    ]
+                }
+            ],
             attributes: { exclude: ['password'] },
             offset,
             limit,

@@ -53,7 +53,7 @@ const signInService = async (email, password) => {
 const signUpService = async (data) => {
     try {
         return await sequelize.transaction(async (t) => {
-            const { email, password, phoneNumber, roleType = ROLE_TYPE.CUSTOMER, customerType = CUSTOMER_TYPE.PARTNER } = data;
+            const { email, password, phoneNumber, roleType = ROLE_TYPE.CUSTOMER, customerType = CUSTOMER_TYPE.OTHER } = data;
             const user = await User.findOne({
                 where: {
                     [Op.or]: [{ email }, { phoneNumber }]
