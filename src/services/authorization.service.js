@@ -149,7 +149,7 @@ const forgotPasswordService = async (req) => {
         } else if (status === USER_STATUS.INACTIVE) {
             return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_INACTIVE, {});
         }
-        // send email activate
+        // send email forgot password
         const token = getToken(email, userId);
         const { subject, htmlBody } = forgotPasswordTemplate(fullName, token, host);
         const info = await sendEmail(undefined, email, subject, null, htmlBody);
