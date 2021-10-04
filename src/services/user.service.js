@@ -94,9 +94,33 @@ const updateUserService = async (req) => {
     try {
         return await sequelize.transaction(async (t) => {
             const { params, body } = req;
-            const { userBanks } = body;
+            const {
+                userBanks,
+                email,
+                phoneNumber,
+                gender,
+                address,
+                birthday,
+                emergencyPhoneNumber,
+                fullName,
+                provinceId,
+                districtId,
+                wardId
+            } = body;
             const { id: userId } = params || {};
             let errors = [];
+            const bodyForUpdate = {
+                email,
+                phoneNumber,
+                gender,
+                address,
+                birthday,
+                emergencyPhoneNumber,
+                fullName,
+                provinceId,
+                districtId,
+                wardId
+            }
             const banksOfUserBody = [...userBanks].map(bank => {
                 return {
                     ...bank,
@@ -138,9 +162,7 @@ const updateUserService = async (req) => {
                 },
                 attributes: { exclude: ['password'] },
             });
-            await userInfo.update({
-                ...body
-            }, { transaction: t });
+            await userInfo.update(bodyForUpdate, { transaction: t });
             return userInfo;
         });
     } catch (error) {
@@ -165,7 +187,19 @@ const createUserService = async (req) => {
     try {
         return await sequelize.transaction(async (t) => {
             const { body } = req;
-            const { email, phoneNumber, roleType = ROLE_TYPE.EMPLOYEE } = body;
+            const {
+                email,
+                phoneNumber,
+                roleType = ROLE_TYPE.EMPLOYEE,
+                gender,
+                address,
+                birthday,
+                emergencyPhoneNumber,
+                fullName,
+                provinceId,
+                districtId,
+                wardId
+            } = body;
             const user = await User.findOne({
                 where: {
                     [Op.or]: [{ email }, { phoneNumber }]
@@ -194,7 +228,16 @@ const createUserService = async (req) => {
                 const roleTypeInfo = await RoleType.findOne({ where: { name: roleType }, raw: true });
                 const code = generateUserCode(lastUser, USER_CODE.NV);
                 const userInfo = {
-                    ...body,
+                    email,
+                    phoneNumber,
+                    gender,
+                    address,
+                    birthday,
+                    emergencyPhoneNumber,
+                    fullName,
+                    provinceId,
+                    districtId,
+                    wardId,
                     code
                 };
                 const userCreate = (await User.create(userInfo, { transaction: t })).get({ plain: true });
