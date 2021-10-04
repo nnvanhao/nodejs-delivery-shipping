@@ -29,11 +29,12 @@ const sendEmail = async (from = config.MAILER.FROM, to, subject, text, html) => 
     }
 }
 
-const activeUserTemplate = (fullName, token, host) => {
+const activeUserTemplate = (fullName, token, host, password) => {
     return {
         htmlBody: `
-            <p>Chào mừng ${fullName || 'bạn'} đến với Vivu Ship,</p>
-            <p><a href="${config.METHOD}${host}/activateUser?token=${token}">Nhấn vào đây để kích hoạt tài khoản</a></p>
+            <p>Chào mừng ${`<b style="font-size: 14px;">${fullName}</b>` || 'bạn'} đến với Vivu Ship,</p>
+            ${password ? `<p>Mật khẩu của bạn là: <b style="font-size: 14px;">${password}</b></p>` : ''}
+            <p><a style="color: #1e1ebb; font-size: 14px;" href="${config.METHOD}${host}/activateUser?token=${token}">Nhấn vào đây để kích hoạt tài khoản và đăng nhập</a></p>
         `,
         subject: 'Kích hoạt tài khoản'
     }

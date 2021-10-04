@@ -100,6 +100,7 @@ const signUpService = async (data, req) => {
                 const { id: customerTypeId } = customerTypeInfo;
                 await UserRole.create({ userId, roleTypeId }, { transaction: t });
                 await Customer.create({ userId, customerTypeId }, { transaction: t });
+                // send email activate
                 const token = getToken(email, userId);
                 const { subject, htmlBody } = activeUserTemplate(null, token, host);
                 const info = await sendEmail(undefined, email, subject, null, htmlBody);

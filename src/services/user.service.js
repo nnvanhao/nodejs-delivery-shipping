@@ -6,8 +6,10 @@ const db = require("../models/index");
 const { Op } = require("sequelize");
 const { ROLE_TYPE, USER_CODE, USER_STATUS } = require("../constants/common.constant");
 const { getQueryConditionsForGetUsers, generateUserCode } = require("../helpers/common.helper");
-const { decodeToken } = require("../helpers/token.helper");
+const { decodeToken, getToken } = require("../helpers/token.helper");
 const config = require("../config/env");
+const { activeUserTemplate, sendEmail } = require("../helpers/mailer.helper");
+const { generatePassword, hashPassword } = require("../helpers/password.helper");
 
 const { User, UserBank, RoleType, UserRole, Customer, CustomerType, sequelize } = db;
 
@@ -186,7 +188,7 @@ const deleteUserService = async (req) => {
 const createUserService = async (req) => {
     try {
         return await sequelize.transaction(async (t) => {
-            const { body } = req;
+            const { body,  headers: { host } = {} } = req;
             const {
                 email,
                 phoneNumber,
@@ -227,6 +229,7 @@ const createUserService = async (req) => {
                 });
                 const roleTypeInfo = await RoleType.findOne({ where: { name: roleType }, raw: true });
                 const code = generateUserCode(lastUser, USER_CODE.NV);
+                const getPasswordGenerate = generatePassword();
                 const userInfo = {
                     email,
                     phoneNumber,
@@ -238,12 +241,21 @@ const createUserService = async (req) => {
                     provinceId,
                     districtId,
                     wardId,
-                    code
+                    code,
+                    password: hashPassword(getPasswordGenerate)
                 };
                 const userCreate = (await User.create(userInfo, { transaction: t })).get({ plain: true });
                 const { id: userId } = userCreate;
                 const { id: roleTypeId } = roleTypeInfo;
                 await UserRole.create({ userId, roleTypeId }, { transaction: t });
+                // send email activate
+                const token = getToken(email, userId);
+                const { subject, htmlBody } = activeUserTemplate(fullName, token, host, getPasswordGenerate);
+                const info = await sendEmail(undefined, email, subject, null, htmlBody);
+                if (!info) {
+                    await t.rollback();
+                    return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.NOT_ACCEPTABLE, Message.SEND_EMAIL_ACTIVE_FAIL, {});
+                }
                 return userInfo;
             }
         })
