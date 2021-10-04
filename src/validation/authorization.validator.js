@@ -36,9 +36,26 @@ const validateRefreshAuthRules = () => {
     ];
 }
 
+const validateForgotPasswordRules = () => {
+    return [
+        body('email', Message.MISSING_EMAIL_FIELD).notEmpty(),
+        body('email', Message.EMAIL_ADDRESS_INVALID).isEmail(),
+    ];
+}
+
+const validateResetPasswordRules = () => {
+    return [
+        body('password', Message.MISSING_PASSWORD_FIELD).notEmpty(),
+        body('password', Message.PASSWORD_FIELD_MORE_THAN_6_DIGITS).isLength({ min: 6 }),
+        body('token', Message.MISSING_TOKEN_FIELD).notEmpty(),
+    ];
+}
+
 module.exports = {
     validateAuthRules,
     validateSignUpRules,
     validateRefreshAuthRules,
-    validateCreateUserRules
+    validateCreateUserRules,
+    validateForgotPasswordRules,
+    validateResetPasswordRules
 };

@@ -34,12 +34,25 @@ const activeUserTemplate = (fullName, token, host, password) => {
         htmlBody: `
             <p>Chào mừng ${`<b style="font-size: 14px;">${fullName}</b>` || 'bạn'} đến với Vivu Ship,</p>
             ${password ? `<p>Mật khẩu của bạn là: <b style="font-size: 14px;">${password}</b></p>` : ''}
-            <p><a style="color: #1e1ebb; font-size: 14px;" href="${config.METHOD}${host}/activateUser?token=${token}">Nhấn vào đây để kích hoạt tài khoản và đăng nhập</a></p>
+            <p>Vui lòng <a style="color: #1e1ebb; font-size: 14px;" href="${config.METHOD}${host}/activate-user?token=${token}">Nhấn vào đây để kích hoạt tài khoản và đăng nhập</a></p>
         `,
         subject: 'Kích hoạt tài khoản'
     }
 }
+
+const forgotPasswordTemplate = (fullName, token, host) => {
+    return {
+        htmlBody: `
+            <p>Chào ${`<b style="font-size: 14px;">${fullName}</b>` || 'bạn'},</p>
+            <p>Chúng tôi đã nhận được yêu cầu quên mật khẩu của bạn</P>
+            <p>Vui lòng <a style="color: #1e1ebb; font-size: 14px;" href="${config.METHOD}${host}/reset-password?token=${token}">Nhấn vào đây để đặt lại mật khẩu</a></p>
+        `,
+        subject: 'Quên mật khẩu'
+    }
+}
+
 module.exports = {
     sendEmail,
-    activeUserTemplate
+    activeUserTemplate,
+    forgotPasswordTemplate
 };

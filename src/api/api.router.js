@@ -3,6 +3,8 @@ exports.AUTH = '/auth';
 exports.AUTH_REFRESH = '/auth/refresh';
 exports.SIGN_UP = '/signup';
 exports.SIGN_OUT = '/signout';
+exports.FORGOT_PASSWORD = '/forgotPassword';
+exports.RESET_PASSWORD = '/resetPassword';
 
 //------User------//
 exports.GET_USERS = '/users';
