@@ -2,14 +2,18 @@ const VerifyUserMiddleware = require('../middlewares/verify.authenticate.middlew
 const {
     signInController,
     signOutController,
-    signUpController
+    signUpController,
+    forgotPasswordController,
+    resetPasswordController
 } = require('../controllers/authorization.controller');
 const ApiUtils = require('../api/api.router');
 const { validateResult } = require('../validation/base');
 const { 
     validateAuthRules,
     validateSignUpRules,
-    validateRefreshAuthRules
+    validateRefreshAuthRules,
+    validateForgotPasswordRules,
+    validateResetPasswordRules
  } = require('../validation/authorization.validator');
 
 exports.routesConfig = function (app) {
@@ -85,30 +89,6 @@ exports.routesConfig = function (app) {
         signUpController,
     ]);
 
-    /**
-     * @swagger
-     * /auth/refresh:
-     *   post:
-     *     tags:
-     *       - Auth
-     *     produces:
-     *       - application/json
-     *     parameters:
-     *     - name: body
-     *       in: body
-     *       description: Get new token using refresh token
-     *       required: true
-     *       schema:
-     *         type: object
-     *         required:
-     *           - refreshToken
-     *         properties:
-     *           refreshToken:
-     *             type: string
-     *     responses:
-     *       200:
-     *         description: Refresh token successful
-     */
     app.post(ApiUtils.AUTH_REFRESH, [
         validateRefreshAuthRules(),
         validateResult,
@@ -117,25 +97,19 @@ exports.routesConfig = function (app) {
         signInController,
     ]);
 
-    /**
-      * @swagger
-      * /signout:
-      *   post:
-      *     tags:
-      *       - Auth
-      *     produces:
-      *       - application/json
-      *     parameters:
-      *     - name: fcmToken
-      *       in: header
-      *       description: fire base cloud messaging token
-      *       required: true
-      *       type: string
-      *     responses:
-      *       200:
-      *         description: Sign out successful
-      */
     app.post(ApiUtils.SIGN_OUT, [
         signOutController,
+    ]);
+
+    app.post(ApiUtils.FORGOT_PASSWORD, [
+        validateForgotPasswordRules(),
+        validateResult,
+        forgotPasswordController,
+    ]);
+
+    app.post(ApiUtils.RESET_PASSWORD, [
+        validateResetPasswordRules(),
+        validateResult,
+        resetPasswordController,
     ]);
 };

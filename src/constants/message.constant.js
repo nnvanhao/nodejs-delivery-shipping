@@ -22,6 +22,7 @@ exports.USERNAME_FIELD_MORE_THAN_6_DIGITS = 'Username_Field_More_Than_6_Digits';
 exports.MISSING_FIRSTNAME_FIELD = 'Missing_FirstName_Field';
 exports.MISSING_LASTNAME_FIELD = 'Missing_LastName_Field';
 exports.MISSING_REFRESH_TOKEN_FIELD = 'Missing_Refresh_Token_Field';
+exports.MISSING_TOKEN_FIELD = 'Missing_Token_Field';
 exports.USER_IS_NOT_EXIST = 'User_Is_Not_Exist';
 exports.PASSWORD_IS_INCORRECT = 'Password_Is_Incorrect';
 exports.PHONE_NUMBER_FIELD_MORE_THAN_10_DIGITS = 'Phone_Number_Field_More_Than_10_Digits';
@@ -31,7 +32,9 @@ exports.MISSING_FULL_NAME_FIELD = 'Missing_Full_Name_Field';
 exports.SEND_EMAIL_ACTIVE_FAIL = 'Send_Email_For_Active_Fail';
 exports.USER_IS_WAITING_ACTIVE = 'User_Is_Waiting_Activate';
 exports.USER_IS_INACTIVE = 'User_Is_Inactive';
-
+exports.EMAIL_NOT_EXIST = 'Email_Is_Not_Exist';
+exports.TokenExpiredError = 'Token_Expired';
+exports.JsonWebTokenError = 'Token_Invalid';
 
 
 

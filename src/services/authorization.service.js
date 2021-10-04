@@ -12,7 +12,7 @@ const db = require("../models/index");
 const { Op } = require("sequelize");
 const { ROLE_TYPE, CUSTOMER_TYPE, USER_CODE, USER_STATUS } = require("../constants/common.constant");
 const { generateUserCode } = require("../helpers/common.helper");
-const { sendEmail, activeUserTemplate } = require("../helpers/mailer.helper");
+const { sendEmail, activeUserTemplate, forgotPasswordTemplate } = require("../helpers/mailer.helper");
 
 const { User, UserToken, RoleType, UserRole, CustomerType, Customer, sequelize } = db;
 
@@ -136,8 +136,58 @@ const signOutService = async (token) => {
     }
 }
 
+const forgotPasswordService = async (req) => {
+    try {
+        const { body, headers: { host } = {} } = req;
+        const { email } = body;
+        const user = await User.findOne({ where: { email, isDeleted: false }, attributes: { exclude: ['createdAt', 'updatedAt'] }, raw: true });
+        const { status, id: userId, fullName } = user || {};
+        if (!user) {
+            return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.EMAIL_NOT_EXIST, {});
+        } else if (status === USER_STATUS.WAITING_VERIFY) {
+            return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_WAITING_ACTIVE, {});
+        } else if (status === USER_STATUS.INACTIVE) {
+            return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_INACTIVE, {});
+        }
+        // send email forgot password
+        const token = getToken(email, userId);
+        const { subject, htmlBody } = forgotPasswordTemplate(fullName, token, host);
+        const info = await sendEmail(undefined, email, subject, null, htmlBody);
+        if (!info) {
+            return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.NOT_ACCEPTABLE, Message.SEND_EMAIL_ACTIVE_FAIL, {});
+        }
+        return {};
+    } catch (error) {
+        return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
+const resetPasswordService = async (req) => {
+    try {
+        return await sequelize.transaction(async (t) => {
+            const { body } = req;
+            const { password, token } = body;
+            const { userId } = decodeToken(token);
+            const user = await User.findOne({ where: { id: userId } });
+            if (user) {
+                user.password = password;
+                await user.save({ transaction: t });
+            }
+            return {};
+        });
+    } catch (error) {
+        const { name } = JSON.parse(JSON.stringify(error)) || {};
+        if (name === 'TokenExpiredError' || name === 'JsonWebTokenError') {
+            return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message[name], {});
+        }
+        return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
 module.exports = {
     signInService,
     signUpService,
-    signOutService
+    signOutService,
+    forgotPasswordService,
+    resetPasswordService
 };

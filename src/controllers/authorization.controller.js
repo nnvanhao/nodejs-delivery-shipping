@@ -3,7 +3,9 @@ const { sendResponse } = require("./base.controller");
 const {
     signInService,
     signUpService,
-    signOutService
+    signOutService,
+    forgotPasswordService,
+    resetPasswordService
 } = require('../services/authorization.service');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 
@@ -24,8 +26,20 @@ const signOutController = async (req, res, next) => {
     sendResponse(result, RESOURCES.AUTHORIZATION, HttpStatus.NO_CONTENT, req, res, next);
 };
 
+const forgotPasswordController = async (req, res, next) => {
+    const result = await forgotPasswordService(req);
+    sendResponse(result, RESOURCES.AUTHORIZATION, HttpStatus.OK, req, res, next);
+};
+
+const resetPasswordController = async (req, res, next) => {
+    const result = await resetPasswordService(req);
+    sendResponse(result, RESOURCES.AUTHORIZATION, HttpStatus.OK, req, res, next);
+};
+
 module.exports = {
     signInController,
     signUpController,
-    signOutController
+    signOutController,
+    forgotPasswordController,
+    resetPasswordController
 }
