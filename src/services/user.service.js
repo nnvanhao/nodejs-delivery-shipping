@@ -4,8 +4,10 @@ const { buildErrorItem } = require('../helpers/error.helper');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
 const { Op } = require("sequelize");
-const { ROLE_TYPE, USER_CODE } = require("../constants/common.constant");
+const { ROLE_TYPE, USER_CODE, USER_STATUS } = require("../constants/common.constant");
 const { getQueryConditionsForGetUsers, generateUserCode } = require("../helpers/common.helper");
+const { decodeToken } = require("../helpers/token.helper");
+const config = require("../config/env");
 
 const { User, UserBank, RoleType, UserRole, Customer, CustomerType, sequelize } = db;
 
@@ -207,10 +209,40 @@ const createUserService = async (req) => {
     }
 }
 
+const activateUserService = async (req, res) => {
+    try {
+        return await sequelize.transaction(async (t) => {
+            const { query, headers: { host } } = req;
+            const { token } = query || {};
+            const { userId } = decodeToken(token);
+            const userInfo = await User.findOne({
+                where: {
+                    id: userId
+                },
+                attributes: { exclude: ['password'] },
+            });
+            const userInfoFormat = userInfo.get({ plain: true });
+            const { status } = userInfoFormat;
+            if (status === USER_STATUS.ACTIVE) {
+                res.redirect(`${config.METHOD}${host}/login?hasActive=${true}`);
+                return {};
+            }
+            await userInfo.update({
+                status: USER_STATUS.ACTIVE
+            }, { transaction: t });
+            res.redirect(`${config.METHOD}${host}/login?hasActive=${true}`);
+            return {};
+        });
+    } catch (error) {
+        return buildErrorItem(RESOURCES.USER, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
 module.exports = {
     getUsersService,
     getUserByIdService,
     updateUserService,
     deleteUserService,
-    createUserService
+    createUserService,
+    activateUserService
 };

@@ -28,6 +28,10 @@ exports.PHONE_NUMBER_FIELD_MORE_THAN_10_DIGITS = 'Phone_Number_Field_More_Than_1
 exports.DATA_IS_EXIST = 'Data_Is_Exist';
 exports.BANK_NUMBER_IS_EXIST = 'Bank_Number_Is_Exist';
 exports.MISSING_FULL_NAME_FIELD = 'Missing_Full_Name_Field';
+exports.SEND_EMAIL_ACTIVE_FAIL = 'Send_Email_For_Active_Fail';
+exports.USER_IS_WAITING_ACTIVE = 'User_Is_Waiting_Activate';
+exports.USER_IS_INACTIVE = 'User_Is_Inactive';
+
 
 
 

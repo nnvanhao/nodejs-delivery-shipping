@@ -9,6 +9,7 @@ exports.GET_USERS = '/users';
 exports.GET_USER = '/user/:id';
 exports.UPDATE_USER = '/user/:id';
 exports.CREATE_USER = '/user';
+exports.ACTIVATE_USER = '/activateUser';
 
 //------Adress------//
 exports.GET_PROVINCES = '/provinces';

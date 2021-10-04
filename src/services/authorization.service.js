@@ -10,8 +10,9 @@ const { buildErrorItem } = require('../helpers/error.helper');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
 const { Op } = require("sequelize");
-const { ROLE_TYPE, CUSTOMER_TYPE, USER_CODE } = require("../constants/common.constant");
+const { ROLE_TYPE, CUSTOMER_TYPE, USER_CODE, USER_STATUS } = require("../constants/common.constant");
 const { generateUserCode } = require("../helpers/common.helper");
+const { sendEmail, activeUserTemplate } = require("../helpers/mailer.helper");
 
 const { User, UserToken, RoleType, UserRole, CustomerType, Customer, sequelize } = db;
 
@@ -19,10 +20,15 @@ const signInService = async (email, password) => {
     try {
         return await sequelize.transaction(async (t) => {
             const user = await User.findOne({ where: { email, isDeleted: false }, attributes: { exclude: ['createdAt', 'updatedAt'] }, raw: true });
+            const { status } = user;
             if (!user) {
                 return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_NOT_EXIST, {});
             } else if (user.password !== password) {
                 return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.PASSWORD_IS_INCORRECT, {});
+            } else if (status === USER_STATUS.WAITING_VERIFY) {
+                return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_WAITING_ACTIVE, {});
+            } else if (status === USER_STATUS.INACTIVE) {
+                return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_INACTIVE, {});
             }
             const userId = user.id;
             const token = getToken(email, userId);
@@ -50,10 +56,11 @@ const signInService = async (email, password) => {
     }
 };
 
-const signUpService = async (data) => {
+const signUpService = async (data, req) => {
     try {
         return await sequelize.transaction(async (t) => {
             const { email, password, phoneNumber, roleType = ROLE_TYPE.CUSTOMER, customerType = CUSTOMER_TYPE.OTHER } = data;
+            const { headers: { host } = {} } = req;
             const user = await User.findOne({
                 where: {
                     [Op.or]: [{ email }, { phoneNumber }]
@@ -93,6 +100,13 @@ const signUpService = async (data) => {
                 const { id: customerTypeId } = customerTypeInfo;
                 await UserRole.create({ userId, roleTypeId }, { transaction: t });
                 await Customer.create({ userId, customerTypeId }, { transaction: t });
+                const token = getToken(email, userId);
+                const { subject, htmlBody } = activeUserTemplate(null, token, host);
+                const info = await sendEmail(undefined, email, subject, null, htmlBody);
+                if (!info) {
+                    await t.rollback();
+                    return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.NOT_ACCEPTABLE, Message.SEND_EMAIL_ACTIVE_FAIL, {});
+                }
                 const signUpData = {
                     email,
                     phoneNumber,
