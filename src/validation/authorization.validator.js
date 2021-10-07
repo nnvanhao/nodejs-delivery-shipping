@@ -6,7 +6,6 @@ const validateAuthRules = () => {
         body('email', Message.MISSING_EMAIL_FIELD).notEmpty(),
         body('email', Message.EMAIL_ADDRESS_INVALID).isEmail(),
         body('password', Message.MISSING_PASSWORD_FIELD).notEmpty(),
-        body('password', Message.PASSWORD_FIELD_MORE_THAN_6_DIGITS).isLength({ min: 6 }),
     ];
 }
 
