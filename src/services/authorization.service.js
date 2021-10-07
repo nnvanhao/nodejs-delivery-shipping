@@ -20,7 +20,7 @@ const signInService = async (email, password) => {
     try {
         return await sequelize.transaction(async (t) => {
             const user = await User.findOne({ where: { email, isDeleted: false }, attributes: { exclude: ['createdAt', 'updatedAt'] }, raw: true });
-            const { status } = user;
+            const { status } = user || {};
             if (!user) {
                 return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_NOT_EXIST, {});
             } else if (user.password !== password) {
