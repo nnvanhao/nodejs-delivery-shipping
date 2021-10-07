@@ -4,7 +4,7 @@ const { ROLE_TYPE } = require('../../src/constants/common.constant');
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        return queryInterface.bulkInsert('roletypes', [
+        return queryInterface.bulkInsert('RoleTypes', [
             {
                 id: uuidv4(),
                 name: ROLE_TYPE.ADMIN,
@@ -21,6 +21,6 @@ module.exports = {
     },
 
     down: async (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete('roletypes', null, {});
+        return queryInterface.bulkDelete('RoleTypes', null, {});
     }
 };

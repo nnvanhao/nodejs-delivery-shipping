@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('userbanks', {
+        await queryInterface.createTable('UserBanks', {
             id: {
                 allowNull: false,
                 primaryKey: true,
@@ -10,7 +10,7 @@ module.exports = {
             userId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'users',
+                    model: 'Users',
                     key: 'id'
                 },
             },
@@ -40,6 +40,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('userbanks');
+        await queryInterface.dropTable('UserBanks');
     }
 };

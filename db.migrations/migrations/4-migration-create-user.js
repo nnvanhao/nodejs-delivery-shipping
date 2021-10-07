@@ -3,7 +3,7 @@ const { USER_STATUS, GENDER } = require('../../src/constants/common.constant');
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('users', {
+        await queryInterface.createTable('Users', {
             id: {
                 allowNull: false,
                 primaryKey: true,
@@ -38,21 +38,21 @@ module.exports = {
             provinceId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'provinces',
+                    model: 'Provinces',
                     key: 'id'
                 },
             },
             districtId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'districts',
+                    model: 'Districts',
                     key: 'id'
                 },
             },
             wardId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'wards',
+                    model: 'Wards',
                     key: 'id'
                 }
             },
@@ -76,6 +76,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('users');
+        await queryInterface.dropTable('Users');
     }
 };
