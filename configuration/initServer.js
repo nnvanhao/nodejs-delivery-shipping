@@ -29,9 +29,8 @@ exports.create = function (app) {
         const port = normalizePort(config.PORT);
 
         server = app.listen(port, function () {
-            const host = server.address().address;
             const port = server.address().port;
-            console.log('Server started. Listening at host: ' + host + ' - port: ' + port);
+            console.log('Server started. Running on port: ' + port);
         });
 
         // Handle server error

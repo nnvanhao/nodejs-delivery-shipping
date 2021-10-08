@@ -8,7 +8,7 @@ const {
 } = require('../controllers/authorization.controller');
 const ApiUtils = require('../api/api.router');
 const { validateResult } = require('../validation/base');
-const { 
+const {
     validateAuthRules,
     validateSignUpRules,
     validateRefreshAuthRules,
@@ -112,4 +112,6 @@ exports.routesConfig = function (app) {
         validateResult,
         resetPasswordController,
     ]);
+
+    app.get('/', (req, res) => res.send(`Delivery Shipping Node API Version 0.1.0. Running with environment: [${process.env.NODE_ENV}]`));
 };
