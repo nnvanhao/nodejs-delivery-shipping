@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
     "start-dev": "NODE_ENV=development nodemon app.js",
     "start-prod": "NODE_ENV=production nodemon app.js",
     "migration": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate",
