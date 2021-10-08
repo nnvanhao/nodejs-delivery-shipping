@@ -51,6 +51,8 @@ app.use(function (req, res, next) {
     }
 });
 
+console.log(`-> Start with environment: [${process.env.NODE_ENV}]`);
+
 console.log('-> Step: Init swagger');
 Swagger.initSwagger(app);
 

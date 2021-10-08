@@ -5,19 +5,19 @@
     "database": "DeliveryShipping",
     "host": "localhost",
     "dialect": "mysql"
-  },
+    },
   "test": {
     "username": "root",
     "password": null,
     "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "mysql"
-  },
+    },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "username": "haoitnet_wp2551",
+    "password": "w6t@e^NJ}rvg",
+    "database": "haoitnet_delivery_shipping_db",
+    "host": "103.130.217.67",
     "dialect": "mysql"
   }
 }
