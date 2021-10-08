@@ -11,9 +11,9 @@ module.exports = {
     ENVIRONMENT: 'dev',
     CLUSTER: false,
     MAILER: {
-        USERNAME: 'bapdola304@gmail.com',
-        PASSWORD: '01629555634',
-        FROM: '"Vivu Ship"<bapdola304@gmail.com>'
+        USERNAME: 'noreplyizteams@gmail.com',
+        PASSWORD: '12345678x@X',
+        FROM: '"VivuShip"<noreplyizteams@gmail.com>'
     },
     METHOD: 'http://',
 };
