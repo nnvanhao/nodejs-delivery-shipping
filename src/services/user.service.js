@@ -17,7 +17,7 @@ const getUsersService = async (req) => {
     try {
         const { query } = req;
         const { page, pageSize, roleType, customerType } = query || {};
-        const offset = (parseInt(page) - 1) || undefined;
+        const offset = (parseInt(page) - 1) * pageSize || undefined;
         const limit = parseInt(pageSize) || undefined;
         const conditions = getQueryConditionsForGetUsers(query, ['fullName', 'email', 'phoneNumber', 'code'])
         const { count, rows } = await User.findAndCountAll({
@@ -256,6 +256,7 @@ const createUserService = async (req) => {
                     await t.rollback();
                     return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.NOT_ACCEPTABLE, Message.SEND_EMAIL_ACTIVE_FAIL, {});
                 }
+                delete userInfo.password;
                 return userInfo;
             }
         })
