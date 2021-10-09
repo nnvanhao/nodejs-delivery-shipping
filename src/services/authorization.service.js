@@ -19,7 +19,25 @@ const { User, UserToken, RoleType, UserRole, CustomerType, Customer, sequelize }
 const signInService = async (email, password) => {
     try {
         return await sequelize.transaction(async (t) => {
-            const user = await User.findOne({ where: { email, isDeleted: false }, attributes: { exclude: ['createdAt', 'updatedAt'] }, raw: true });
+            const user = await User.findOne({ 
+                where: { email, isDeleted: false }, 
+                attributes: { exclude: ['createdAt', 'updatedAt'] }, 
+                include: [
+                    {
+                        model: UserRole,
+                        attributes: ['id'],
+                        required: true,
+                        include: [
+                            {
+                                model: RoleType,
+                                attributes: ['name'],
+                            }
+                        ]
+                    },
+                ],
+                raw: true,
+                nest: true
+            });
             const { status } = user || {};
             if (!user) {
                 return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_NOT_EXIST, {});
@@ -52,6 +70,7 @@ const signInService = async (email, password) => {
             return signInData;
         });
     } catch (error) {
+        console.log({error});
         return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
 };
@@ -59,7 +78,7 @@ const signInService = async (email, password) => {
 const signUpService = async (data, req) => {
     try {
         return await sequelize.transaction(async (t) => {
-            const { email, password, phoneNumber, roleType = ROLE_TYPE.CUSTOMER, customerType = CUSTOMER_TYPE.OTHER } = data;
+            const { email, password, phoneNumber, roleType = ROLE_TYPE.CUSTOMER, customerType = CUSTOMER_TYPE.PARTNER } = data;
             const { headers: { host } = {} } = req;
             const user = await User.findOne({
                 where: {
@@ -138,25 +157,32 @@ const signOutService = async (token) => {
 
 const forgotPasswordService = async (req) => {
     try {
-        const { body, headers: { host } = {} } = req;
-        const { email } = body;
-        const user = await User.findOne({ where: { email, isDeleted: false }, attributes: { exclude: ['createdAt', 'updatedAt'] }, raw: true });
-        const { status, id: userId, fullName } = user || {};
-        if (!user) {
-            return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.EMAIL_NOT_EXIST, {});
-        } else if (status === USER_STATUS.WAITING_VERIFY) {
-            return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_WAITING_ACTIVE, {});
-        } else if (status === USER_STATUS.INACTIVE) {
-            return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_INACTIVE, {});
-        }
-        // send email forgot password
-        const token = getToken(email, userId);
-        const { subject, htmlBody } = forgotPasswordTemplate(fullName, token, host);
-        const info = await sendEmail(undefined, email, subject, null, htmlBody);
-        if (!info) {
-            return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.NOT_ACCEPTABLE, Message.SEND_EMAIL_ACTIVE_FAIL, {});
-        }
-        return {};
+        return await sequelize.transaction(async (t) => {
+            const { body, headers: { host } = {} } = req;
+            const { email } = body;
+            const user = await User.findOne({ where: { email, isDeleted: false }, attributes: { exclude: ['createdAt', 'updatedAt'] }, raw: true });
+            const { status, id: userId, fullName } = user || {};
+            if (!user) {
+                return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.EMAIL_NOT_EXIST, {});
+            } else if (status === USER_STATUS.WAITING_VERIFY) {
+                return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_WAITING_ACTIVE, {});
+            } else if (status === USER_STATUS.INACTIVE) {
+                return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_INACTIVE, {});
+            }
+            // send email forgot password
+            const token = getToken(email, userId);
+            const userTokenData = {
+                userId,
+                token
+            }
+            await UserToken.create(userTokenData, { transaction: t });
+            const { subject, htmlBody } = forgotPasswordTemplate(fullName, token, host);
+            const info = await sendEmail(undefined, email, subject, null, htmlBody);
+            if (!info) {
+                return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.NOT_ACCEPTABLE, Message.SEND_EMAIL_ACTIVE_FAIL, {});
+            }
+            return {};
+        })
     } catch (error) {
         return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
@@ -168,10 +194,18 @@ const resetPasswordService = async (req) => {
             const { body } = req;
             const { password, token } = body;
             const { userId } = decodeToken(token);
+            const tokenInfo = await UserToken.findOne({ where: { [Op.and]: [{ userId }, { isExpired: false }] } });
+            if (!tokenInfo) {
+                return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.TOKEN_EXPIRED, {});
+            }
             const user = await User.findOne({ where: { id: userId } });
             if (user) {
                 user.password = password;
                 await user.save({ transaction: t });
+            }
+            if (tokenInfo) {
+                tokenInfo.isExpired = true;
+                await tokenInfo.save();
             }
             return {};
         });
