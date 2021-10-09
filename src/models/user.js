@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         password: DataTypes.STRING, // default 255
         fullName: DataTypes.STRING(128),
         phoneNumber: DataTypes.STRING(16),
-        emergencyPhoneNumber: DataTypes.STRING(16),
+        emergencyPhone: DataTypes.STRING(16),
         gender: DataTypes.ENUM(GENDER.MALE, GENDER.FEMALE, GENDER.OTHER),
         status: {
             type: DataTypes.ENUM(USER_STATUS.ACTIVE, USER_STATUS.INACTIVE, USER_STATUS.WAITING_VERIFY),

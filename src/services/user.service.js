@@ -97,13 +97,13 @@ const updateUserService = async (req) => {
         return await sequelize.transaction(async (t) => {
             const { params, body } = req;
             const {
-                userBanks,
+                userBanks = [],
                 email,
                 phoneNumber,
                 gender,
                 address,
                 birthday,
-                emergencyPhoneNumber,
+                emergencyPhone,
                 fullName,
                 provinceId,
                 districtId,
@@ -117,7 +117,7 @@ const updateUserService = async (req) => {
                 gender,
                 address,
                 birthday,
-                emergencyPhoneNumber,
+                emergencyPhone,
                 fullName,
                 provinceId,
                 districtId,
@@ -279,14 +279,15 @@ const activateUserService = async (req, res) => {
             });
             const userInfoFormat = userInfo.get({ plain: true });
             const { status } = userInfoFormat;
+            const hostFormat = host.split(':')[0]
             if (status === USER_STATUS.ACTIVE) {
-                res.redirect(`${config.METHOD}${host}/login?hasActive=${true}`);
+                res.redirect(`${config.METHOD}${hostFormat}/login?hasActive=${true}`);
                 return {};
             }
             await userInfo.update({
                 status: USER_STATUS.ACTIVE
             }, { transaction: t });
-            res.redirect(`${config.METHOD}${host}/login?hasActive=${true}`);
+            res.redirect(`${config.METHOD}${hostFormat}/login?hasActive=${true}`);
             return {};
         });
     } catch (error) {
