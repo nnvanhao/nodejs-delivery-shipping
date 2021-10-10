@@ -17,6 +17,7 @@ const getUsersService = async (req) => {
     try {
         const { query } = req;
         const { page, pageSize, roleType, customerType } = query || {};
+        const hasCustomerType = customerType ? true : false;
         const offset = (parseInt(page) - 1) * pageSize || undefined;
         const limit = parseInt(pageSize) || undefined;
         const conditions = getQueryConditionsForGetUsers(query, ['fullName', 'email', 'phoneNumber', 'code'])
@@ -43,6 +44,7 @@ const getUsersService = async (req) => {
                 {
                     model: Customer,
                     attributes: ['id'],
+                    required: hasCustomerType,
                     include: [
                         {
                             model: CustomerType,
