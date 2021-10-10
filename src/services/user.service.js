@@ -17,6 +17,7 @@ const getUsersService = async (req) => {
     try {
         const { query } = req;
         const { page, pageSize, roleType, customerType } = query || {};
+        const hasCustomerType = customerType ? true : false;
         const offset = (parseInt(page) - 1) * pageSize || undefined;
         const limit = parseInt(pageSize) || undefined;
         const conditions = getQueryConditionsForGetUsers(query, ['fullName', 'email', 'phoneNumber', 'code'])
@@ -43,6 +44,7 @@ const getUsersService = async (req) => {
                 {
                     model: Customer,
                     attributes: ['id'],
+                    required: hasCustomerType,
                     include: [
                         {
                             model: CustomerType,
@@ -196,7 +198,7 @@ const createUserService = async (req) => {
                 gender,
                 address,
                 birthday,
-                emergencyPhoneNumber,
+                emergencyPhone,
                 fullName,
                 provinceId,
                 districtId,
@@ -236,7 +238,7 @@ const createUserService = async (req) => {
                     gender,
                     address,
                     birthday,
-                    emergencyPhoneNumber,
+                    emergencyPhone,
                     fullName,
                     provinceId,
                     districtId,
@@ -268,7 +270,7 @@ const createUserService = async (req) => {
 const activateUserService = async (req, res) => {
     try {
         return await sequelize.transaction(async (t) => {
-            const { query, headers: { host } } = req;
+            const { query } = req;
             const { token } = query || {};
             const { userId } = decodeToken(token);
             const userInfo = await User.findOne({
@@ -279,15 +281,14 @@ const activateUserService = async (req, res) => {
             });
             const userInfoFormat = userInfo.get({ plain: true });
             const { status } = userInfoFormat;
-            const hostFormat = host.split(':')[0]
             if (status === USER_STATUS.ACTIVE) {
-                res.redirect(`${config.METHOD}${hostFormat}/login?hasActive=${true}`);
+                res.redirect(`${config.METHOD}${config.HOST}/login?hasActive=${true}`);
                 return {};
             }
             await userInfo.update({
                 status: USER_STATUS.ACTIVE
             }, { transaction: t });
-            res.redirect(`${config.METHOD}${hostFormat}/login?hasActive=${true}`);
+            res.redirect(`${config.METHOD}${config.HOST}/login?hasActive=${true}`);
             return {};
         });
     } catch (error) {
