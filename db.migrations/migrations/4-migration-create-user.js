@@ -21,7 +21,7 @@ module.exports = {
             phoneNumber: {
                 type: Sequelize.STRING(16)
             },
-            emergencyPhoneNumber: {
+            emergencyPhone: {
                 type: Sequelize.STRING
             },
             gender: {
