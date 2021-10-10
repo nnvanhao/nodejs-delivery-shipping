@@ -12,6 +12,7 @@ exports.INVALID_EMAIL_OR_PASSWORD = 'Invalid_E-mail_or_Password';
 exports.EMAIL_ADDRESS_INVALID = 'Email_Address_Invalid';
 exports.EMAIL_ADDRESS_ALREADY_EXISTS = 'Email_Address_Already_Exists';
 exports.PHONE_NUMBER_ALREADY_EXISTS = 'Phone_Number_Already_Exists';
+exports.EMERGENCY_PHONE_ALREADY_EXISTS = 'Emergency_Phone_Already_Exists';
 exports.MISSING_EMAIL_FIELD = 'Missing_Email_Field';
 exports.MISSING_PASSWORD_FIELD = 'Missing_Password_Field';
 exports.PASSWORD_FIELD_MORE_THAN_6_DIGITS = 'Password_Field_More_Than_6_Digits';

@@ -123,39 +123,60 @@ const updateUserService = async (req) => {
                 districtId,
                 wardId
             }
-            const banksOfUserBody = [...userBanks].map(bank => {
-                return {
-                    ...bank,
-                    userId
-                }
+            const user = await User.findOne({
+                where: {
+                    [Op.or]: [{ email }, { phoneNumber }, { emergencyPhone }],
+                    id: {
+                        [Op.ne]: userId
+                    }
+                }, raw: true
             });
-            const banksOfUser = await UserBank.findAll({ where: { userId }, raw: true });
-            banksOfUser.forEach(bank => {
-                const { number: numberBank, id: bankId } = bank;
-                banksOfUserBody.forEach(bankBody => {
-                    const { number: numberBody = '', id: bankBodyId = '' } = bankBody || {};
-                    if (numberBank === numberBody && bankId !== bankBodyId) {
-                        errors.push(bankBody);
+            if (user) {
+                let message = {};
+                if (user.email === email) {
+                    message = Message.EMAIL_ADDRESS_ALREADY_EXISTS;
+                } else if (user.phoneNumber === phoneNumber) {
+                    message = Message.PHONE_NUMBER_ALREADY_EXISTS;
+                } else if (user.emergencyPhone === emergencyPhone) {
+                    message = Message.EMERGENCY_PHONE_ALREADY_EXISTS;
+                }
+                return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.NOT_ACCEPTABLE, message, {});
+            }
+            if (userBanks && userBanks.length) {
+                const banksOfUserBody = [...userBanks].map(bank => {
+                    return {
+                        ...bank,
+                        userId
                     }
                 });
-            });
-            if (errors.length) {
-                let extractedErrors = [];
-                errors.forEach(err => {
-                    extractedErrors.push({
-                        param: err.holderName,
-                        msg: Message.BANK_NUMBER_IS_EXIST
-                    })
+                const banksOfUser = await UserBank.findAll({ where: { userId }, raw: true });
+                banksOfUser.forEach(bank => {
+                    const { number: numberBank, id: bankId } = bank;
+                    banksOfUserBody.forEach(bankBody => {
+                        const { number: numberBody = '', id: bankBodyId = '' } = bankBody || {};
+                        if (numberBank === numberBody && bankId !== bankBodyId) {
+                            errors.push(bankBody);
+                        }
+                    });
                 });
-                return buildErrorItem(RESOURCES.USER, null, HttpStatus.NOT_ACCEPTABLE, Message.DATA_IS_EXIST, extractedErrors);
-            }
-            for (let i = 0; i < banksOfUserBody.length; i++) {
-                const data = banksOfUserBody[i] || {};
-                const { id } = data;
-                if (id) {
-                    await UserBank.update(data, { where: { id } }, { transaction: t });
-                } else {
-                    await UserBank.create(data, { transaction: t });
+                if (errors.length) {
+                    let extractedErrors = [];
+                    errors.forEach(err => {
+                        extractedErrors.push({
+                            param: err.holderName,
+                            msg: Message.BANK_NUMBER_IS_EXIST
+                        })
+                    });
+                    return buildErrorItem(RESOURCES.USER, null, HttpStatus.NOT_ACCEPTABLE, Message.DATA_IS_EXIST, extractedErrors);
+                }
+                for (let i = 0; i < banksOfUserBody.length; i++) {
+                    const data = banksOfUserBody[i] || {};
+                    const { id } = data;
+                    if (id) {
+                        await UserBank.update(data, { where: { id } }, { transaction: t });
+                    } else {
+                        await UserBank.create(data, { transaction: t });
+                    }
                 }
             }
             const userInfo = await User.findOne({
