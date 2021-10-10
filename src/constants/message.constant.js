@@ -35,6 +35,7 @@ exports.USER_IS_INACTIVE = 'User_Is_Inactive';
 exports.EMAIL_NOT_EXIST = 'Email_Is_Not_Exist';
 exports.TokenExpiredError = 'Token_Expired';
 exports.JsonWebTokenError = 'Token_Invalid';
+exports.OLD_PASSWORD_INCORRECT = 'Old_Password_Is_Incorrect';
 
 
 

@@ -16,4 +16,5 @@ module.exports = {
         FROM: '"Vivu Ship"<noreplyizteams@gmail.com>'
     },
     METHOD: 'http://',
+    HOST: 'vivuship.vn'
 };
