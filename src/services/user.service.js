@@ -196,7 +196,7 @@ const createUserService = async (req) => {
                 gender,
                 address,
                 birthday,
-                emergencyPhoneNumber,
+                emergencyPhone,
                 fullName,
                 provinceId,
                 districtId,
@@ -236,7 +236,7 @@ const createUserService = async (req) => {
                     gender,
                     address,
                     birthday,
-                    emergencyPhoneNumber,
+                    emergencyPhone,
                     fullName,
                     provinceId,
                     districtId,
@@ -268,7 +268,7 @@ const createUserService = async (req) => {
 const activateUserService = async (req, res) => {
     try {
         return await sequelize.transaction(async (t) => {
-            const { query, headers: { host } } = req;
+            const { query } = req;
             const { token } = query || {};
             const { userId } = decodeToken(token);
             const userInfo = await User.findOne({
@@ -279,15 +279,14 @@ const activateUserService = async (req, res) => {
             });
             const userInfoFormat = userInfo.get({ plain: true });
             const { status } = userInfoFormat;
-            const hostFormat = host.split(':')[0]
             if (status === USER_STATUS.ACTIVE) {
-                res.redirect(`${config.METHOD}${hostFormat}/login?hasActive=${true}`);
+                res.redirect(`${config.METHOD}${config.HOST}/login?hasActive=${true}`);
                 return {};
             }
             await userInfo.update({
                 status: USER_STATUS.ACTIVE
             }, { transaction: t });
-            res.redirect(`${config.METHOD}${hostFormat}/login?hasActive=${true}`);
+            res.redirect(`${config.METHOD}${config.HOST}/login?hasActive=${true}`);
             return {};
         });
     } catch (error) {

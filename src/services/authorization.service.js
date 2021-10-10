@@ -218,10 +218,33 @@ const resetPasswordService = async (req) => {
     }
 }
 
+const changePasswordService = async (req) => {
+    try {
+        return await sequelize.transaction(async (t) => {
+            const { body } = req;
+            const { password, oldPassword, userId } = body;
+            const user = await User.findOne({ where: { id: userId } });
+            const passwordCheck = await User.findOne({ where: { password: oldPassword, id: userId } });
+            if (!user) {
+                return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.USER_IS_NOT_EXIST, {});
+            }
+            if (!passwordCheck) {
+                return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.UNAUTHORIZED, Message.OLD_PASSWORD_INCORRECT, {});
+            }
+            user.password = password;
+            await user.save({ transaction: t });
+            return {};
+        });
+    } catch (error) {
+        return buildErrorItem(RESOURCES.AUTHORIZATION, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
 module.exports = {
     signInService,
     signUpService,
     signOutService,
     forgotPasswordService,
-    resetPasswordService
+    resetPasswordService,
+    changePasswordService
 };

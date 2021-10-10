@@ -5,6 +5,7 @@ exports.SIGN_UP = '/signup';
 exports.SIGN_OUT = '/signout';
 exports.FORGOT_PASSWORD = '/forgotPassword';
 exports.RESET_PASSWORD = '/resetPassword';
+exports.CHANGE_PASSWORD = '/changePassword';
 
 //------User------//
 exports.GET_USERS = '/users';
