@@ -79,9 +79,6 @@ module.exports = {
             recipientPostalCode: {
                 type: Sequelize.STRING,
             },
-            recipientZipCode: {
-                type: Sequelize.STRING,
-            },
             recipientProvince: {
                 type: Sequelize.UUID,
                 references: {
@@ -149,6 +146,14 @@ module.exports = {
             isDeleted: {
                 type: Sequelize.BOOLEAN,
             },
+            createdAt: {
+                allowNull: false,
+                type: Sequelize.DATE 
+            },
+            updatedAt: {
+                allowNull: false,
+                type: Sequelize.DATE
+            }
         });
     },
     down: async (queryInterface, Sequelize) => {
