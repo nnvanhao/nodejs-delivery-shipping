@@ -65,9 +65,6 @@ module.exports = (sequelize, DataTypes) => {
         recipientPostalCode: {
             type: DataTypes.STRING,
         },
-        recipientZipCode: {
-            type: DataTypes.STRING,
-        },
         recipientProvince: {
             type: DataTypes.STRING,
         },

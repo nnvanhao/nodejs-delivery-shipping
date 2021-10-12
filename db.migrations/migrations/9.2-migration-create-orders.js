@@ -79,9 +79,6 @@ module.exports = {
             recipientPostalCode: {
                 type: Sequelize.STRING,
             },
-            recipientZipCode: {
-                type: Sequelize.STRING,
-            },
             recipientProvince: {
                 type: Sequelize.UUID,
                 references: {
