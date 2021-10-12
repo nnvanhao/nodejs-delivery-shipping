@@ -5,10 +5,12 @@ const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
 const { Op } = require("sequelize");
 
-const { Orders } = db;
+const { Orders, sequelize  } = db;
 
-const createOrdersService = async () => {
-    
+const createOrdersService = async (req) => {
+    return await sequelize.transaction(async (t) => {
+        const { body } = req;
+    })
 }
 
 module.exports = {
