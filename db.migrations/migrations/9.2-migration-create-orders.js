@@ -13,7 +13,7 @@ module.exports = {
             code: {
                 type: Sequelize.STRING,
             },
-            orderStatusId: {
+            ordersStatusId: {
                 type: Sequelize.UUID,
                 references: {
                     model: 'OrdersStatus',
