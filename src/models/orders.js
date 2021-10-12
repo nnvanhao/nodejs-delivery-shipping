@@ -16,14 +16,14 @@ module.exports = (sequelize, DataTypes) => {
     };
     Orders.init({
         id: {
-            allowNull: false,
-            primaryKey: true,
             type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
         },
         code: {
             type: DataTypes.STRING,
         },
-        statusOrderId: {
+        ordersStatusId: {
             type: DataTypes.STRING,
         },
         shipperId: {

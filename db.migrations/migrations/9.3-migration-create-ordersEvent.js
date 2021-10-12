@@ -7,7 +7,7 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.UUID,
             },
-            orderStatusId: {
+            ordersStatusId: {
                 type: Sequelize.UUID,
                 references: {
                     model: 'OrdersStatus',
