@@ -1,9 +1,9 @@
 module.exports = {
     DATABASE: {
-        MYSQL_HOST: '103.130.217.67',
-        MYSQL_DATABASE: 'haoitnet_delivery_shipping_db',
-        USERNAME: 'haoitnet_wp2551',
-        PASSWORD: 'w6t@e^NJ}rvg',
+        MYSQL_HOST: 'localhost',
+        MYSQL_DATABASE: 'DeliveryShipping',
+        USERNAME: 'root',
+        PASSWORD: '12345678x@X',
     },
     PORT: 3600,
     JWT_SECRET: 'myS33!!creeeT',
