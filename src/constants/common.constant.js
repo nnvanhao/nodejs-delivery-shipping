@@ -32,4 +32,20 @@ const GENDER = {
     OTHER: 'Other'
 }
 
-module.exports = { LOGGER_TYPE, ROLE_TYPE, CUSTOMER_TYPE, USER_CODE, USER_STATUS, GENDER };
+const SHIPPING_FEE_PAYMENT = {
+    SENDER_PAY: 'SenderPay',
+    RECEIVER_PAY: 'ReceiverPay',
+}
+
+const ORDER_STATUS = {
+}
+
+module.exports = { 
+    LOGGER_TYPE, 
+    ROLE_TYPE, 
+    CUSTOMER_TYPE, 
+    USER_CODE, 
+    USER_STATUS, 
+    GENDER,
+    SHIPPING_FEE_PAYMENT
+};
