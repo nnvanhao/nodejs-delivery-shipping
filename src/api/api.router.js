@@ -20,4 +20,4 @@ exports.GET_DISTRICTS_BY_PROVINCE = '/districtsByProvince/:id';
 exports.GET_WARDS_BY_DISTRICT = '/wardsByDistrict/:id';
 
 //------Orders------//
-exports.CREATE_ORDERS_BY_PARTNER = '/ordersCreateByPartner';
+exports.CREATE_ORDERS_BY_PARTNER = '/orders/createByPartner';

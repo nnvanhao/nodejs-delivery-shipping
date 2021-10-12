@@ -12,7 +12,7 @@ const { ROLE_TYPE } = require('../constants/common.constant');
 
 exports.routesConfig = function (app) {
 
-    app.get(ApiUtils.CREATE_ORDERS_BY_PARTNER, [
+    app.post(ApiUtils.CREATE_ORDERS_BY_PARTNER, [
         VerifyUserMiddleware.validJWTNeeded,
         VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.CUSTOMER]),
         createOrdersController,
