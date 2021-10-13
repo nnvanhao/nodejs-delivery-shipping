@@ -8,14 +8,20 @@ module.exports = {
             {
                 id: uuidv4(),
                 name: CUSTOMER_TYPE.PARTNER,
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
             {
                 id: uuidv4(),
                 name: CUSTOMER_TYPE.OTHER,
+                createdAt: new Date(),
+                updatedAt: new Date()
             },
             {
                 id: uuidv4(),
                 name: CUSTOMER_TYPE.OTHER,
+                createdAt: new Date(),
+                updatedAt: new Date()
             }
         ]);
     },
