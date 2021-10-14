@@ -287,8 +287,25 @@ const getOrdersByIdService = async (req) => {
     }
 }
 
+const updateOrdersService = async (req) => {
+    try {
+        const { body, params } = req;
+        const { id: ordersId } = params || {};
+        return await sequelize.transaction(async (t) => {
+            const ordersBody = {
+                ...body
+            }
+            await Orders.update(ordersBody, { where: { id: ordersId } },{ transaction: t });
+            return {};
+        });
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
 module.exports = {
     createOrdersService,
     getOrdersService,
-    getOrdersByIdService
+    getOrdersByIdService,
+    updateOrdersService
 };
