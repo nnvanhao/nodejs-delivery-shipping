@@ -25,4 +25,5 @@ exports.CREATE_ORDERS_BY_OTHER = '/orders/createByOther';
 exports.GET_ORDERS = '/orders';
 exports.GET_ORDERS_BY_ID = '/orders/:id';
 exports.UPDATE_ORDERS = '/orders/:id';
+exports.DELETE_ORDERS = '/orders/:id';
 

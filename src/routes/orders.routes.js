@@ -4,7 +4,8 @@ const {
     createOrdersController,
     getOrdersController,
     getOrdersByIdController,
-    updateOrdersController
+    updateOrdersController,
+    deleteOrdersController
 } = require('../controllers/orders.controller');
 const ApiUtils = require('../api/api.router');
 const { validateResult } = require('../validation/base');
@@ -47,6 +48,12 @@ exports.routesConfig = function (app) {
         validateCreateOrdersRules(),
         validateResult,
         updateOrdersController,
+    ]);
+
+    app.delete(ApiUtils.DELETE_ORDERS, [
+        VerifyUserMiddleware.validJWTNeeded,
+        VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN, ROLE_TYPE.CUSTOMER]),
+        deleteOrdersController,
     ]);
 
 };

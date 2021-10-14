@@ -303,9 +303,23 @@ const updateOrdersService = async (req) => {
     }
 }
 
+const deleteOrdersService = async (req) => {
+    try {
+        return await sequelize.transaction(async (t) => {
+            const { params } = req;
+            const { id: ordersId } = params || {};
+            await Orders.update({ isDeleted: true }, { where: { id: ordersId } }, { transaction: t });
+            return {};
+        });
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
 module.exports = {
     createOrdersService,
     getOrdersService,
     getOrdersByIdService,
-    updateOrdersService
+    updateOrdersService,
+    deleteOrdersService
 };
