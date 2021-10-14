@@ -5,5 +5,6 @@ exports.SYSTEM_SETTINGS = 'system_settings';
 exports.RESOURCES = {
     AUTHORIZATION: 'AUTHORIZATION',
     USER: 'USER',
-    ADDRESS: 'ADDRESS'
+    ADDRESS: 'ADDRESS',
+    ORDERS: 'ORDERS'
 }

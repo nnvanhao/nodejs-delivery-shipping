@@ -6,8 +6,8 @@ const {
 const ApiUtils = require('../api/api.router');
 const { validateResult } = require('../validation/base');
 const {
-    validateCreateUserRules
-} = require('../validation/authorization.validator');
+    validateCreateOrdersRules
+} = require('../validation/orders.validator');
 const { ROLE_TYPE } = require('../constants/common.constant');
 
 exports.routesConfig = function (app) {
@@ -15,6 +15,14 @@ exports.routesConfig = function (app) {
     app.post(ApiUtils.CREATE_ORDERS_BY_PARTNER, [
         VerifyUserMiddleware.validJWTNeeded,
         VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.CUSTOMER]),
+        validateCreateOrdersRules(),
+        validateResult,
+        createOrdersController,
+    ]);
+
+    app.post(ApiUtils.CREATE_ORDERS_BY_OTHER, [
+        validateCreateOrdersRules(),
+        validateResult,
         createOrdersController,
     ]);
 

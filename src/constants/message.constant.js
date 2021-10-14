@@ -38,5 +38,24 @@ exports.TokenExpiredError = 'Token_Expired';
 exports.JsonWebTokenError = 'Token_Invalid';
 exports.OLD_PASSWORD_INCORRECT = 'Old_Password_Is_Incorrect';
 
+// orders
+exports.MISSING_PICKUP_NAME_FIELD = 'Missing_Pickup_Name_Field';
+exports.MISSING_PICKUP_PHONE_FIELD = 'Missing_Pickup_Phone_Field';
+exports.MISSING_PICKUP_PROVINCE_FIELD = 'Missing_Pickup_Province_Field';
+exports.MISSING_PICKUP_DISTRICT_FIELD = 'Missing_Pickup_District_Field';
+exports.MISSING_PICKUP_WARD_FIELD = 'Missing_Pickup_Ward_Field';
+exports.MISSING_PICKUP_ADDRESS_FIELD = 'Missing_Pickup_Address_Field';
+exports.MISSING_PICKUP_DATE_FIELD = 'Missing_Pickup_Date_Field';
 
+exports.MISSING_RECIPIENT_NAME_FIELD = 'Missing_Recipient_Name_Field';
+exports.MISSING_RECIPIENT_PHONE_FIELD = 'Missing_Recipient_Phone_Field';
+exports.MISSING_RECIPIENT_PROVINCE_FIELD = 'Missing_Recipient_Province_Field';
+exports.MISSING_RECIPIENT_DISTRICT_FIELD = 'Missing_Recipient_District_Field';
+exports.MISSING_RECIPIENT_WARD_FIELD = 'Missing_Recipient_Ward_Field';
+exports.MISSING_RECIPIENT_ADDRESS_FIELD = 'Missing_Recipient_Address_Field';
+exports.MISSING_RECIPIENT_POSTAL_CODE_FIELD = 'Missing_Recipient_PostalCode_Field';
 
+exports.MISSING_WEIGHT_FIELD = 'Missing_Weight_Field';
+exports.MISSING_ORDERS_NAME_FIELD = 'Missing_Orders_Name_Field';
+exports.MISSING_ORDERS_QUANTITY_FIELD = 'Missing_Orders_Quantity_Field';
+exports.SEND_EMAIL_FOR_ORDERS_INFO_FAIL = 'Send_Email_For_Orders_Info_Fail';

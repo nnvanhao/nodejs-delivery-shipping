@@ -7,7 +7,7 @@ const { RESOURCES } = require("../constants/baseApiResource.constant");
 
 const createOrdersController = async (req, res, next) => {
     const result = await createOrdersService(req);
-    sendResponse(result, RESOURCES.USER, HttpStatus.OK, req, res, next);
+    sendResponse(result, RESOURCES.USER, HttpStatus.CREATED, req, res, next);
 };
 
 module.exports = {

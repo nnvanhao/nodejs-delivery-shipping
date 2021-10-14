@@ -18,6 +18,7 @@ const CUSTOMER_TYPE = {
 const USER_CODE = {
     KH: 'KH',
     NV: 'NV',
+    ORDER: 'ORDER'
 }
 
 const USER_STATUS = {
@@ -37,6 +38,11 @@ const SHIPPING_FEE_PAYMENT = {
     RECEIVER_PAY: 'ReceiverPay',
 }
 
+const SHIPPING_FEE_PAYMENT_TEXT = {
+    SenderPay: 'Người gửi trả phí',
+    ReceiverPay: 'Người nhận trả phí',
+}
+
 const ORDER_STATUS = {
 }
 
@@ -47,5 +53,6 @@ module.exports = {
     USER_CODE, 
     USER_STATUS, 
     GENDER,
-    SHIPPING_FEE_PAYMENT
+    SHIPPING_FEE_PAYMENT,
+    SHIPPING_FEE_PAYMENT_TEXT
 };

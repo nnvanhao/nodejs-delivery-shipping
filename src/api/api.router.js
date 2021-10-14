@@ -21,3 +21,4 @@ exports.GET_WARDS_BY_DISTRICT = '/wardsByDistrict/:id';
 
 //------Orders------//
 exports.CREATE_ORDERS_BY_PARTNER = '/orders/createByPartner';
+exports.CREATE_ORDERS_BY_OTHER = '/orders/createByOther';
