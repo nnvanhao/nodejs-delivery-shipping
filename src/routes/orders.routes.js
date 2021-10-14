@@ -3,7 +3,8 @@ const VerifyPermissionMiddleware = require('../middlewares/verify.permission.mid
 const {
     createOrdersController,
     getOrdersController,
-    getOrdersByIdController
+    getOrdersByIdController,
+    updateOrdersController
 } = require('../controllers/orders.controller');
 const ApiUtils = require('../api/api.router');
 const { validateResult } = require('../validation/base');
@@ -38,6 +39,14 @@ exports.routesConfig = function (app) {
         VerifyUserMiddleware.validJWTNeeded,
         VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN]),
         getOrdersByIdController,
+    ]);
+
+    app.put(ApiUtils.UPDATE_ORDERS, [
+        VerifyUserMiddleware.validJWTNeeded,
+        VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN, ROLE_TYPE.CUSTOMER]),
+        validateCreateOrdersRules(),
+        validateResult,
+        updateOrdersController,
     ]);
 
 };
