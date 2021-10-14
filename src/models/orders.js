@@ -12,7 +12,18 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
+            Orders.belongsTo(models.User, { foreignKey: 'id' });
+
+            // pickup
+            Orders.belongsTo(models.Province, { foreignKey: 'pickupProvince', as: 'pickupProvinceInfo' });
+            Orders.belongsTo(models.District, { foreignKey: 'pickupDistrict', as: 'pickupDistrictInfo' });
+            Orders.belongsTo(models.Ward, { foreignKey: 'pickupWard', as: 'pickupWardInfo' });
+            // recipient
+            Orders.belongsTo(models.Province, { foreignKey: 'recipientProvince', as: 'recipientProvinceInfo' });
+            Orders.belongsTo(models.District, { foreignKey: 'recipientDistrict', as: 'recipientDistrictInfo' });
+            Orders.belongsTo(models.Ward, { foreignKey: 'recipientWard', as: 'recipientWardInfo' });
         }
+
     };
     Orders.init({
         id: {
@@ -119,6 +130,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         isDeleted: {
             type: DataTypes.BOOLEAN,
+            defaultValue: false
         },
     }, {
         sequelize,
