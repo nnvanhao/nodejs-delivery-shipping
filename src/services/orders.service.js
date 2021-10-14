@@ -7,6 +7,7 @@ const { Op } = require("sequelize");
 const { USER_CODE, ROLE_TYPE, CUSTOMER_TYPE, USER_STATUS } = require("../constants/common.constant");
 const { generateUserCode, getQueryConditionsForGetUsers } = require("../helpers/common.helper");
 const { ordersTemplate, sendEmail } = require("../helpers/mailer.helper");
+const { getTokenString, decodeToken } = require("../helpers/token.helper");
 
 const {
     Orders,
@@ -19,6 +20,7 @@ const {
     District,
     Ward,
     OrdersStatus,
+    OrdersEvents,
     sequelize
 } = db;
 
@@ -295,7 +297,7 @@ const updateOrdersService = async (req) => {
             const ordersBody = {
                 ...body
             }
-            await Orders.update(ordersBody, { where: { id: ordersId } },{ transaction: t });
+            await Orders.update(ordersBody, { where: { id: ordersId } }, { transaction: t });
             return {};
         });
     } catch (error) {
@@ -316,10 +318,31 @@ const deleteOrdersService = async (req) => {
     }
 }
 
+const createOrdersEventService = async (req) => {
+    try {
+        return await sequelize.transaction(async (t) => {
+            const { body, headers: { authorization } } = req;
+            const token = getTokenString(authorization);
+            const { userId } = decodeToken(token);
+            const { ordersId, ordersStatusId } = body || {};
+            const ordersEventBody = {
+                ...body,
+                updateBy: userId
+            }
+            await Orders.update({ ordersStatusId }, { where: { id: ordersId } }, { transaction: t });
+            await OrdersEvents.create(ordersEventBody, { transaction: t });
+            return {};
+        });
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
 module.exports = {
     createOrdersService,
     getOrdersService,
     getOrdersByIdService,
     updateOrdersService,
-    deleteOrdersService
+    deleteOrdersService,
+    createOrdersEventService
 };

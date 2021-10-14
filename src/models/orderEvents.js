@@ -15,24 +15,24 @@ module.exports = (sequelize, DataTypes) => {
     };
     OrdersEvents.init({
         id: {
-            allowNull: false,
-            primaryKey: true,
             type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4
         },
         ordersStatusId: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUID,
         },
         provinceId: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUID,
         },
         districtId: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUID,
         },
         wardId: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUID,
         },
-        orderId: {
-            type: DataTypes.STRING,
+        ordersId: {
+            type: DataTypes.UUID,
         },
         address: {
             type: DataTypes.STRING,
@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
         },
         updateBy: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUID,
         },
     }, {
         sequelize,
