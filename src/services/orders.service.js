@@ -5,7 +5,7 @@ const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
 const { Op } = require("sequelize");
 const { USER_CODE, ROLE_TYPE, CUSTOMER_TYPE, USER_STATUS } = require("../constants/common.constant");
-const { generateUserCode } = require("../helpers/common.helper");
+const { generateUserCode, getQueryConditionsForGetUsers } = require("../helpers/common.helper");
 const { ordersTemplate, sendEmail } = require("../helpers/mailer.helper");
 
 const {
@@ -18,6 +18,7 @@ const {
     Province,
     District,
     Ward,
+    OrdersStatus,
     sequelize
 } = db;
 
@@ -146,6 +147,148 @@ const createOrdersService = async (req) => {
     }
 }
 
+const getOrdersService = async (req) => {
+    try {
+        const { query } = req;
+        const { page, pageSize, fromDate, toDate, ordersStatus } = query || {};
+        const fromDateFormat = `${fromDate}T00:00:00.00Z`
+        const toDateFormat = `${toDate}T23:59:00.00Z`
+        const hasFilterDate = fromDate && toDate;
+        const hasOrdersStatus = ordersStatus ? true : false;
+        const offset = (parseInt(page) - 1) * pageSize || undefined;
+        const limit = parseInt(pageSize) || undefined;
+        const conditions = getQueryConditionsForGetUsers(query, ['code', 'status']);
+        if (hasFilterDate) {
+            conditions.createdAt = {
+                [Op.between]: [fromDateFormat, toDateFormat]
+            }
+        }
+        const { count, rows } = await Orders.findAndCountAll({
+            where: {
+                ...conditions,
+                isDeleted: false
+            },
+            include: [
+                {
+                    model: Province,
+                    attributes: ['id', 'name'],
+                    as: 'pickupProvinceInfo'
+                },
+                {
+                    model: District,
+                    attributes: ['id', 'name'],
+                    as: 'pickupDistrictInfo'
+                },
+                {
+                    model: Ward,
+                    attributes: ['id', 'name'],
+                    as: 'pickupWardInfo'
+                },
+                {
+                    model: Province,
+                    attributes: ['id', 'name'],
+                    as: 'recipientProvinceInfo'
+                },
+                {
+                    model: District,
+                    attributes: ['id', 'name'],
+                    as: 'recipientDistrictInfo'
+                },
+                {
+                    model: Ward,
+                    attributes: ['id', 'name'],
+                    as: 'recipientWardInfo'
+                },
+                {
+                    model: OrdersStatus,
+                    attributes: ['id', 'name'],
+                    as: 'statusInfo',
+                    required: hasOrdersStatus,
+                    where: hasOrdersStatus && {
+                        name: [ordersStatus]
+                    }
+                },
+                {
+                    model: User,
+                    attributes: ['id', 'fullName'],
+                    as: 'shipperInfo'
+                },
+                {
+                    model: User,
+                    attributes: ['id', 'fullName'],
+                    as: 'orderCreatorInfo'
+                },
+            ],
+            attributes: {
+                exclude: [
+                    'recipientAmountPayment',
+                    'totalValue',
+                    'shippingFee',
+                    'isDeleted',
+                    'pickupProvince',
+                    'pickupDistrict',
+                    'pickupWard',
+                    'recipientProvince',
+                    'recipientDistrict',
+                    'recipientWard',
+                    'ordersStatusId',
+                    'shipperId',
+                    'orderCreatorId'
+                ]
+            },
+            offset,
+            limit,
+            order: [
+                ['createdAt', 'DESC']
+            ],
+        });
+        return {
+            items: rows,
+            total: count
+        };
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
+const getOrdersByIdService = async (req) => {
+    try {
+        const { params } = req;
+        const { id: ordersId } = params || {};
+        const ordersInfo = await Orders.findOne({
+            where: {
+                id: ordersId
+            },
+            attributes: {
+                exclude: [
+                    'code',
+                    'orderCreatorId',
+                    'shipperId',
+                    'ordersStatusId',
+                    'isDeleted'
+                ]
+            },
+            include: [
+                {
+                    model: OrdersStatus,
+                    attributes: ['id', 'name'],
+                    as: 'statusInfo',
+                },
+                {
+                    model: User,
+                    attributes: ['id', 'fullName'],
+                    as: 'shipperInfo'
+                },
+            ],
+        });
+        return ordersInfo;
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
 module.exports = {
     createOrdersService,
+    getOrdersService,
+    getOrdersByIdService
 };
