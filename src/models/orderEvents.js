@@ -11,6 +11,14 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
+            // address
+            OrdersEvents.belongsTo(models.Province, { foreignKey: 'provinceId', as: 'provinceInfo' });
+            OrdersEvents.belongsTo(models.District, { foreignKey: 'districtId', as: 'districtInfo' });
+            OrdersEvents.belongsTo(models.Ward, { foreignKey: 'wardId', as: 'wardInfo' });
+            //  status
+            OrdersEvents.belongsTo(models.OrdersStatus, { foreignKey: 'ordersStatusId', as: 'statusInfo' });
+            //  user updated
+            OrdersEvents.belongsTo(models.User, { foreignKey: 'updateBy', as: 'updatedByUser' });
         }
     };
     OrdersEvents.init({
