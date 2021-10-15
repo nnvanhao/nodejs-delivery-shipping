@@ -338,11 +338,54 @@ const createOrdersEventService = async (req) => {
     }
 }
 
+const getOrdersEventsService = async (req) => {
+    try {
+        const { params } = req;
+        const { id: ordersId } = params || {};
+        const ordersInfo = await OrdersEvents.findAll({
+            where: {
+                ordersId
+            },
+            include: [
+                {
+                    model: OrdersStatus,
+                    attributes: ['id', 'name'],
+                    as: 'statusInfo',
+                },
+                {
+                    model: User,
+                    attributes: ['id', 'fullName'],
+                    as: 'updatedByUser'
+                },
+                {
+                    model: Province,
+                    attributes: ['id', 'name'],
+                    as: 'provinceInfo'
+                },
+                {
+                    model: District,
+                    attributes: ['id', 'name'],
+                    as: 'districtInfo'
+                },
+                {
+                    model: Ward,
+                    attributes: ['id', 'name'],
+                    as: 'wardInfo'
+                },
+            ],
+        });
+        return ordersInfo;
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
 module.exports = {
     createOrdersService,
     getOrdersService,
     getOrdersByIdService,
     updateOrdersService,
     deleteOrdersService,
-    createOrdersEventService
+    createOrdersEventService,
+    getOrdersEventsService
 };

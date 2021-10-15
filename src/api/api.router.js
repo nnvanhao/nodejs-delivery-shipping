@@ -27,4 +27,5 @@ exports.GET_ORDERS_BY_ID = '/orders/:id';
 exports.UPDATE_ORDERS = '/orders/:id';
 exports.DELETE_ORDERS = '/orders/:id';
 exports.CREATE_ORDERS_EVENT = '/orders/event';
+exports.GET_ORDERS_EVENT = '/orders/:id/events';
 
