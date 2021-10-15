@@ -5,7 +5,8 @@ const {
     getOrdersService,
     getOrdersByIdService,
     updateOrdersService,
-    deleteOrdersService
+    deleteOrdersService,
+    createOrdersEventService
 } = require('../services/orders.service');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 
@@ -34,11 +35,16 @@ const deleteOrdersController = async (req, res, next) => {
     sendResponse(result, RESOURCES.ORDERS, HttpStatus.OK, req, res, next);
 };
 
+const createOrdersEventController = async (req, res, next) => {
+    const result = await createOrdersEventService(req);
+    sendResponse(result, RESOURCES.ORDERS, HttpStatus.OK, req, res, next);
+};
 
 module.exports = {
     createOrdersController,
     getOrdersController,
     getOrdersByIdController,
     updateOrdersController,
-    deleteOrdersController
+    deleteOrdersController,
+    createOrdersEventController
 }

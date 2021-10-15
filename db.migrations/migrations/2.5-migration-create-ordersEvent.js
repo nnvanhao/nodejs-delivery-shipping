@@ -10,7 +10,7 @@ module.exports = {
             ordersStatusId: {
                 type: Sequelize.UUID,
                 references: {
-                    model: 'OrdersStatus',
+                    model: 'OrdersStatuses',
                     key: 'id'
                 },
             },
@@ -35,7 +35,7 @@ module.exports = {
                     key: 'id'
                 }
             },
-            orderId: {
+            ordersId: {
                 type: Sequelize.UUID,
                 references: {
                     model: 'Orders',
