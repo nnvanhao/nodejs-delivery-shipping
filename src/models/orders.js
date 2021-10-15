@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
             Orders.belongsTo(models.District, { foreignKey: 'recipientDistrict', as: 'recipientDistrictInfo' });
             Orders.belongsTo(models.Ward, { foreignKey: 'recipientWard', as: 'recipientWardInfo' });
             //  status
-            Orders.belongsTo(models.OrdersStatus, { foreignKey: 'ordersStatusId', as: 'statusInfo' });
+            Orders.belongsTo(models.OrdersStatuses, { foreignKey: 'ordersStatusId', as: 'statusInfo' });
             //  shipper
             Orders.belongsTo(models.User, { foreignKey: 'shipperId', as: 'shipperInfo' });
             //  orderCreator

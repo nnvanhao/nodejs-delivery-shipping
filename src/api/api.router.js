@@ -29,3 +29,8 @@ exports.DELETE_ORDERS = '/orders/:id';
 exports.CREATE_ORDERS_EVENT = '/orders/event';
 exports.GET_ORDERS_EVENT = '/orders/:id/events';
 
+//------Orders Status------//
+exports.GET_ORDERS_STATUSES = '/ordersStatuses';
+exports.CREATE_ORDERS_STATUS = '/ordersStatus';
+exports.UPDATE_ORDERS_STATUS = '/ordersStatus/:id';
+exports.UPDATE_SORT_INDEX_ORDERS_STATUS = '/sortIndexOrdersStatus';

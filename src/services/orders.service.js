@@ -19,7 +19,7 @@ const {
     Province,
     District,
     Ward,
-    OrdersStatus,
+    OrdersStatuses,
     OrdersEvents,
     sequelize
 } = db;
@@ -202,7 +202,7 @@ const getOrdersService = async (req) => {
                     as: 'recipientWardInfo'
                 },
                 {
-                    model: OrdersStatus,
+                    model: OrdersStatuses,
                     attributes: ['id', 'name'],
                     as: 'statusInfo',
                     required: hasOrdersStatus,
@@ -272,7 +272,7 @@ const getOrdersByIdService = async (req) => {
             },
             include: [
                 {
-                    model: OrdersStatus,
+                    model: OrdersStatuses,
                     attributes: ['id', 'name'],
                     as: 'statusInfo',
                 },
@@ -348,7 +348,7 @@ const getOrdersEventsService = async (req) => {
             },
             include: [
                 {
-                    model: OrdersStatus,
+                    model: OrdersStatuses,
                     attributes: ['id', 'name'],
                     as: 'statusInfo',
                 },
@@ -380,6 +380,95 @@ const getOrdersEventsService = async (req) => {
     }
 }
 
+const getOrdersStatusesService = async () => {
+    try {
+        return await OrdersStatuses.findAll({
+            order: [
+                ['sortIndex', 'ASC'],
+            ], raw: true
+        });
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS_STATUS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
+const createOrdersStatusService = async (req) => {
+    try {
+        const { body } = req;
+        const {
+            name,
+            requiredTakePicture = false
+        } = body;
+
+        const sortIndexOrdersStatusMaxNumber = await OrdersStatuses.max('sortIndex');
+
+        const data = {
+            name,
+            sortIndex: sortIndexOrdersStatusMaxNumber + 1,
+            required: false,
+            requiredTakePicture,
+            isDeleted: false,
+        }
+        return await OrdersStatuses.create(data);
+
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS_STATUS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
+const updateOrdersStatusService = async (req) => {
+    try {
+        const { params, body } = req;
+        const { id: ordersStatusId } = params || {};
+
+        const {
+            name,
+            requiredTakePicture = false,
+            isDeleted = false
+        } = body;
+
+        const data = {
+            name,
+            requiredTakePicture,
+            isDeleted
+        }
+
+        if (ordersStatusId) {
+            const ordersStatus = await OrdersStatuses.findOne({
+                where: {
+                    id: ordersStatusId
+                },
+            });
+            return await ordersStatus.update(data);
+        }
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS_STATUS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
+const updateSortIndexOrdersStatusService = async (req) => {
+    try {
+        const { body } = req;
+
+        const {
+            ordersStatuses = [],
+        } = body;
+
+        for (let i = 0; i < ordersStatuses.length; i++) {
+            const { id: ordersStatusId } = ordersStatuses[i];
+            await OrdersStatuses.update(ordersStatuses[i], { where: { id: ordersStatusId } });
+        }
+
+        return await OrdersStatuses.findAll({
+            order: [
+                ['sortIndex', 'ASC'],
+            ], raw: true
+        });
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS_STATUS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
 module.exports = {
     createOrdersService,
     getOrdersService,
@@ -387,5 +476,9 @@ module.exports = {
     updateOrdersService,
     deleteOrdersService,
     createOrdersEventService,
-    getOrdersEventsService
+    getOrdersEventsService,
+    getOrdersStatusesService,
+    createOrdersStatusService,
+    updateOrdersStatusService,
+    updateSortIndexOrdersStatusService
 };

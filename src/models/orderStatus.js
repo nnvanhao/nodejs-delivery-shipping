@@ -22,10 +22,11 @@ module.exports = (sequelize, DataTypes) => {
         name: DataTypes.STRING,
         sortIndex: DataTypes.INTEGER,
         required: DataTypes.BOOLEAN,
+        requiredTakePicture: DataTypes.BOOLEAN,
         isDeleted: DataTypes.BOOLEAN,
     }, {
         sequelize,
-        modelName: 'OrdersStatus',
+        modelName: 'OrdersStatuses',
     });
     return OrdersStatus;
 };
