@@ -23,6 +23,14 @@ const validateCreateOrdersRules = () => {
     ];
 }
 
+const validateCreateOrdersStatusRules = () => {
+    return [
+        body('name', Message.MISSING_ORDERS_NAME_FIELD).notEmpty(),
+        body('requiredTakePicture', Message.MISSING_ORDERS_REQUIRED_TAKE_PICTURE_FIELD).notEmpty(),
+    ];
+}
+
 module.exports = {
-    validateCreateOrdersRules
+    validateCreateOrdersRules,
+    validateCreateOrdersStatusRules,
 };
