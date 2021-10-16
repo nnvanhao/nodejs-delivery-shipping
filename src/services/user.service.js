@@ -62,6 +62,8 @@ const getUsersService = async (req) => {
             order: [
                 ['createdAt', 'DESC']
             ],
+            raw: true,
+            nest: true
         });
         return {
             items: rows,

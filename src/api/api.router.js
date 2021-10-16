@@ -29,3 +29,6 @@ exports.DELETE_ORDERS = '/orders/:id';
 exports.CREATE_ORDERS_EVENT = '/orders/event';
 exports.GET_ORDERS_EVENT = '/orders/:id/events';
 
+//------export------//
+exports.EXCEL_EXPORT = '/export';
+
