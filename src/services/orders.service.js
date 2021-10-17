@@ -243,6 +243,8 @@ const getOrdersService = async (req) => {
             order: [
                 ['createdAt', 'DESC']
             ],
+            raw: true,
+            nest: true
         });
         return {
             items: rows,
@@ -373,6 +375,8 @@ const getOrdersEventsService = async (req) => {
                     as: 'wardInfo'
                 },
             ],
+            raw: true,
+            nest: true
         });
         return ordersInfo;
     } catch (error) {

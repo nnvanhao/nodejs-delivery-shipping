@@ -43,16 +43,31 @@ const SHIPPING_FEE_PAYMENT_TEXT = {
     ReceiverPay: 'Người nhận trả phí',
 }
 
+const ROLE_TYPE_LANG = {
+    CUSTOMER: 'Khach_hang',
+    EMPLOYEE: 'Nhan_vien',
+    ORDERS: 'Don_hang',
+    ORDERS_EVENTS: 'Su_kien_don_hang'
+}
+
+const EXPORT_TYPE = {
+    USERS: 'USERS',
+    ORDERS: 'ORDERS',
+    ORDERS_EVENTS: 'ORDERS_EVENTS'
+}
+
 const ORDER_STATUS = {
 }
 
-module.exports = { 
-    LOGGER_TYPE, 
-    ROLE_TYPE, 
-    CUSTOMER_TYPE, 
-    USER_CODE, 
-    USER_STATUS, 
+module.exports = {
+    LOGGER_TYPE,
+    ROLE_TYPE,
+    CUSTOMER_TYPE,
+    USER_CODE,
+    USER_STATUS,
     GENDER,
     SHIPPING_FEE_PAYMENT,
-    SHIPPING_FEE_PAYMENT_TEXT
+    SHIPPING_FEE_PAYMENT_TEXT,
+    ROLE_TYPE_LANG,
+    EXPORT_TYPE
 };
