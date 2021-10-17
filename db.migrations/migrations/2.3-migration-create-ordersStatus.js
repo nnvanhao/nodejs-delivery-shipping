@@ -16,6 +16,9 @@ module.exports = {
             required: {
                 type: Sequelize.BOOLEAN,
             },
+            requiredTakePicture: {
+                type: Sequelize.BOOLEAN,
+            },
             isDeleted: {
                 type: Sequelize.BOOLEAN,
             },
