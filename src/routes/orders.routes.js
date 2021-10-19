@@ -9,9 +9,11 @@ const {
     createOrdersEventController,
     getOrdersEventController,
     getOrdersStatusesController,
+    getOrdersStatusByIdController,
     createOrdersStatusController,
     updateOrdersStatusController,
-    updateSortIndexOrdersStatusController
+    updateSortIndexOrdersStatusController,
+    deleteOrdersStatusController
 } = require('../controllers/orders.controller');
 const ApiUtils = require('../api/api.router');
 const { validateResult } = require('../validation/base');
@@ -81,6 +83,12 @@ exports.routesConfig = function (app) {
         getOrdersStatusesController,
     ]);
 
+    app.get(ApiUtils.ORDERS_STATUS_ID, [
+        VerifyUserMiddleware.validJWTNeeded,
+        VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN]),
+        getOrdersStatusByIdController,
+    ]);
+
     app.post(ApiUtils.CREATE_ORDERS_STATUS, [
         VerifyUserMiddleware.validJWTNeeded,
         VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN]),
@@ -89,7 +97,7 @@ exports.routesConfig = function (app) {
         createOrdersStatusController,
     ]);
 
-    app.put(ApiUtils.UPDATE_ORDERS_STATUS, [
+    app.put(ApiUtils.ORDERS_STATUS_ID, [
         VerifyUserMiddleware.validJWTNeeded,
         VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN]),
         validateCreateOrdersStatusRules(),
@@ -101,6 +109,12 @@ exports.routesConfig = function (app) {
         VerifyUserMiddleware.validJWTNeeded,
         VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN]),
         updateSortIndexOrdersStatusController,
+    ]);
+
+    app.delete(ApiUtils.ORDERS_STATUS_ID, [
+        VerifyUserMiddleware.validJWTNeeded,
+        VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN]),
+        deleteOrdersStatusController,
     ]);
 
 };

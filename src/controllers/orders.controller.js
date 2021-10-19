@@ -9,9 +9,11 @@ const {
     createOrdersEventService,
     getOrdersEventsService,
     getOrdersStatusesService,
+    getOrdersStatusByIdService,
     createOrdersStatusService,
     updateOrdersStatusService,
-    updateSortIndexOrdersStatusService
+    updateSortIndexOrdersStatusService,
+    deleteOrdersStatusService
 } = require('../services/orders.service');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 
@@ -55,6 +57,11 @@ const getOrdersStatusesController = async (req, res, next) => {
     sendResponse(result, RESOURCES.ORDERS_STATUS, HttpStatus.OK, req, res, next);
 };
 
+const getOrdersStatusByIdController = async (req, res, next) => {
+    const result = await getOrdersStatusByIdService(req);
+    sendResponse(result, RESOURCES.ORDERS_STATUS, HttpStatus.OK, req, res, next);
+};
+
 const createOrdersStatusController = async (req, res, next) => {
     const result = await createOrdersStatusService(req);
     sendResponse(result, RESOURCES.ORDERS_STATUS, HttpStatus.OK, req, res, next);
@@ -70,6 +77,11 @@ const updateSortIndexOrdersStatusController = async (req, res, next) => {
     sendResponse(result, RESOURCES.ORDERS_STATUS, HttpStatus.OK, req, res, next);
 };
 
+const deleteOrdersStatusController = async (req, res, next) => {
+    const result = await deleteOrdersStatusService(req);
+    sendResponse(result, RESOURCES.ORDERS_STATUS, HttpStatus.OK, req, res, next);
+};
+
 module.exports = {
     createOrdersController,
     getOrdersController,
@@ -79,7 +91,9 @@ module.exports = {
     createOrdersEventController,
     getOrdersEventController,
     getOrdersStatusesController,
+    getOrdersStatusByIdController,
     createOrdersStatusController,
     updateOrdersStatusController,
-    updateSortIndexOrdersStatusController
+    updateSortIndexOrdersStatusController,
+    deleteOrdersStatusController
 }
