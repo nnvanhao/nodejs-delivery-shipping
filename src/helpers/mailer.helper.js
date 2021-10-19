@@ -2,6 +2,7 @@ const nodemailer = require("nodemailer");
 const dayjs = require('dayjs');
 const config = require('../config/env');
 const { SHIPPING_FEE_PAYMENT_TEXT } = require("../constants/common.constant");
+const { VNDCurrencyFormatting } = require("./common.helper");
 
 // async..await is not allowed in global scope, must use a wrapper
 const sendEmail = async (from = config.MAILER.FROM, to, subject, text, html) => {
@@ -110,12 +111,12 @@ const ordersTemplate = (orders) => {
                 <tr style="background-color: #f2f2f2;">
                     <td style="text-align: left;padding: 8px;">Tổng giá trị đơn hàng</td>
                     <td style="text-align: left;padding: 8px;"></td>
-                    <td style="text-align: left;padding: 8px;">${totalValue}</td>
+                    <td style="text-align: left;padding: 8px;">${VNDCurrencyFormatting(totalValue)}</td>
                 </tr>
                 <tr>
                     <td style="text-align: left;padding: 8px;">Phí giao hàng</td>
                     <td style="text-align: left;padding: 8px;"></td>
-                    <td style="text-align: left;padding: 8px;">${shippingFee}</td>
+                    <td style="text-align: left;padding: 8px;">${VNDCurrencyFormatting(shippingFee)}</td>
                 </tr>
                 <tr style="background-color: #f2f2f2;">
                     <td style="text-align: left;padding: 8px;">Thanh toán cước phí vận chuyển</td>
@@ -125,7 +126,7 @@ const ordersTemplate = (orders) => {
                 <tr>
                     <td style="text-align: left;padding: 8px;">Tiền thu khách</td>
                     <td style="text-align: left;padding: 8px;"></td>
-                    <td style="text-align: left;padding: 8px;">${recipientAmountPayment}</td>
+                    <td style="text-align: left;padding: 8px;">${VNDCurrencyFormatting(recipientAmountPayment)}</td>
                 </tr>
                 </table>
                 <table style=" border-collapse: collapse; width: 100%;margin-top: 30px;">

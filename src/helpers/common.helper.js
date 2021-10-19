@@ -28,7 +28,13 @@ const generateUserCode = (user, prefix) => {
     return `${prefix}${getCodeNumber(parseInt(index))}`;
 }
 
+const VNDCurrencyFormatting = (value) => {
+    const valueSelected = value || 0;
+    return valueSelected.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+}
+
 module.exports = {
     getQueryConditionsForGetUsers,
-    generateUserCode
+    generateUserCode,
+    VNDCurrencyFormatting
 };
