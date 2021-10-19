@@ -8,6 +8,7 @@ const { USER_CODE, ROLE_TYPE, CUSTOMER_TYPE, USER_STATUS } = require("../constan
 const { generateUserCode, getQueryConditionsForGetUsers } = require("../helpers/common.helper");
 const { ordersTemplate, sendEmail } = require("../helpers/mailer.helper");
 const { getTokenString, decodeToken } = require("../helpers/token.helper");
+const { getUserAccessRole } = require("../middlewares/verify.permission.middleware");
 
 const {
     Orders,
@@ -26,7 +27,7 @@ const {
 
 const createOrdersService = async (req) => {
     try {
-        const { body } = req;
+        const { body, headers: { authorization } } = req;
         const { isPartner, pickupName, pickupPhone, email, pickupProvince, pickupDistrict, pickupWard, pickupAddress } = body;
         if (!isPartner) {
             const user = await User.findOne({
@@ -54,6 +55,19 @@ const createOrdersService = async (req) => {
             },
             raw: true,
         });
+        const defaultOrdersStatus = await OrdersStatuses.findOne({
+            where: {
+                sortIndex: 0
+            },
+            raw: true,
+        });
+        const { id: ordersStatusId } = defaultOrdersStatus;
+        if (authorization && isPartner) {
+            const token = getTokenString(authorization);
+            const { userId: userCreateId } = decodeToken(token);
+            body.orderCreatorId = userCreateId;
+        }
+        body.ordersStatusId = ordersStatusId;
         const ordersCode = generateUserCode(lastOrders, USER_CODE.ORDER);
         await sequelize.transaction(async (t) => {
             if (!isPartner) {
@@ -151,7 +165,7 @@ const createOrdersService = async (req) => {
 
 const getOrdersService = async (req) => {
     try {
-        const { query } = req;
+        const { query, headers: { authorization } } = req;
         const { page, pageSize, fromDate, toDate, ordersStatus } = query || {};
         const fromDateFormat = `${fromDate}T00:00:00.00Z`
         const toDateFormat = `${toDate}T23:59:00.00Z`
@@ -163,6 +177,16 @@ const getOrdersService = async (req) => {
         if (hasFilterDate) {
             conditions.createdAt = {
                 [Op.between]: [fromDateFormat, toDateFormat]
+            }
+        }
+        if (authorization) {
+            const token = getTokenString(authorization);
+            const { userId } = decodeToken(token);
+            const userAccessRole = await getUserAccessRole(userId);
+            if (userAccessRole === ROLE_TYPE.CUSTOMER) {
+                conditions.orderCreatorId = userId;
+            } else if(userAccessRole === ROLE_TYPE.EMPLOYEE) {
+                conditions.shipperId = userId;
             }
         }
         const { count, rows } = await Orders.findAndCountAll({
@@ -282,6 +306,36 @@ const getOrdersByIdService = async (req) => {
                     model: User,
                     attributes: ['id', 'fullName'],
                     as: 'shipperInfo'
+                },
+                {
+                    model: Province,
+                    attributes: ['id', 'name'],
+                    as: 'pickupProvinceInfo'
+                },
+                {
+                    model: District,
+                    attributes: ['id', 'name'],
+                    as: 'pickupDistrictInfo'
+                },
+                {
+                    model: Ward,
+                    attributes: ['id', 'name'],
+                    as: 'pickupWardInfo'
+                },
+                {
+                    model: Province,
+                    attributes: ['id', 'name'],
+                    as: 'recipientProvinceInfo'
+                },
+                {
+                    model: District,
+                    attributes: ['id', 'name'],
+                    as: 'recipientDistrictInfo'
+                },
+                {
+                    model: Ward,
+                    attributes: ['id', 'name'],
+                    as: 'recipientWardInfo'
                 },
             ],
         });

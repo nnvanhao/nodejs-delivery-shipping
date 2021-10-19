@@ -56,9 +56,6 @@ const EXPORT_TYPE = {
     ORDERS_EVENTS: 'ORDERS_EVENTS'
 }
 
-const ORDER_STATUS = {
-}
-
 module.exports = {
     LOGGER_TYPE,
     ROLE_TYPE,
