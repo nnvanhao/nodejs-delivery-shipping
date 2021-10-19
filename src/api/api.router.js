@@ -32,5 +32,5 @@ exports.GET_ORDERS_EVENT = '/orders/:id/events';
 //------Orders Status------//
 exports.GET_ORDERS_STATUSES = '/ordersStatuses';
 exports.CREATE_ORDERS_STATUS = '/ordersStatus';
-exports.UPDATE_ORDERS_STATUS = '/ordersStatus/:id';
-exports.UPDATE_SORT_INDEX_ORDERS_STATUS = '/sortIndexOrdersStatus';
+exports.ORDERS_STATUS_ID = '/ordersStatus/:id';
+exports.UPDATE_SORT_INDEX_ORDERS_STATUS = '/sortIndexOrdersStatuses';

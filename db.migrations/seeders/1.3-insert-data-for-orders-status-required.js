@@ -9,6 +9,7 @@ module.exports = {
                 name: 'Chờ xác nhận',
                 sortIndex: 0,
                 required: true,
+                isDeleted: false,
                 requiredTakePicture: false,
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -18,6 +19,7 @@ module.exports = {
                 name: 'Đang vận chuyển',
                 sortIndex: 1,
                 required: true,
+                isDeleted: false,
                 requiredTakePicture: false,
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -27,6 +29,7 @@ module.exports = {
                 name: 'Giao hàng thành công',
                 sortIndex: 2,
                 required: true,
+                isDeleted: false,
                 requiredTakePicture: true,
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -36,6 +39,7 @@ module.exports = {
                 name: 'Đã hủy',
                 sortIndex: 3,
                 required: true,
+                isDeleted: false,
                 requiredTakePicture: false,
                 createdAt: new Date(),
                 updatedAt: new Date()

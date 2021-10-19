@@ -385,7 +385,24 @@ const getOrdersStatusesService = async () => {
         return await OrdersStatuses.findAll({
             order: [
                 ['sortIndex', 'ASC'],
-            ], raw: true
+            ], raw: true,
+            where: {
+                isDeleted: false
+            }
+        });
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS_STATUS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
+const getOrdersStatusByIdService = async (req) => {
+    try {
+        const { params } = req;
+        const { id: ordersStatusId } = params || {};
+        return await OrdersStatuses.findOne({
+            where: {
+                id: ordersStatusId
+            },
         });
     } catch (error) {
         return buildErrorItem(RESOURCES.ORDERS_STATUS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
@@ -456,7 +473,7 @@ const updateSortIndexOrdersStatusService = async (req) => {
 
         for (let i = 0; i < ordersStatuses.length; i++) {
             const { id: ordersStatusId } = ordersStatuses[i];
-            await OrdersStatuses.update(ordersStatuses[i], { where: { id: ordersStatusId } });
+            await OrdersStatuses.update({ sortIndex: ordersStatuses[i].sortIndex }, { where: { id: ordersStatusId } });
         }
 
         return await OrdersStatuses.findAll({
@@ -464,6 +481,19 @@ const updateSortIndexOrdersStatusService = async (req) => {
                 ['sortIndex', 'ASC'],
             ], raw: true
         });
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS_STATUS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
+const deleteOrdersStatusService = async (req) => {
+    try {
+        const { params } = req;
+        const { id: ordersStatusId } = params || {};
+
+        if (ordersStatusId) {
+            return await OrdersStatuses.update({ isDeleted: true }, { where: { id: ordersStatusId } });
+        }
     } catch (error) {
         return buildErrorItem(RESOURCES.ORDERS_STATUS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
@@ -478,7 +508,9 @@ module.exports = {
     createOrdersEventService,
     getOrdersEventsService,
     getOrdersStatusesService,
+    getOrdersStatusByIdService,
     createOrdersStatusService,
     updateOrdersStatusService,
-    updateSortIndexOrdersStatusService
+    updateSortIndexOrdersStatusService,
+    deleteOrdersStatusService
 };
