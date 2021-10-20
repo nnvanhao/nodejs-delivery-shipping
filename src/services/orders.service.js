@@ -28,7 +28,19 @@ const {
 const createOrdersService = async (req) => {
     try {
         const { body, headers: { authorization } } = req;
-        const { isPartner, pickupName, pickupPhone, email, pickupProvince, pickupDistrict, pickupWard, pickupAddress } = body;
+        const {
+            isPartner,
+            pickupName,
+            pickupPhone,
+            email,
+            pickupProvince,
+            pickupDistrict,
+            pickupWard,
+            pickupAddress,
+            height = 0,
+            width = 0,
+            long = 0,
+        } = body;
         if (!isPartner) {
             const user = await User.findOne({
                 where: {
@@ -105,7 +117,10 @@ const createOrdersService = async (req) => {
             }
             const ordersBody = {
                 code: ordersCode,
-                ...body
+                ...body,
+                height: height || 0,
+                width: width || 0,
+                long: long || 0
             }
             await Orders.create(ordersBody, { transaction: t });
         });
@@ -159,6 +174,7 @@ const createOrdersService = async (req) => {
         }
         return {};
     } catch (error) {
+        console.log({error});
         return buildErrorItem(RESOURCES.ORDERS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
 }
@@ -185,7 +201,7 @@ const getOrdersService = async (req) => {
             const userAccessRole = await getUserAccessRole(userId);
             if (userAccessRole === ROLE_TYPE.CUSTOMER) {
                 conditions.orderCreatorId = userId;
-            } else if(userAccessRole === ROLE_TYPE.EMPLOYEE) {
+            } else if (userAccessRole === ROLE_TYPE.EMPLOYEE) {
                 conditions.shipperId = userId;
             }
         }
