@@ -44,7 +44,7 @@ const deleteOrdersController = async (req, res, next) => {
 
 const createOrdersEventController = async (req, res, next) => {
     const result = await createOrdersEventService(req);
-    sendResponse(result, RESOURCES.ORDERS, HttpStatus.OK, req, res, next);
+    sendResponse(result, RESOURCES.ORDERS, HttpStatus.CREATED, req, res, next);
 };
 
 const getOrdersEventController = async (req, res, next) => {

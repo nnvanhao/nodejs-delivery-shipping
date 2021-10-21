@@ -67,7 +67,7 @@ exports.routesConfig = function (app) {
 
     app.post(ApiUtils.CREATE_ORDERS_EVENT, [
         VerifyUserMiddleware.validJWTNeeded,
-        VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN, ROLE_TYPE.CUSTOMER]),
+        VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN, ROLE_TYPE.CUSTOMER, ROLE_TYPE.EMPLOYEE]),
         createOrdersEventController,
     ]);
 
@@ -79,7 +79,7 @@ exports.routesConfig = function (app) {
 
     app.get(ApiUtils.GET_ORDERS_STATUSES, [
         VerifyUserMiddleware.validJWTNeeded,
-        VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN, ROLE_TYPE.CUSTOMER]),
+        VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN, ROLE_TYPE.CUSTOMER, ROLE_TYPE.EMPLOYEE]),
         getOrdersStatusesController,
     ]);
 
