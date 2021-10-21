@@ -174,7 +174,6 @@ const createOrdersService = async (req) => {
         }
         return {};
     } catch (error) {
-        console.log({error});
         return buildErrorItem(RESOURCES.ORDERS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
 }
@@ -182,14 +181,14 @@ const createOrdersService = async (req) => {
 const getOrdersService = async (req) => {
     try {
         const { query, headers: { authorization } } = req;
-        const { page, pageSize, fromDate, toDate, ordersStatus } = query || {};
+        const { page, pageSize, fromDate, toDate, ordersStatus, searchText = '' } = query || {};
         const fromDateFormat = `${fromDate}T00:00:00.00Z`
         const toDateFormat = `${toDate}T23:59:00.00Z`
         const hasFilterDate = fromDate && toDate;
         const hasOrdersStatus = ordersStatus ? true : false;
         const offset = (parseInt(page) - 1) * pageSize || undefined;
         const limit = parseInt(pageSize) || undefined;
-        const conditions = getQueryConditionsForGetUsers(query, ['code', 'status']);
+        let conditions = getQueryConditionsForGetUsers(query, ['code', 'status']);
         if (hasFilterDate) {
             conditions.createdAt = {
                 [Op.between]: [fromDateFormat, toDateFormat]
@@ -202,7 +201,18 @@ const getOrdersService = async (req) => {
             if (userAccessRole === ROLE_TYPE.CUSTOMER) {
                 conditions.orderCreatorId = userId;
             } else if (userAccessRole === ROLE_TYPE.EMPLOYEE) {
-                conditions.shipperId = userId;
+                conditions = {
+                    ...conditions,
+                    shipperId: userId,
+                    [Op.or]: [
+                        { recipientName: {
+                            [Op.like]: '%' + searchText + '%',
+                        } },
+                        { recipientPhone: {
+                            [Op.like]: '%' + searchText + '%',
+                        } }
+                    ],
+                }
             }
         }
         const { count, rows } = await Orders.findAndCountAll({
@@ -263,8 +273,6 @@ const getOrdersService = async (req) => {
             ],
             attributes: {
                 exclude: [
-                    'recipientAmountPayment',
-                    'totalValue',
                     'shippingFee',
                     'isDeleted',
                     'pickupProvince',
