@@ -327,7 +327,6 @@ const getOrdersByIdService = async (req) => {
             },
             attributes: {
                 exclude: [
-                    'code',
                     'orderCreatorId',
                     'shipperId',
                     'ordersStatusId',
