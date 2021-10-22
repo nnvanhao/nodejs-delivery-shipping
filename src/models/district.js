@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     District.init({
         name: DataTypes.STRING(128),
         type: DataTypes.STRING(32),
+        code: DataTypes.STRING(32),
         provinceId: DataTypes.UUID,
     }, {
         sequelize,

@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     Province.init({
         name: DataTypes.STRING(128),
         code: DataTypes.STRING(3),
-        type: DataTypes.STRING(32)
+        type: DataTypes.STRING(32),
+        shortName: DataTypes.STRING(32)
     }, {
         sequelize,
         modelName: 'Province',

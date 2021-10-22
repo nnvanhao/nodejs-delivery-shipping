@@ -5,7 +5,7 @@ const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
 const { Op } = require("sequelize");
 const { USER_CODE, ROLE_TYPE, CUSTOMER_TYPE, USER_STATUS } = require("../constants/common.constant");
-const { generateUserCode, getQueryConditionsForGetUsers } = require("../helpers/common.helper");
+const { generateUserCode, getQueryConditionsForGetUsers, generateOrdersCode } = require("../helpers/common.helper");
 const { ordersTemplate, sendEmail } = require("../helpers/mailer.helper");
 const { getTokenString, decodeToken } = require("../helpers/token.helper");
 const { getUserAccessRole } = require("../middlewares/verify.permission.middleware");
@@ -37,6 +37,8 @@ const createOrdersService = async (req) => {
             pickupDistrict,
             pickupWard,
             pickupAddress,
+            recipientProvince,
+            recipientDistrict,
             height = 0,
             width = 0,
             long = 0,
@@ -67,6 +69,18 @@ const createOrdersService = async (req) => {
             },
             raw: true,
         });
+        const recipientProvinceInfo = await Province.findOne({
+            where: {
+                id: recipientProvince
+            },
+            raw: true,
+        });
+        const recipientDistrictInfo = await District.findOne({
+            where: {
+                id: recipientDistrict
+            },
+            raw: true,
+        });
         const defaultOrdersStatus = await OrdersStatuses.findOne({
             where: {
                 sortIndex: 0
@@ -80,7 +94,7 @@ const createOrdersService = async (req) => {
             body.orderCreatorId = userCreateId;
         }
         body.ordersStatusId = ordersStatusId;
-        const ordersCode = generateUserCode(lastOrders, USER_CODE.ORDER);
+        const ordersCode = generateOrdersCode(lastOrders, recipientProvinceInfo, recipientDistrictInfo);
         await sequelize.transaction(async (t) => {
             if (!isPartner) {
                 const lastUser = await User.findOne({

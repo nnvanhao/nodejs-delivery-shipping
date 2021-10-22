@@ -28,6 +28,17 @@ const generateUserCode = (user, prefix) => {
     return `${prefix}${getCodeNumber(parseInt(index))}`;
 }
 
+const generateOrdersCode = (user, province, district) => {
+    const { code } = user || {};
+    const { shortName, code: provinceCode } = province || {};
+    const { code:districtCode } = district || {};
+    let index = 0;
+    if (code) {
+        index = code.split(prefix).pop();
+    }
+    return `${shortName}${provinceCode}${districtCode}${getCodeNumber(parseInt(index))}`;
+}
+
 const VNDCurrencyFormatting = (value) => {
     const valueSelected = value || 0;
     return valueSelected.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
@@ -36,5 +47,6 @@ const VNDCurrencyFormatting = (value) => {
 module.exports = {
     getQueryConditionsForGetUsers,
     generateUserCode,
-    VNDCurrencyFormatting
+    VNDCurrencyFormatting,
+    generateOrdersCode
 };

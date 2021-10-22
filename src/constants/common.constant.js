@@ -18,7 +18,7 @@ const CUSTOMER_TYPE = {
 const USER_CODE = {
     KH: 'KH',
     NV: 'NV',
-    ORDER: 'ORDER'
+    ORDERS: 'ORDERS'
 }
 
 const USER_STATUS = {
