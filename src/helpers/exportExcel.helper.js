@@ -1,12 +1,12 @@
 const Excel = require('exceljs');
-const { EXPORT_TYPE } = require('../constants/common.constant');
+const { EXPORT_TYPE, ROLE_TYPE } = require('../constants/common.constant');
 const { LANG } = require('../lang/vi');
 
 const getHeadingByExportType = (data) => {
     const { exportType, roleType } = data;
     let heading = [];
     switch (exportType) {
-        case EXPORT_TYPE.USERS:
+        case EXPORT_TYPE.USERS: {
             heading = [
                 { header: LANG.EXPORT.USERS.STT, key: 'stt', width: 12 },
                 { header: LANG.EXPORT.CODE[roleType], key: 'code', width: 20 },
@@ -16,6 +16,17 @@ const getHeadingByExportType = (data) => {
                 { header: LANG.EXPORT.USERS.CUSTOMER_TYPE, key: 'customerType', width: 20 },
                 { header: LANG.EXPORT.USERS.STATUS, key: 'status', width: 20 }
             ]
+            if (roleType === ROLE_TYPE.EMPLOYEE) {
+                heading = [
+                    { header: LANG.EXPORT.USERS.STT, key: 'stt', width: 12 },
+                    { header: LANG.EXPORT.CODE[roleType], key: 'code', width: 20 },
+                    { header: LANG.EXPORT.USERS.FULL_NAME, key: 'fullName', width: 20 },
+                    { header: LANG.EXPORT.USERS.PHONE_NUMBER, key: 'phoneNumber', width: 20 },
+                    { header: LANG.EXPORT.USERS.EMAIL, key: 'email', width: 30 },
+                    { header: LANG.EXPORT.USERS.STATUS, key: 'status', width: 20 }
+                ]
+            }
+        }
             break;
         case EXPORT_TYPE.ORDERS:
             heading = [
