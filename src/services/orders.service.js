@@ -271,7 +271,7 @@ const getOrdersService = async (req) => {
                     as: 'statusInfo',
                     required: hasOrdersStatus,
                     where: hasOrdersStatus && {
-                        name: [ordersStatus]
+                        id: [ordersStatus]
                     }
                 },
                 {
