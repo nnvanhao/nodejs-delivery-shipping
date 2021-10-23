@@ -34,9 +34,9 @@ const generateOrdersCode = (user, province, district) => {
     const { code:districtCode } = district || {};
     let index = 0;
     if (code) {
-        index = code.split(prefix).pop();
+        index = code.slice(code.length - 5);
     }
-    return `${shortName}${provinceCode}${districtCode}${getCodeNumber(parseInt(index))}`;
+    return `${provinceCode}${districtCode}${shortName}${getCodeNumber(parseInt(index))}`;
 }
 
 const VNDCurrencyFormatting = (value) => {

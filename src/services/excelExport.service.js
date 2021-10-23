@@ -85,7 +85,7 @@ const getUsersData = async (req, exportType) => {
             status: LANG.EXPORT.USER_STATUS[status],
         }
     });
-    const fileName = `${ROLE_TYPE_LANG[roleType]}_${dayjs().format("DD-MM-YYYY_HH.mm.ss")}.xlsx`;
+    const fileName = `${ROLE_TYPE_LANG[roleType]}_${dayjs().format("DD-MM-YYYY")}.xlsx`;
     return {
         heading: getHeadingByExportType({ exportType, roleType }),
         data: usersFormat,
@@ -109,7 +109,7 @@ const getOrdersData = async (req, exportType) => {
             recipientAddress,
         }
     });
-    const ordersFileName = `${ROLE_TYPE_LANG.ORDERS}_${dayjs().format("DD-MM-YYYY_HH.mm.ss")}.xlsx`;
+    const ordersFileName = `${ROLE_TYPE_LANG.ORDERS}_${dayjs().format("DD-MM-YYYY")}.xlsx`;
     return {
         ordersHeading: getHeadingByExportType({ exportType }),
         ordersData: ordersListFormat,
@@ -137,7 +137,7 @@ const getOrdersEventsData = async (req, exportType) => {
             updatedByUser: fullName,
         }
     });
-    const ordersEventsFileName = `${ROLE_TYPE_LANG.ORDERS_EVENTS}_${dayjs().format("DD-MM-YYYY_HH.mm.ss")}.xlsx`;
+    const ordersEventsFileName = `${ROLE_TYPE_LANG.ORDERS_EVENTS}_${dayjs().format("DD-MM-YYYY")}.xlsx`;
     return {
         ordersEventsHeading: getHeadingByExportType({ exportType }),
         ordersEventsData: ordersEventsFormat,

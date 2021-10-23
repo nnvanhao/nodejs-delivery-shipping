@@ -62,11 +62,6 @@ const createOrdersService = async (req) => {
         const lastOrders = await Orders.findOne({
             limit: 1,
             order: [['createdAt', 'DESC']],
-            where: {
-                code: {
-                    [Op.like]: '%' + USER_CODE.ORDER + '%'
-                }
-            },
             raw: true,
         });
         const recipientProvinceInfo = await Province.findOne({
@@ -132,9 +127,9 @@ const createOrdersService = async (req) => {
             const ordersBody = {
                 code: ordersCode,
                 ...body,
-                height: height || 0,
-                width: width || 0,
-                long: long || 0
+                height: height || null,
+                width: width || null,
+                long: long || null
             }
             await Orders.create(ordersBody, { transaction: t });
         });
@@ -386,11 +381,14 @@ const updateOrdersService = async (req) => {
     try {
         const { body, params } = req;
         const { id: ordersId } = params || {};
-        const { shipperId } = body;
+        const { shipperId, height, width, long } = body;
         return await sequelize.transaction(async (t) => {
             const ordersBody = {
                 ...body,
-                shipperId: shipperId || null
+                shipperId: shipperId || null,
+                height: height || null,
+                width: width || null,
+                long: long || null
             }
             await Orders.update(ordersBody, { where: { id: ordersId } }, { transaction: t });
             return {};
