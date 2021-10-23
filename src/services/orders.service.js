@@ -386,9 +386,11 @@ const updateOrdersService = async (req) => {
     try {
         const { body, params } = req;
         const { id: ordersId } = params || {};
+        const { shipperId } = body;
         return await sequelize.transaction(async (t) => {
             const ordersBody = {
-                ...body
+                ...body,
+                shipperId: shipperId || null
             }
             await Orders.update(ordersBody, { where: { id: ordersId } }, { transaction: t });
             return {};
@@ -466,10 +468,70 @@ const getOrdersEventsService = async (req) => {
                     as: 'wardInfo'
                 },
             ],
+            order: [
+                ['createdAt', 'DESC']
+            ],
             raw: true,
             nest: true
         });
         return ordersInfo;
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
+const getOrdersEventsByOrdersCodeService = async (req) => {
+    try {
+        const { query } = req;
+        const { code } = query || {};
+        const ordersInfo = await Orders.findOne({
+            where: {
+                code
+            },
+            raw: true,
+        });
+        if (!ordersInfo) {
+            return [];
+        }
+        const { id: ordersId } = ordersInfo;
+        const ordersEvents = await OrdersEvents.findAll({
+            where: {
+                ordersId
+            },
+            include: [
+                {
+                    model: OrdersStatuses,
+                    attributes: ['id', 'name'],
+                    as: 'statusInfo',
+                },
+                {
+                    model: User,
+                    attributes: ['id', 'fullName'],
+                    as: 'updatedByUser'
+                },
+                {
+                    model: Province,
+                    attributes: ['id', 'name'],
+                    as: 'provinceInfo'
+                },
+                {
+                    model: District,
+                    attributes: ['id', 'name'],
+                    as: 'districtInfo'
+                },
+                {
+                    model: Ward,
+                    attributes: ['id', 'name'],
+                    as: 'wardInfo'
+                },
+            ],
+            order: [
+                ['createdAt', 'DESC']
+            ],
+            raw: true,
+            nest: true
+        });
+        return ordersEvents;
     } catch (error) {
         return buildErrorItem(RESOURCES.ORDERS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
@@ -607,5 +669,6 @@ module.exports = {
     createOrdersStatusService,
     updateOrdersStatusService,
     updateSortIndexOrdersStatusService,
-    deleteOrdersStatusService
+    deleteOrdersStatusService,
+    getOrdersEventsByOrdersCodeService
 };

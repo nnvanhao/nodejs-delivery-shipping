@@ -13,7 +13,8 @@ const {
     createOrdersStatusController,
     updateOrdersStatusController,
     updateSortIndexOrdersStatusController,
-    deleteOrdersStatusController
+    deleteOrdersStatusController,
+    getOrdersEventsByOrdersCodeController
 } = require('../controllers/orders.controller');
 const ApiUtils = require('../api/api.router');
 const { validateResult } = require('../validation/base');
@@ -75,6 +76,10 @@ exports.routesConfig = function (app) {
         VerifyUserMiddleware.validJWTNeeded,
         VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN, ROLE_TYPE.CUSTOMER]),
         getOrdersEventController,
+    ]);
+
+    app.get(ApiUtils.GET_ORDERS_EVENT_BY_ORDERS_CODE, [
+        getOrdersEventsByOrdersCodeController,
     ]);
 
     app.get(ApiUtils.GET_ORDERS_STATUSES, [
