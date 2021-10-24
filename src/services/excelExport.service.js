@@ -8,6 +8,7 @@ const { LANG } = require('../lang/vi');
 const { handleCreateExcelFile, getHeadingByExportType } = require("../helpers/exportExcel.helper");
 const { getUsersService } = require("./user.service");
 const { getOrdersService, getOrdersEventsService } = require("./orders.service");
+const { formatAddressString } = require("../helpers/common.helper");
 
 const excelExportService = async (req, res) => {
     try {
@@ -97,7 +98,17 @@ const getUsersData = async (req, exportType) => {
 const getOrdersData = async (req, exportType) => {
     const { items: ordersList = [] } = await getOrdersService(req);
     const ordersListFormat = ordersList.map((orders, index) => {
-        const { code, statusInfo, recipientName, recipientPhone, createdAt, recipientAddress } = orders;
+        const {
+            code,
+            statusInfo,
+            recipientName,
+            recipientPhone,
+            createdAt,
+            recipientAddress,
+            recipientProvinceInfo,
+            recipientDistrictInfo,
+            recipientWardInfo
+        } = orders;
         const { name: ordersStatusName } = statusInfo || {};
         return {
             stt: (index + 1).toString(),
@@ -106,7 +117,7 @@ const getOrdersData = async (req, exportType) => {
             ordersStatus: ordersStatusName,
             recipientName,
             recipientPhone,
-            recipientAddress,
+            recipientAddress: formatAddressString(recipientProvinceInfo, recipientDistrictInfo, recipientWardInfo, recipientAddress),
         }
     });
     const ordersFileName = `${ROLE_TYPE_LANG.ORDERS}_${dayjs().format("DD-MM-YYYY")}.xlsx`;

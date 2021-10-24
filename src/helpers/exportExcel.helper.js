@@ -8,9 +8,9 @@ const getHeadingByExportType = (data) => {
     switch (exportType) {
         case EXPORT_TYPE.USERS: {
             heading = [
-                { header: LANG.EXPORT.USERS.STT, key: 'stt', width: 12 },
+                { header: LANG.EXPORT.USERS.STT, key: 'stt', width: 10 },
                 { header: LANG.EXPORT.CODE[roleType], key: 'code', width: 20 },
-                { header: LANG.EXPORT.USERS.FULL_NAME, key: 'fullName', width: 20 },
+                { header: LANG.EXPORT.USERS.FULL_NAME, key: 'fullName', width: 25 },
                 { header: LANG.EXPORT.USERS.PHONE_NUMBER, key: 'phoneNumber', width: 20 },
                 { header: LANG.EXPORT.USERS.EMAIL, key: 'email', width: 30 },
                 { header: LANG.EXPORT.USERS.CUSTOMER_TYPE, key: 'customerType', width: 20 },
@@ -18,9 +18,9 @@ const getHeadingByExportType = (data) => {
             ]
             if (roleType === ROLE_TYPE.EMPLOYEE) {
                 heading = [
-                    { header: LANG.EXPORT.USERS.STT, key: 'stt', width: 12 },
+                    { header: LANG.EXPORT.USERS.STT, key: 'stt', width: 10 },
                     { header: LANG.EXPORT.CODE[roleType], key: 'code', width: 20 },
-                    { header: LANG.EXPORT.USERS.FULL_NAME, key: 'fullName', width: 20 },
+                    { header: LANG.EXPORT.USERS.FULL_NAME, key: 'fullName', width: 25 },
                     { header: LANG.EXPORT.USERS.PHONE_NUMBER, key: 'phoneNumber', width: 20 },
                     { header: LANG.EXPORT.USERS.EMAIL, key: 'email', width: 30 },
                     { header: LANG.EXPORT.USERS.STATUS, key: 'status', width: 20 }
@@ -30,13 +30,13 @@ const getHeadingByExportType = (data) => {
             break;
         case EXPORT_TYPE.ORDERS:
             heading = [
-                { header: LANG.EXPORT.USERS.STT, key: 'stt', width: 12 },
+                { header: LANG.EXPORT.USERS.STT, key: 'stt', width: 10 },
                 { header: LANG.EXPORT.CODE.ORDERS, key: 'code', width: 20 },
-                { header: LANG.EXPORT.ORDERS.CREATED_AT, key: 'createdAt', width: 20 },
-                { header: LANG.EXPORT.ORDERS.STATUS, key: 'ordersStatus', width: 30 },
-                { header: LANG.EXPORT.ORDERS.RECIPIENT_NAME, key: 'recipientName', width: 20 },
+                { header: LANG.EXPORT.ORDERS.CREATED_AT, key: 'createdAt', width: 25 },
+                { header: LANG.EXPORT.ORDERS.STATUS, key: 'ordersStatus', width: 25 },
+                { header: LANG.EXPORT.ORDERS.RECIPIENT_NAME, key: 'recipientName', width: 25 },
                 { header: LANG.EXPORT.ORDERS.RECIPIENT_PHONE, key: 'recipientPhone', width: 20 },
-                { header: LANG.EXPORT.ORDERS.RECIPIENT_ADDRESS, key: 'recipientAddress', width: 40 }
+                { header: LANG.EXPORT.ORDERS.RECIPIENT_ADDRESS, key: 'recipientAddress', width: 60 }
             ]
             break;
         case EXPORT_TYPE.ORDERS_EVENTS:
