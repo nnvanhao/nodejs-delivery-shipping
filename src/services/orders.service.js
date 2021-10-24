@@ -5,7 +5,7 @@ const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
 const { Op } = require("sequelize");
 const { USER_CODE, ROLE_TYPE, CUSTOMER_TYPE, USER_STATUS } = require("../constants/common.constant");
-const { generateUserCode, getQueryConditionsForGetUsers, generateOrdersCode } = require("../helpers/common.helper");
+const { generateUserCode, getQueryConditionsForGetUsers, generateOrdersCode, getQueryConditionsForSearchTextManyFields } = require("../helpers/common.helper");
 const { ordersTemplate, sendEmail } = require("../helpers/mailer.helper");
 const { getTokenString, decodeToken } = require("../helpers/token.helper");
 const { getUserAccessRole } = require("../middlewares/verify.permission.middleware");
@@ -42,6 +42,7 @@ const createOrdersService = async (req) => {
             height = 0,
             width = 0,
             long = 0,
+            recipientAmountPayment
         } = body;
         if (!isPartner) {
             const user = await User.findOne({
@@ -129,7 +130,8 @@ const createOrdersService = async (req) => {
                 ...body,
                 height: height || null,
                 width: width || null,
-                long: long || null
+                long: long || null,
+                recipientAmountPayment: recipientAmountPayment || 0
             }
             await Orders.create(ordersBody, { transaction: t });
         });
@@ -183,6 +185,7 @@ const createOrdersService = async (req) => {
         }
         return {};
     } catch (error) {
+        console.log({error});
         return buildErrorItem(RESOURCES.ORDERS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
 }
@@ -213,16 +216,13 @@ const getOrdersService = async (req) => {
                 conditions = {
                     ...conditions,
                     shipperId: userId,
-                    [Op.or]: [
-                        { recipientName: {
-                            [Op.like]: '%' + searchText + '%',
-                        } },
-                        { recipientPhone: {
-                            [Op.like]: '%' + searchText + '%',
-                        } }
-                    ],
                 }
             }
+        }
+        // for search text with many fields
+        conditions = {
+            ...conditions,
+            [Op.or]: getQueryConditionsForSearchTextManyFields(searchText, ['code', 'pickupPhone', 'pickupName', 'recipientName', 'recipientPhone'])
         }
         const { count, rows } = await Orders.findAndCountAll({
             where: {
@@ -381,14 +381,15 @@ const updateOrdersService = async (req) => {
     try {
         const { body, params } = req;
         const { id: ordersId } = params || {};
-        const { shipperId, height, width, long } = body;
+        const { shipperId, height, width, long, recipientAmountPayment } = body;
         return await sequelize.transaction(async (t) => {
             const ordersBody = {
                 ...body,
                 shipperId: shipperId || null,
                 height: height || null,
                 width: width || null,
-                long: long || null
+                long: long || null,
+                recipientAmountPayment: recipientAmountPayment || 0
             }
             await Orders.update(ordersBody, { where: { id: ordersId } }, { transaction: t });
             return {};
