@@ -1,4 +1,5 @@
 const { Op } = require("sequelize");
+const ordersCodeSize = 8;
 
 const getQueryConditionsForGetUsers = (query, fields) => {
     conditions = {};
@@ -13,9 +14,19 @@ const getQueryConditionsForGetUsers = (query, fields) => {
     return conditions;
 }
 
+const getQueryConditionsForSearchTextManyFields = (value, fields) => {
+    return fields.map(field => {
+        return {
+            [field]: {
+                [Op.like]: '%' + value + '%',
+            }
+        }
+    })
+}
+
 const getCodeNumber = (number) => {
     var str = String(number + 1);
-    while (str.length < 5) str = "0" + str;
+    while (str.length < ordersCodeSize) str = "0" + str;
     return str;
 }
 
@@ -34,7 +45,7 @@ const generateOrdersCode = (user, province, district) => {
     const { code:districtCode } = district || {};
     let index = 0;
     if (code) {
-        index = code.slice(code.length - 5);
+        index = code.slice(code.length - ordersCodeSize);
     }
     return `${provinceCode}${districtCode}${shortName}${getCodeNumber(parseInt(index))}`;
 }
@@ -56,5 +67,6 @@ module.exports = {
     generateUserCode,
     VNDCurrencyFormatting,
     generateOrdersCode,
-    formatAddressString
+    formatAddressString,
+    getQueryConditionsForSearchTextManyFields
 };
