@@ -78,15 +78,15 @@ const ordersTemplate = (orders) => {
     return {
         htmlBody: `
         <div>
-            <div style="height: 70px; background: #207346; width: 100%; text-align: center;line-height: 70px;">
+            <div style="height: auto; background: #207346; width: 100%; text-align: center;padding: 10px 0px">
             <p style="font-size: 25px; font-weight: 600; color: white">
                 Cảm ơn bạn đã sử dụng dịch vụ của VivuShip
             </p>
             </div>
-            <div style="padding: 0px 50px">
+            <div style="padding: 0px 10px">
             <div>
                 <p>Xin chào ${pickupName},</p>
-                <p>Cảm ơn bạn đã dùng dịch vụ giao hàng của VivuShip. Dưới đây là thông tin đơn hàng của bạn.</p>
+                <div style="line-height: 18px; margin-bottom: 20px; color: black">Cảm ơn bạn đã dùng dịch vụ giao hàng của VivuShip. Dưới đây là thông tin đơn hàng của bạn.</div>
             </div>
             <div>
                 <span style="font-size: 18px; font-weight: 600">
@@ -98,7 +98,7 @@ const ordersTemplate = (orders) => {
             </div>
             <div>
                 <table style=" border-collapse: collapse; width: 100%;margin-top: 30px;">
-                <tr style="background-color: #207346; color: white; font-size: 18px;">
+                <tr style="background-color: #207346; color: white; font-size: 16px;">
                     <th style="text-align: left;padding: 8px">Sản phẩm</th>
                     <th style="text-align: left;padding: 8px">Số lượng</th>
                     <th style="text-align: left;padding: 8px">Giá</th>
@@ -109,7 +109,7 @@ const ordersTemplate = (orders) => {
                     <td style="text-align: left;padding: 8px;"></td>
                 </tr>
                 <tr style="background-color: #f2f2f2;">
-                    <td style="text-align: left;padding: 8px;">Tổng giá trị đơn hàng</td>
+                    <td style="text-align: left;padding: 8px; line-height: 18px; padding: 0px 10px;">Tổng giá trị đơn hàng</td>
                     <td style="text-align: left;padding: 8px;"></td>
                     <td style="text-align: left;padding: 8px;">${VNDCurrencyFormatting(totalValue)}</td>
                 </tr>
@@ -119,12 +119,12 @@ const ordersTemplate = (orders) => {
                     <td style="text-align: left;padding: 8px;">${VNDCurrencyFormatting(shippingFee)}</td>
                 </tr>
                 <tr style="background-color: #f2f2f2;">
-                    <td style="text-align: left;padding: 8px;">Thanh toán cước phí vận chuyển</td>
+                    <td style="text-align: left;padding: 8px; line-height: 18px; padding: 0px 10px;">Thanh toán cước phí vận chuyển</td>
                     <td style="text-align: left;padding: 8px;"></td>
                     <td style="text-align: left;padding: 8px;">${SHIPPING_FEE_PAYMENT_TEXT[shippingFeePayment] || ''}</td>
                 </tr>
                 <tr>
-                    <td style="text-align: left;padding: 8px;">Tiền thu khách</td>
+                    <td style="text-align: left;padding: 8px; line-height: 18px; padding: 0px 10px;">Tiền thu khách</td>
                     <td style="text-align: left;padding: 8px;"></td>
                     <td style="text-align: left;padding: 8px;">${VNDCurrencyFormatting(recipientAmountPayment)}</td>
                 </tr>
@@ -135,21 +135,21 @@ const ordersTemplate = (orders) => {
                     <th style="text-align: left;padding: 8px;">Địa chỉ giao hàng</th>
                 </tr>
                 <tr style="background-color: #f2f2f2;">
-                    <td style="text-align: left">
+                    <td style="text-align: left; padding: 0px 10px;">
                     <p>
                         ${pickupAddress}
                     </p>
-                    <p>
+                    <div style="line-height: 18px; color: black; padding-bottom: 10px">
                         ${pickupWardName}, ${pickupDistrictName}, ${pickupProvinceName}
-                    </p>
+                    </div>
                     </td>
-                    <td style="text-align: left">
+                    <td style="text-align: left; padding: 0px 10px;">
                     <p>
                         ${recipientAddress}
                     </p>
-                    <p>
+                    <div style="line-height: 18px; color: black; padding-bottom: 10px">
                         ${recipientWardName}, ${recipientDistrictName}, ${recipientProvinceName}
-                    </p>
+                    </div>
                     </td>
                 </tr>
                 </table>
