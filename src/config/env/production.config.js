@@ -13,7 +13,7 @@ module.exports = {
     MAILER: {
         USERNAME: 'noreplyizteams@gmail.com',
         PASSWORD: '12345678x@X',
-        FROM: '"Vivu Ship"<noreplyizteams@gmail.com>'
+        FROM: '"VivuShip"<noreplyizteams@gmail.com>'
     },
     METHOD: 'http://',
     HOST: 'vivuship.vn'
