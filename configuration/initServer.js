@@ -1,11 +1,15 @@
 const config = require('../src/config/env');
+const fs = require('fs');
 const https = require('https');
+const http = require('http');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 const Logger = require('../src/helpers/logger.helper');
 const { normalizePort } = require('../src/helpers/server.helper');
 const { LOGGER_TYPE } = require('../src/constants/common.constant');
 const logger = new Logger();
+
+let isHttps = true;
 
 exports.create = function (app) {
     const isRunCluster = config.CLUSTER;
@@ -25,13 +29,26 @@ exports.create = function (app) {
         // Workers can share any TCP connection
         // In this case it is an HTTP server
         // Start server
-        let server = https.createServer(app);
-        const port = normalizePort(config.PORT);
+        let server = http.createServer(app);
 
+
+
+        const port = normalizePort(config.PORT);
         server = app.listen(port, function () {
             const port = server.address().port;
             console.log('Server started. Running on port: ' + port);
         });
+
+        if (isHttps) {
+            let httpsServer = https.createServer({
+                key: fs.readFileSync('/etc/letsencrypt/live/vivuship.vn/privkey.pem'),
+                cert: fs.readFileSync('/etc/letsencrypt/live/vivuship.vn/fullchain.pem'),
+            }, app);
+
+            httpsServer.listen(443, () => {
+                console.log('HTTPS Server running on port 443');
+            });
+        }
 
         // Handle server error
         server.on('error', function onError(error) {
