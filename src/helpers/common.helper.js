@@ -62,11 +62,30 @@ const VNDCurrencyFormatting = (value) => {
     return valueSelected.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
 }
 
+const handleGetApiPath = (params) => {
+    return handleGetPath(params);
+}
+
+const handleGetPath = ( params) => {
+    let path = '';
+    let queryArray = [];
+    if (params) {
+        Object.keys(params).forEach(function (key) {
+            if (params[key] !== null && params[key] !== undefined) {
+                queryArray.push(key + '=' + params[key]);
+            }
+        });
+        path += (queryArray.length ? '?' + queryArray.join('&') : '');
+    }
+    return path;
+}
+
 module.exports = {
     getQueryConditionsForGetUsers,
     generateUserCode,
     VNDCurrencyFormatting,
     generateOrdersCode,
     formatAddressString,
-    getQueryConditionsForSearchTextManyFields
+    getQueryConditionsForSearchTextManyFields,
+    handleGetApiPath
 };

@@ -1,11 +1,12 @@
 const HttpStatus = require("http-status-codes");
+const axios = require('axios');
 const Message = require('../constants/message.constant');
 const { buildErrorItem } = require('../helpers/error.helper');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
 const { Op } = require("sequelize");
-const { USER_CODE, ROLE_TYPE, CUSTOMER_TYPE, USER_STATUS } = require("../constants/common.constant");
-const { generateUserCode, getQueryConditionsForGetUsers, generateOrdersCode, getQueryConditionsForSearchTextManyFields } = require("../helpers/common.helper");
+const { USER_CODE, ROLE_TYPE, CUSTOMER_TYPE, USER_STATUS, GHTK_API_URL } = require("../constants/common.constant");
+const { generateUserCode, getQueryConditionsForGetUsers, generateOrdersCode, getQueryConditionsForSearchTextManyFields, handleGetApiPath } = require("../helpers/common.helper");
 const { ordersTemplate, sendEmail } = require("../helpers/mailer.helper");
 const { getTokenString, decodeToken } = require("../helpers/token.helper");
 const { getUserAccessRole } = require("../middlewares/verify.permission.middleware");
@@ -652,6 +653,23 @@ const deleteOrdersStatusService = async (req) => {
     }
 }
 
+const getShippingFeeService = async (req) => {
+    try {
+        const { query } = req;
+        const url = `${GHTK_API_URL}${handleGetApiPath(query)}`;
+        const options = {
+            method: 'GET',
+            headers: { 'content-type': 'application/x-www-form-urlencoded', 'token': '99d88d500abA136dAF22Bfa7c6B3762B337f3e39' },
+            url: encodeURI(url),
+        };
+        const result = await axios(options);
+        const { data } = result;
+        return data;
+    } catch (error) {
+        return buildErrorItem(RESOURCES.ORDERS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
 module.exports = {
     createOrdersService,
     getOrdersService,
@@ -666,5 +684,6 @@ module.exports = {
     updateOrdersStatusService,
     updateSortIndexOrdersStatusService,
     deleteOrdersStatusService,
-    getOrdersEventsByOrdersCodeService
+    getOrdersEventsByOrdersCodeService,
+    getShippingFeeService
 };

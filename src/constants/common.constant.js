@@ -56,6 +56,8 @@ const EXPORT_TYPE = {
     ORDERS_EVENTS: 'ORDERS_EVENTS'
 }
 
+const GHTK_API_URL = 'https://services.giaohangtietkiem.vn/services/shipment/fee'
+
 module.exports = {
     LOGGER_TYPE,
     ROLE_TYPE,
@@ -66,5 +68,6 @@ module.exports = {
     SHIPPING_FEE_PAYMENT,
     SHIPPING_FEE_PAYMENT_TEXT,
     ROLE_TYPE_LANG,
-    EXPORT_TYPE
+    EXPORT_TYPE,
+    GHTK_API_URL
 };

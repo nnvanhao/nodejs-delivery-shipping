@@ -29,6 +29,7 @@ exports.DELETE_ORDERS = '/orders/:id';
 exports.CREATE_ORDERS_EVENT = '/orders/event';
 exports.GET_ORDERS_EVENT = '/orders/:id/events';
 exports.GET_ORDERS_EVENT_BY_ORDERS_CODE = '/orders/events/byCode';
+exports.GET_SHIPPING_FEE = '/shippingFee';
 
 //------export------//
 exports.EXCEL_EXPORT = '/export';
