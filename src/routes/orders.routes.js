@@ -14,7 +14,8 @@ const {
     updateOrdersStatusController,
     updateSortIndexOrdersStatusController,
     deleteOrdersStatusController,
-    getOrdersEventsByOrdersCodeController
+    getOrdersEventsByOrdersCodeController,
+    getShippingFeeController
 } = require('../controllers/orders.controller');
 const ApiUtils = require('../api/api.router');
 const { validateResult } = require('../validation/base');
@@ -120,6 +121,10 @@ exports.routesConfig = function (app) {
         VerifyUserMiddleware.validJWTNeeded,
         VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN]),
         deleteOrdersStatusController,
+    ]);
+
+    app.get(ApiUtils.GET_SHIPPING_FEE, [
+        getShippingFeeController,
     ]);
 
 };
