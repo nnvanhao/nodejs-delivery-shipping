@@ -194,6 +194,7 @@ const getOrdersService = async (req) => {
         const toDateFormat = `${toDate}T23:59:00.00Z`
         const hasFilterDate = fromDate && toDate;
         const hasOrdersStatus = ordersStatus ? true : false;
+        const ordersStatusSelected = hasOrdersStatus && ordersStatus.split(',');
         const offset = (parseInt(page) - 1) * pageSize || undefined;
         const limit = parseInt(pageSize) || undefined;
         let conditions = getQueryConditionsForGetUsers(query, ['code', 'status']);
@@ -262,7 +263,7 @@ const getOrdersService = async (req) => {
                     as: 'statusInfo',
                     required: hasOrdersStatus,
                     where: hasOrdersStatus && {
-                        id: [ordersStatus]
+                        id: ordersStatusSelected
                     }
                 },
                 {
