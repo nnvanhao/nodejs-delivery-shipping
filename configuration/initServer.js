@@ -9,7 +9,7 @@ const { normalizePort } = require('../src/helpers/server.helper');
 const { LOGGER_TYPE } = require('../src/constants/common.constant');
 const logger = new Logger();
 
-let isHttps = true;
+let isHttps = process.env.NODE_ENV === 'production';
 
 exports.create = function (app) {
     const isRunCluster = config.CLUSTER;
@@ -29,27 +29,27 @@ exports.create = function (app) {
         // Workers can share any TCP connection
         // In this case it is an HTTP server
         // Start server
-        let server = http.createServer(app);
 
         const port = normalizePort(config.PORT);
-        server = app.listen(port, function () {
-            const port = server.address().port;
-            console.log('Server started. Running on port: ' + port);
-        });
 
+        let httpsServer = null;
         if (isHttps) {
-            let httpsServer = https.createServer({
+            httpsServer = https.createServer({
                 key: fs.readFileSync('/etc/letsencrypt/live/vivuship.vn/privkey.pem'),
                 cert: fs.readFileSync('/etc/letsencrypt/live/vivuship.vn/fullchain.pem'),
             }, app);
 
-            httpsServer.listen(3700, () => {
-                console.log('HTTPS Server running on port 443');
-            });
+        } else {
+            httpsServer = http.createServer(app);
         }
 
+        httpsServer = app.listen(port, function () {
+            const port = httpsServer.address().port;
+            console.log('Server started. Running on port: ' + port);
+        });
+
         // Handle server error
-        server.on('error', function onError(error) {
+        httpsServer.on('error', function onError(error) {
             if (error.syscall !== 'listen') {
                 throw error;
             }
