@@ -31,8 +31,6 @@ exports.create = function (app) {
         // Start server
         let server = http.createServer(app);
 
-
-
         const port = normalizePort(config.PORT);
         server = app.listen(port, function () {
             const port = server.address().port;
@@ -45,7 +43,7 @@ exports.create = function (app) {
                 cert: fs.readFileSync('/etc/letsencrypt/live/vivuship.vn/fullchain.pem'),
             }, app);
 
-            httpsServer.listen(443, () => {
+            httpsServer.listen(3700, () => {
                 console.log('HTTPS Server running on port 443');
             });
         }
