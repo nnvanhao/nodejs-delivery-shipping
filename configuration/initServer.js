@@ -7,7 +7,7 @@ const Logger = require('../src/helpers/logger.helper');
 const { normalizePort } = require('../src/helpers/server.helper');
 const { LOGGER_TYPE } = require('../src/constants/common.constant');
 const logger = new Logger();
-let isHttps = process.env.NODE_ENV === 'production';
+let isHttps = false;
 
 exports.create = function (app) {
     const isRunCluster = config.CLUSTER;
