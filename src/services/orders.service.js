@@ -190,11 +190,12 @@ const createOrdersService = async (req) => {
 const getOrdersService = async (req) => {
     try {
         const { query, headers: { authorization } } = req;
-        const { page, pageSize, fromDate, toDate, ordersStatus, searchText = '' } = query || {};
+        const { page, pageSize, fromDate, toDate, ordersStatus, searchText = '', employeeId } = query || {};
         const fromDateFormat = `${fromDate}T00:00:00.00Z`
         const toDateFormat = `${toDate}T23:59:00.00Z`
         const hasFilterDate = fromDate && toDate;
         const hasOrdersStatus = ordersStatus ? true : false;
+        const hasEmployee = employeeId ? true : false;
         const ordersStatusSelected = hasOrdersStatus && ordersStatus.split(',');
         const offset = (parseInt(page) - 1) * pageSize || undefined;
         const limit = parseInt(pageSize) || undefined;
@@ -270,7 +271,11 @@ const getOrdersService = async (req) => {
                 {
                     model: User,
                     attributes: ['id', 'fullName'],
-                    as: 'shipperInfo'
+                    as: 'shipperInfo',
+                    required: hasEmployee,
+                    where: hasEmployee && {
+                        id: employeeId
+                    }
                 },
                 {
                     model: User,
