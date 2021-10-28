@@ -58,6 +58,12 @@ const EXPORT_TYPE = {
 
 const GHTK_API_URL = 'https://services.giaohangtietkiem.vn/services/shipment/fee'
 
+const FOLDER_DRIVER_NAME = {
+    USERS: 'Users',
+    ORDERS: 'Orders',
+    VIVU_SHIP: 'ViVuShip'
+}
+
 module.exports = {
     LOGGER_TYPE,
     ROLE_TYPE,
@@ -69,5 +75,6 @@ module.exports = {
     SHIPPING_FEE_PAYMENT_TEXT,
     ROLE_TYPE_LANG,
     EXPORT_TYPE,
-    GHTK_API_URL
+    GHTK_API_URL,
+    FOLDER_DRIVER_NAME
 };
