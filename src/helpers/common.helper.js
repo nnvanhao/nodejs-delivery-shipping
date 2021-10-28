@@ -80,6 +80,14 @@ const handleGetPath = ( params) => {
     return path;
 }
 
+const isEmpty = (obj) => {
+    if (obj === undefined || obj === null) {
+        return true;
+    }
+    let empty = Object.keys(obj);
+    return empty.length === 0;
+}
+
 module.exports = {
     getQueryConditionsForGetUsers,
     generateUserCode,
@@ -87,5 +95,6 @@ module.exports = {
     generateOrdersCode,
     formatAddressString,
     getQueryConditionsForSearchTextManyFields,
-    handleGetApiPath
+    handleGetApiPath,
+    isEmpty
 };

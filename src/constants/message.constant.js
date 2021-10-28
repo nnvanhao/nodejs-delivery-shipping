@@ -37,6 +37,8 @@ exports.EMAIL_NOT_EXIST = 'Email_Is_Not_Exist';
 exports.TokenExpiredError = 'Token_Expired';
 exports.JsonWebTokenError = 'Token_Invalid';
 exports.OLD_PASSWORD_INCORRECT = 'Old_Password_Is_Incorrect';
+exports.ROOT_FOLDER_NOT_EXIST = 'Root_Folder_Is_Not_Exist';
+exports.FOLDER_STORAGE_NOT_EXIST = 'Folder_Storage_Is_Not_Exist';
 
 //------Orders------//
 exports.MISSING_PICKUP_NAME_FIELD = 'Missing_Pickup_Name_Field';

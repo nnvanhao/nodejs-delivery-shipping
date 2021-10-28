@@ -8,6 +8,7 @@ const Swagger = require('./configuration/initSwagger');
 const Routes = require('./configuration/initRoutes');
 const Server = require('./configuration/initServer');
 const Events = require('./configuration/initEvents');
+const GoogleDriver = require('./configuration/initCreateFolderDriver');
 const xssFilter = require('x-xss-protection');
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
@@ -65,7 +66,11 @@ MySQLConnection.getSequelizeInstance().getConnectStatus();
 console.log('-> Step: Init events');
 Events.initEvents();
 
+console.log('-> Step: create root foldre driver');
+GoogleDriver.createRootFolder();
+
 console.log('-> Step: Start server');
 Server.create(app);
+
 
 
