@@ -9,14 +9,14 @@ const { FOLDER_DRIVER_NAME } = require("../constants/common.constant");
 const uploadFilesService = async (req) => {
     try {
         const { files, query } = req;
-        const { folderStorage, targetId } = query;
+        const { categoryType, targetId } = query;
         let targetParent = '';
         let createFilesResult = [];
         const rootFolder = await findFolderByName(FOLDER_DRIVER_NAME.VIVU_SHIP);
         if (isEmpty(rootFolder)) {
             return buildErrorItem(RESOURCES.UPLOAD_FILE, null, HttpStatus.NOT_FOUND, Message.ROOT_FOLDER_NOT_EXIST, {});
         }
-        const folderStorageData = await findFolderByName(folderStorage, rootFolder.id);
+        const folderStorageData = await findFolderByName(categoryType, rootFolder.id);
         if (isEmpty(folderStorageData)) {
             return buildErrorItem(RESOURCES.UPLOAD_FILE, null, HttpStatus.NOT_FOUND, Message.FOLDER_STORAGE_NOT_EXIST, {});
         }
@@ -30,7 +30,7 @@ const uploadFilesService = async (req) => {
         for (let i = 0; i < files.length; i++) {
             const file = files[i] || {};
             const { path, originalname } = file;
-            const nameFormat = `${folderStorage}_${targetId}_${originalname}`;
+            const nameFormat = `${categoryType}_${targetId}_${originalname}`;
             const createFileResult = await createFile(nameFormat, path, targetParent);
             createFilesResult.push(createFileResult);
         }

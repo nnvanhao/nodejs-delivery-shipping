@@ -17,9 +17,9 @@ module.exports = {
     },
     METHOD: 'http://',
     GOOGLE_DRIVER: {
-        CLIENT_ID: '559490754608-4u203gc2f4mbmv7tunlc4cbnro47097s.apps.googleusercontent.com',
-        CLIENT_SECRET: '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',
+        CLIENT_ID: '335115956851-3kvddct2e8heap6ec85o8o7epth8paln.apps.googleusercontent.com',
+        CLIENT_SECRET: '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',
         REDIRECT_URI: 'https://developers.google.com/oauthplayground',
-        REFRESH_TOKEN: '1//040HpPZW8qrNfCgYIARAAGAQSNwF-L9Ir_1UedcNu42oFfbh8_8k4lO_2RQu2ZrJumOz4bGD38eua4Lm1EcSNnk-_MNPZT18DpDg',
+        REFRESH_TOKEN: '1//04z_bpgzATVISCgYIARAAGAQSNwF-L9IrqW5_TFTMUkyYrRyGiZxE6EEt5g1zog_MOm3qsSYCeWU6Yac5VdD7WSS4fLhXkUgsJC0',
     }
 };
