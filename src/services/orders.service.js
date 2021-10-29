@@ -23,7 +23,8 @@ const {
     Ward,
     OrdersStatuses,
     OrdersEvents,
-    sequelize
+    sequelize,
+    ResourceFiles
 } = db;
 
 const createOrdersService = async (req) => {
@@ -421,10 +422,14 @@ const createOrdersEventService = async (req) => {
             const { body, headers: { authorization } } = req;
             const token = getTokenString(authorization);
             const { userId } = decodeToken(token);
-            const { ordersId, ordersStatusId } = body || {};
+            const { ordersId, ordersStatusId, images } = body || {};
             const ordersEventBody = {
                 ...body,
                 updateBy: userId
+            }
+            for (let i = 0; i < images.length; i++) {
+                const image = images[0] || {};
+                await ResourceFiles.create(image, { transaction: t });
             }
             await Orders.update({ ordersStatusId }, { where: { id: ordersId } }, { transaction: t });
             await OrdersEvents.create(ordersEventBody, { transaction: t });

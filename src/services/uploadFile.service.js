@@ -32,7 +32,7 @@ const uploadFilesService = async (req) => {
             const { path, originalname } = file;
             const nameFormat = `${categoryType}_${targetId}_${originalname}`;
             const createFileResult = await createFile(nameFormat, path, targetParent);
-            createFilesResult.push(createFileResult);
+            createFilesResult.push({ ...createFileResult, type: categoryType });
         }
         return createFilesResult;
     } catch (error) {
