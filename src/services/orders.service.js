@@ -6,7 +6,7 @@ const { RESOURCES } = require("../constants/baseApiResource.constant");
 const db = require("../models/index");
 const { Op } = require("sequelize");
 const { USER_CODE, ROLE_TYPE, CUSTOMER_TYPE, USER_STATUS, GHTK_API_URL } = require("../constants/common.constant");
-const { generateUserCode, getQueryConditionsForGetUsers, generateOrdersCode, getQueryConditionsForSearchTextManyFields, handleGetApiPath } = require("../helpers/common.helper");
+const { generateUserCode, getQueryConditionsForGetUsers, generateOrdersCode, getQueryConditionsForSearchTextManyFields, handleGetApiPath, isEmpty } = require("../helpers/common.helper");
 const { ordersTemplate, sendEmail } = require("../helpers/mailer.helper");
 const { getTokenString, decodeToken } = require("../helpers/token.helper");
 const { getUserAccessRole } = require("../middlewares/verify.permission.middleware");
@@ -427,9 +427,11 @@ const createOrdersEventService = async (req) => {
                 ...body,
                 updateBy: userId
             }
-            for (let i = 0; i < images.length; i++) {
-                const image = images[0] || {};
-                await ResourceFiles.create(image, { transaction: t });
+            if (!isEmpty(images)) {
+                for (let i = 0; i < images.length; i++) {
+                    const image = images[0] || {};
+                    await ResourceFiles.create(image, { transaction: t });
+                }
             }
             await Orders.update({ ordersStatusId }, { where: { id: ordersId } }, { transaction: t });
             await OrdersEvents.create(ordersEventBody, { transaction: t });
