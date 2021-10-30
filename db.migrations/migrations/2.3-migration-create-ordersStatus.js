@@ -19,6 +19,12 @@ module.exports = {
             requiredTakePicture: {
                 type: Sequelize.BOOLEAN,
             },
+            key: {
+                type: Sequelize.STRING,
+            },
+            color: {
+                type: Sequelize.STRING,
+            },
             isDeleted: {
                 type: Sequelize.BOOLEAN,
             },

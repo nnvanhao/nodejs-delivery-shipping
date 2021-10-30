@@ -580,13 +580,15 @@ const createOrdersStatusService = async (req) => {
         const { body } = req;
         const {
             name,
-            requiredTakePicture = false
+            requiredTakePicture = false,
+            color,
         } = body;
 
         const sortIndexOrdersStatusMaxNumber = await OrdersStatuses.max('sortIndex');
 
         const data = {
             name,
+            color,
             sortIndex: sortIndexOrdersStatusMaxNumber + 1,
             required: false,
             requiredTakePicture,

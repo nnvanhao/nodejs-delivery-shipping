@@ -23,6 +23,8 @@ module.exports = (sequelize, DataTypes) => {
         sortIndex: DataTypes.INTEGER,
         required: DataTypes.BOOLEAN,
         requiredTakePicture: DataTypes.BOOLEAN,
+        key: DataTypes.STRING,
+        color: DataTypes.STRING,
         isDeleted: DataTypes.BOOLEAN,
     }, {
         sequelize,
