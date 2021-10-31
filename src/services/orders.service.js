@@ -427,14 +427,14 @@ const createOrdersEventService = async (req) => {
                 ...body,
                 updateBy: userId
             }
-            if (!isEmpty(images)) {
+            await Orders.update({ ordersStatusId }, { where: { id: ordersId } }, { transaction: t });
+            const createOrdersEvent = (await OrdersEvents.create(ordersEventBody, { transaction: t })).get({ plain: true });
+            if (!isEmpty(images) && !isEmpty(createOrdersEvent)) {
                 for (let i = 0; i < images.length; i++) {
                     const image = images[0] || {};
-                    await ResourceFiles.create(image, { transaction: t });
+                    await ResourceFiles.create({...image, targetId: createOrdersEvent.id }, { transaction: t });
                 }
             }
-            await Orders.update({ ordersStatusId }, { where: { id: ordersId } }, { transaction: t });
-            await OrdersEvents.create(ordersEventBody, { transaction: t });
             return {};
         });
     } catch (error) {
@@ -483,7 +483,18 @@ const getOrdersEventsService = async (req) => {
             raw: true,
             nest: true
         });
-        return ordersInfo;
+        let ordersEvents = [];
+        for (let i = 0; i < ordersInfo.length; i++) {
+            const ordersEvent = ordersInfo[i];
+            const { id } = ordersEvent || {};
+            const resourceImages = await ResourceFiles.findAll({
+                where: { targetId: id },
+                raw: true,
+                nest: true
+            });
+            ordersEvents.push({ ...ordersEvent, images: resourceImages });
+        }
+        return ordersEvents;
     } catch (error) {
         return buildErrorItem(RESOURCES.ORDERS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }

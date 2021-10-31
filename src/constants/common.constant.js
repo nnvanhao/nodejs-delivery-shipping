@@ -61,7 +61,8 @@ const GHTK_API_URL = 'https://services.giaohangtietkiem.vn/services/shipment/fee
 const FOLDER_DRIVER_NAME = {
     USERS: 'Users',
     ORDERS: 'Orders',
-    VIVU_SHIP: 'ViVuShip'
+    VIVU_SHIP: 'ViVuShip',
+    SETTINGS: 'Settings'
 }
 
 module.exports = {
