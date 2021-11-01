@@ -65,6 +65,12 @@ const FOLDER_DRIVER_NAME = {
     SETTINGS: 'Settings'
 }
 
+const SETTINGS_KEY = {
+    BRAND_IMAGE: 'BRAND_IMAGE',
+    BANNER_IMAGES: 'BANNER_IMAGES',
+    AUTH_IMAGE: 'AUTH_IMAGES'
+}
+
 module.exports = {
     LOGGER_TYPE,
     ROLE_TYPE,
@@ -77,5 +83,6 @@ module.exports = {
     ROLE_TYPE_LANG,
     EXPORT_TYPE,
     GHTK_API_URL,
-    FOLDER_DRIVER_NAME
+    FOLDER_DRIVER_NAME,
+    SETTINGS_KEY
 };

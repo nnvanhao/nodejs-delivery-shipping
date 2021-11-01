@@ -42,3 +42,8 @@ exports.UPDATE_SORT_INDEX_ORDERS_STATUS = '/sortIndexOrdersStatuses';
 
 //------Upload files------//
 exports.UPLOAD_FILES = '/uploadFiles';
+
+//------Settings------//
+exports.UPDATE_SETTINGS = '/settings';
+exports.GET_SETTINGS = '/settings';
+exports.GET_SETTING_BY_KEY = '/setting';
