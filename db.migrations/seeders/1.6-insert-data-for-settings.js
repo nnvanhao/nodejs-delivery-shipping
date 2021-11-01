@@ -25,6 +25,56 @@ module.exports = {
                 value: '',
                 createdAt: new Date(),
                 updatedAt: new Date()
+            },
+            // static pages
+            {
+                id: uuidv4(),
+                key: SETTINGS_KEY.ABOUT_US,
+                value: '',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                id: uuidv4(),
+                key: SETTINGS_KEY.SERVICES,
+                value: '',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                id: uuidv4(),
+                key: SETTINGS_KEY.CONTACT,
+                value: '',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                id: uuidv4(),
+                key: SETTINGS_KEY.POLICY,
+                value: '',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                id: uuidv4(),
+                key: SETTINGS_KEY.TERMS_AND_CONDITIONS,
+                value: '',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                id: uuidv4(),
+                key: SETTINGS_KEY.SECURITY_AND_PRIVACY,
+                value: '',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                id: uuidv4(),
+                key: SETTINGS_KEY.SUPPORT,
+                value: '',
+                createdAt: new Date(),
+                updatedAt: new Date()
             }
         ]);
     },
