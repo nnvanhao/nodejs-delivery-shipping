@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: DataTypes.UUIDV4
         },
         key: DataTypes.STRING,
-        value: DataTypes.STRING,
+        value: DataTypes.TEXT,
     }, {
         sequelize,
         modelName: 'Settings',
