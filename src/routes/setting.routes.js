@@ -17,14 +17,10 @@ exports.routesConfig = function (app) {
     ]);
 
     app.get(ApiUtils.GET_SETTINGS,[
-        VerifyUserMiddleware.validJWTNeeded,
-        VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN, ROLE_TYPE.CUSTOMER, ROLE_TYPE.EMPLOYEE]),
         getSettingsController,
     ]);
 
     app.get(ApiUtils.GET_SETTING_BY_KEY,[
-        VerifyUserMiddleware.validJWTNeeded,
-        VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN, ROLE_TYPE.CUSTOMER, ROLE_TYPE.EMPLOYEE]),
         getSettingByKeyController,
     ]);
 
