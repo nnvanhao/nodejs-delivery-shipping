@@ -61,7 +61,21 @@ const GHTK_API_URL = 'https://services.giaohangtietkiem.vn/services/shipment/fee
 const FOLDER_DRIVER_NAME = {
     USERS: 'Users',
     ORDERS: 'Orders',
-    VIVU_SHIP: 'ViVuShip'
+    VIVU_SHIP: 'ViVuShip',
+    SETTINGS: 'Settings'
+}
+
+const SETTINGS_KEY = {
+    BRAND_IMAGE: 'BRAND_IMAGE',
+    BANNER_IMAGES: 'BANNER_IMAGES',
+    AUTH_IMAGE: 'AUTH_IMAGES',
+    ABOUT_US: 'ABOUT_US',
+    SERVICES: 'SERVICES',
+    CONTACT: 'CONTACT',
+    POLICY: 'POLICY',
+    TERMS_AND_CONDITIONS: 'TERMS_AND_CONDITIONS',
+    SECURITY_AND_PRIVACY: 'SECURITY_AND_PRIVACY',
+    SUPPORT: 'SUPPORT'
 }
 
 module.exports = {
@@ -76,5 +90,6 @@ module.exports = {
     ROLE_TYPE_LANG,
     EXPORT_TYPE,
     GHTK_API_URL,
-    FOLDER_DRIVER_NAME
+    FOLDER_DRIVER_NAME,
+    SETTINGS_KEY
 };

@@ -4,6 +4,7 @@ const AddressRoutes = require('./address.routes');
 const OrdersRoutes = require('./orders.routes');
 const ExcelExportRoutes = require('./excelExport.routes');
 const UploadFileRoutes = require('./uploadFile.routes');
+const SettingRoutes = require('./setting.routes');
 
 module.exports = {
     AuthorizationRoutes,
@@ -11,5 +12,6 @@ module.exports = {
     AddressRoutes,
     OrdersRoutes,
     ExcelExportRoutes,
-    UploadFileRoutes
+    UploadFileRoutes,
+    SettingRoutes
 }

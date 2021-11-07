@@ -14,7 +14,7 @@ exports.createRootFolder = async function () {
             rootFolderId = rootFolder.id;
         }
         if (!rootFolderId) return;
-        const childrenFolders = [FOLDER_DRIVER_NAME.USERS, FOLDER_DRIVER_NAME.ORDERS];
+        const childrenFolders = [FOLDER_DRIVER_NAME.USERS, FOLDER_DRIVER_NAME.ORDERS, FOLDER_DRIVER_NAME.SETTINGS];
         for (let i = 0; i < childrenFolders.length; i++) {
             const folderElement = childrenFolders[i];
             const chilrenFolder = await findFolderByName(folderElement, rootFolderId);
