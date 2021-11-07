@@ -12,6 +12,7 @@ module.exports = {
                 required: true,
                 isDeleted: false,
                 color: '9B9B9B',
+                allowEmployee: false,
                 requiredTakePicture: false,
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -24,6 +25,7 @@ module.exports = {
                 required: true,
                 isDeleted: false,
                 color: 'F5A623',
+                allowEmployee: true,
                 requiredTakePicture: false,
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -36,6 +38,7 @@ module.exports = {
                 required: true,
                 isDeleted: false,
                 color: '4A90E2',
+                allowEmployee: false,
                 requiredTakePicture: false,
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -48,6 +51,7 @@ module.exports = {
                 required: true,
                 isDeleted: false,
                 color: '417505',
+                allowEmployee: true,
                 requiredTakePicture: true,
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -60,6 +64,7 @@ module.exports = {
                 required: true,
                 isDeleted: false,
                 color: 'D0021B',
+                allowEmployee: true,
                 requiredTakePicture: true,
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -72,6 +77,7 @@ module.exports = {
                 required: true,
                 isDeleted: false,
                 color: '4A4A4A',
+                allowEmployee: false,
                 requiredTakePicture: false,
                 createdAt: new Date(),
                 updatedAt: new Date()

@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         requiredTakePicture: DataTypes.BOOLEAN,
         key: DataTypes.STRING,
         color: DataTypes.STRING,
+        allowEmployee: DataTypes.BOOLEAN,
         isDeleted: DataTypes.BOOLEAN,
     }, {
         sequelize,

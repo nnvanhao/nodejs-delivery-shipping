@@ -25,6 +25,9 @@ module.exports = {
             color: {
                 type: Sequelize.STRING,
             },
+            allowEmployee: {
+                type: Sequelize.BOOLEAN,
+            },
             isDeleted: {
                 type: Sequelize.BOOLEAN,
             },
