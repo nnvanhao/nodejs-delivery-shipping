@@ -8,7 +8,7 @@ module.exports = {
     PORT: 3600,
     JWT_SECRET: 'myS33!!creeeT',
     JWT_EXPIRATION_IN_SECONDS: 86400,
-    ENVIRONMENT: 'prod',
+    ENVIRONMENT: 'dev',
     CLUSTER: false,
     MAILER: {
         USERNAME: 'noreplyizteams@gmail.com',
