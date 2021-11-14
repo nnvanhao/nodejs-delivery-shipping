@@ -2,7 +2,8 @@ const HttpStatus = require("http-status-codes");
 const { sendResponse } = require("./base.controller");
 const {
     employeeReportService,
-    customerReportService
+    customerReportService,
+    ordersReportService
 } = require('../services/report.service');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 
@@ -16,7 +17,13 @@ const customerReportController = async (req, res, next) => {
     sendResponse(result, RESOURCES.REPORTS, HttpStatus.OK, req, res, next);
 };
 
+const ordersReportController = async (req, res, next) => {
+    const result = await ordersReportService(req, res);
+    sendResponse(result, RESOURCES.REPORTS, HttpStatus.OK, req, res, next);
+};
+
 module.exports = {
     employeeReportController,
-    customerReportController
+    customerReportController,
+    ordersReportController
 }

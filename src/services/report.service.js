@@ -12,6 +12,8 @@ const {
     RoleType,
     Customer,
     CustomerType,
+    Orders,
+    OrdersStatuses
 } = db;
 
 const employeeReportService = async () => {
@@ -59,6 +61,58 @@ const customerReportService = async () => {
     }
 }
 
+const ordersReportService = async () => {
+    try {
+        const ordersStatusData = await OrdersStatuses.findAll({
+            order: [
+                ['sortIndex', 'ASC'],
+            ], raw: true,
+            where: {
+                isDeleted: false
+            }
+        });
+        const ordersByStatusReport = [];
+        for (let i = 0; i < ordersStatusData.length; i++) {
+            const ordersStatusItem = ordersStatusData[i];
+            const { id, name, key } = ordersStatusItem;
+            const totalOrdersByStatus = await findAllOrdersByCondition({}, id);
+            ordersByStatusReport.push({ id, key, name, total: totalOrdersByStatus });
+        }
+        const totalOrders = await findAllOrdersByCondition();
+        const data = {
+            totalOrders,
+            ordersByStatusReport
+        }
+        return data;
+    } catch (error) {
+        return buildErrorItem(RESOURCES.REPORTS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
+    }
+}
+
+const findAllOrdersByCondition = async (conditions = {}, ordersStatus) => {
+    const hasOrdersStatus = ordersStatus ? true : false;
+    const { count } = await Orders.findAndCountAll({
+        where: {
+            ...conditions,
+            isDeleted: false
+        },
+        include: [
+            {
+                model: OrdersStatuses,
+                attributes: ['id', 'name'],
+                required: hasOrdersStatus,
+                as: 'statusInfo',
+                where: hasOrdersStatus && {
+                    id: ordersStatus
+                }
+            },
+        ],
+        raw: true,
+        nest: true
+    });
+    return count;
+}
+
 const findAllUserByCondition = async (conditions, role = ROLE_TYPE.EMPLOYEE, customerType) => {
     const hasCustomerType = customerType ? true : false;
     const { count } = await User.findAndCountAll({
@@ -104,5 +158,6 @@ const findAllUserByCondition = async (conditions, role = ROLE_TYPE.EMPLOYEE, cus
 
 module.exports = {
     employeeReportService,
-    customerReportService
+    customerReportService,
+    ordersReportService
 };
