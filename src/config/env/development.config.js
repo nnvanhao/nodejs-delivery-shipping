@@ -21,6 +21,6 @@ module.exports = {
         CLIENT_ID: '559490754608-4u203gc2f4mbmv7tunlc4cbnro47097s.apps.googleusercontent.com',
         CLIENT_SECRET: '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',
         REDIRECT_URI: 'https://developers.google.com/oauthplayground',
-        REFRESH_TOKEN: '1//04FTltFXvMGeWCgYIARAAGAQSNwF-L9IrsrfNKM1ra4aVYL6NNQruuDO4aFWowk3qUSKdGgRYeHnoG739aqFPvb8UeG5OuwpBbZI',
+        REFRESH_TOKEN: '1//04MzzJM18a5QQCgYIARAAGAQSNwF-L9IrEXAOPcejbBiHO4TOUCihY-_Rau_flxHTnmen6rY9jSenwbnYH7XK23MMJdgoyQ6k728',
     }
 };
