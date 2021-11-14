@@ -1,7 +1,7 @@
 const { AuthorizationRoutes } = require('../src/routes');
 const { UserRoutes } = require('../src/routes');
 const { AddressRoutes } = require('../src/routes');
-const { OrdersRoutes, ExcelExportRoutes, UploadFileRoutes, SettingRoutes } = require('../src/routes');
+const { OrdersRoutes, ExcelExportRoutes, UploadFileRoutes, SettingRoutes, ReportRoutes } = require('../src/routes');
 
 exports.initRoutes = function (app) {
     AuthorizationRoutes.routesConfig(app);
@@ -11,4 +11,5 @@ exports.initRoutes = function (app) {
     ExcelExportRoutes.routesConfig(app);
     UploadFileRoutes.routesConfig(app);
     SettingRoutes.routesConfig(app);
+    ReportRoutes.routesConfig(app);
 };

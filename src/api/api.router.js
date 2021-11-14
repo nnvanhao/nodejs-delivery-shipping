@@ -47,3 +47,7 @@ exports.UPLOAD_FILES = '/uploadFiles';
 exports.UPDATE_SETTINGS = '/settings';
 exports.GET_SETTINGS = '/settings';
 exports.GET_SETTING_BY_KEY = '/setting';
+
+//------Reports------//
+exports.GET_REPORTS_EMPLOYEE = '/reports/employee';
+exports.GET_REPORTS_CUSTOMER = '/reports/customer';
