@@ -620,12 +620,14 @@ const updateOrdersStatusService = async (req) => {
         const {
             name,
             requiredTakePicture = false,
-            isDeleted = false
+            isDeleted = false,
+            color,
         } = body;
 
         const data = {
             name,
             requiredTakePicture,
+            color,
             isDeleted
         }
 
