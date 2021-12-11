@@ -75,6 +75,13 @@ module.exports = {
                 value: '',
                 createdAt: new Date(),
                 updatedAt: new Date()
+            },
+            {
+                id: uuidv4(),
+                key: SETTINGS_KEY.TRANSPORT,
+                value: '',
+                createdAt: new Date(),
+                updatedAt: new Date()
             }
         ]);
     },

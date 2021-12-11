@@ -20,6 +20,6 @@ module.exports = {
         CLIENT_ID: '335115956851-3kvddct2e8heap6ec85o8o7epth8paln.apps.googleusercontent.com',
         CLIENT_SECRET: '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',
         REDIRECT_URI: 'https://developers.google.com/oauthplayground',
-        REFRESH_TOKEN: '1//04uvjAZMNH61qCgYIARAAGAQSNwF-L9Irk6CxTh7ks9-dzHS34ufOoOpPa9CM-O7l9Cz31hlVDvDutGUzWaj0UYV6_DGTWd4lPjE',
+        REFRESH_TOKEN: '1//04qx1Y2La9EHDCgYIARAAGAQSNwF-L9Ir1Y8pWLcHTWSWLaIYlxvwNo_qelJlliktEpN-nQEO7-v_kD6ozcHQZ5dfvakak9EsCuU',
     }
 };

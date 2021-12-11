@@ -43,6 +43,14 @@ const createFolder = async (folderName, parantId) => {
         fields: 'id'
     });
     const { data } = crateFolder || {}
+    const { id } = data;
+    const publicFolder = await googleDrive.permissions.create({
+        fileId: id,
+        requestBody: {
+            role: 'reader',
+            type: 'anyone',
+          }
+    });
     return data || {};
 }
 
