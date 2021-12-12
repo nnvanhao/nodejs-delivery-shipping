@@ -74,9 +74,9 @@ const ordersReportService = async () => {
         const ordersByStatusReport = [];
         for (let i = 0; i < ordersStatusData.length; i++) {
             const ordersStatusItem = ordersStatusData[i];
-            const { id, name, key } = ordersStatusItem;
+            const { id, name, key, color } = ordersStatusItem;
             const totalOrdersByStatus = await findAllOrdersByCondition({}, id);
-            ordersByStatusReport.push({ id, key, name, total: totalOrdersByStatus });
+            ordersByStatusReport.push({ id, key, name, color, total: totalOrdersByStatus });
         }
         const totalOrders = await findAllOrdersByCondition();
         const data = {
