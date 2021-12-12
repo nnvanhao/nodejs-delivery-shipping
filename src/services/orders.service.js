@@ -206,6 +206,16 @@ const getOrdersService = async (req) => {
                 [Op.between]: [fromDateFormat, toDateFormat]
             }
         }
+        if (fromDate && !toDate) {
+            conditions.createdAt = {
+                [Op.gte]: fromDateFormat
+            }
+        }
+        if (!fromDate && toDate) {
+            conditions.createdAt = {
+                [Op.lte]: toDateFormat
+            }
+        }
         if (authorization) {
             const token = getTokenString(authorization);
             const { userId } = decodeToken(token);
@@ -335,7 +345,7 @@ const getOrdersByIdService = async (req) => {
             include: [
                 {
                     model: OrdersStatuses,
-                    attributes: ['id', 'name'],
+                    attributes: ['id', 'name', 'color'],
                     as: 'statusInfo',
                 },
                 {
@@ -521,7 +531,7 @@ const getOrdersEventsByOrdersCodeService = async (req) => {
             include: [
                 {
                     model: OrdersStatuses,
-                    attributes: ['id', 'name'],
+                    attributes: ['id', 'name', 'color'],
                     as: 'statusInfo',
                 },
                 {
