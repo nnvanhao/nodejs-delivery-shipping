@@ -8,8 +8,8 @@
     "start": "nodemon app.js",
     "start-dev": "NODE_ENV=development nodemon app.js",
     "start-prod": "NODE_ENV=production nodemon app.js",
-    "migration": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate",
-    "seed": "npx sequelize-cli db:seed:undo:all && npx sequelize-cli db:seed:all"
+    "migration": "npx sequelize-cli db:migrate",
+    "seed": "npx sequelize-cli db:seed:all"
   },
   "author": "",
   "license": "ISC",
