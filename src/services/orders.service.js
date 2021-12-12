@@ -419,6 +419,7 @@ const deleteOrdersService = async (req) => {
             const { params } = req;
             const { id: ordersId } = params || {};
             await Orders.update({ isDeleted: true }, { where: { id: ordersId } }, { transaction: t });
+            await OrdersEvents.update({ isDeleted: true }, { where: { ordersId } }, { transaction: t });
             return {};
         });
     } catch (error) {
@@ -458,7 +459,8 @@ const getOrdersEventsService = async (req) => {
         const { id: ordersId } = params || {};
         const ordersInfo = await OrdersEvents.findAll({
             where: {
-                ordersId
+                ordersId,
+                isDeleted: false
             },
             include: [
                 {
@@ -526,7 +528,8 @@ const getOrdersEventsByOrdersCodeService = async (req) => {
         const { id: ordersId } = ordersInfo;
         const ordersEvents = await OrdersEvents.findAll({
             where: {
-                ordersId
+                ordersId,
+                isDeleted: false
             },
             include: [
                 {

@@ -51,6 +51,10 @@ module.exports = (sequelize, DataTypes) => {
         updateBy: {
             type: DataTypes.UUID,
         },
+        isDeleted: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
+        },
     }, {
         sequelize,
         modelName: 'OrdersEvents',
