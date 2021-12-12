@@ -15,7 +15,8 @@ module.exports = {
         PASSWORD: '12345678x@X',
         FROM: '"VivuShip"<noreplyizteams@gmail.com>'
     },
-    METHOD: 'http://',
+    METHOD: 'https://',
+    HOST: 'vivuship.vn',
     GOOGLE_DRIVER: {
         CLIENT_ID: '335115956851-3kvddct2e8heap6ec85o8o7epth8paln.apps.googleusercontent.com',
         CLIENT_SECRET: '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',
