@@ -20,15 +20,13 @@ const employeeReportService = async () => {
     try {
         const totalEmployee = await findAllUserByCondition();
         const totalActiveEmployee = await findAllUserByCondition({ status: USER_STATUS.ACTIVE });
-        const totalInactiveEmployee = await findAllUserByCondition({
-            status: {
-                [Op.in]: [USER_STATUS.INACTIVE, USER_STATUS.WAITING_VERIFY],
-            }
-        });
+        const totalInactiveEmployee = await findAllUserByCondition({ status: USER_STATUS.INACTIVE });
+        const totalWaitingVerifyEmployee = await findAllUserByCondition({ status: USER_STATUS.WAITING_VERIFY });
         const data = {
             totalEmployee,
             totalActiveEmployee,
-            totalInactiveEmployee
+            totalInactiveEmployee,
+            totalWaitingVerifyEmployee
         }
         return data;
     } catch (error) {
@@ -42,18 +40,16 @@ const customerReportService = async () => {
         const totalPartner = await findAllUserByCondition({}, ROLE_TYPE.CUSTOMER, CUSTOMER_TYPE.PARTNER);
         const totalOther = await findAllUserByCondition({}, ROLE_TYPE.CUSTOMER, CUSTOMER_TYPE.OTHER);
         const totalActivePartner = await findAllUserByCondition({ status: USER_STATUS.ACTIVE }, ROLE_TYPE.CUSTOMER, CUSTOMER_TYPE.PARTNER);
-        const totalInactivePartner = await findAllUserByCondition({
-            status: {
-                [Op.in]: [USER_STATUS.INACTIVE, USER_STATUS.WAITING_VERIFY],
-            }
-        }, ROLE_TYPE.CUSTOMER, CUSTOMER_TYPE.PARTNER);
+        const totalInactivePartner = await findAllUserByCondition({ status: USER_STATUS.INACTIVE }, ROLE_TYPE.CUSTOMER, CUSTOMER_TYPE.PARTNER);
+        const totalWaitingVerifyPartner = await findAllUserByCondition({ status: USER_STATUS.WAITING_VERIFY }, ROLE_TYPE.CUSTOMER, CUSTOMER_TYPE.PARTNER);
 
         const data = {
             totalCustomer,
             totalPartner,
             totalOther,
             totalActivePartner,
-            totalInactivePartner
+            totalInactivePartner,
+            totalWaitingVerifyPartner
         }
         return data;
     } catch (error) {

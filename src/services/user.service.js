@@ -16,11 +16,14 @@ const { User, UserBank, RoleType, UserRole, Customer, CustomerType, sequelize } 
 const getUsersService = async (req) => {
     try {
         const { query } = req;
-        const { page, pageSize, roleType, customerType } = query || {};
+        const { page, pageSize, roleType, customerType, status } = query || {};
         const hasCustomerType = customerType ? true : false;
         const offset = (parseInt(page) - 1) * pageSize || undefined;
         const limit = parseInt(pageSize) || undefined;
-        const conditions = getQueryConditionsForGetUsers(query, ['fullName', 'email', 'phoneNumber', 'code'])
+        const conditions = getQueryConditionsForGetUsers(query, ['fullName', 'email', 'phoneNumber', 'code']);
+        if (status) {
+            conditions.status = status;
+        }
         const { count, rows } = await User.findAndCountAll({
             where: {
                 ...conditions,
