@@ -113,7 +113,7 @@ const createOrdersService = async (req) => {
                         districtId: pickupDistrict,
                         wardId: pickupWard,
                         address: pickupAddress,
-                        status: USER_STATUS.INACTIVE
+                        status: USER_STATUS.ACTIVE
                     };
                     const userCreate = (await User.create(userInfo, { transaction: t })).get({ plain: true });
                     const { id: userId } = userCreate;
