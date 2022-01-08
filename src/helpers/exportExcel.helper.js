@@ -32,11 +32,28 @@ const getHeadingByExportType = (data) => {
             heading = [
                 { header: LANG.EXPORT.USERS.STT, key: 'stt', width: 10 },
                 { header: LANG.EXPORT.CODE.ORDERS, key: 'code', width: 20 },
-                { header: LANG.EXPORT.ORDERS.CREATED_AT, key: 'createdAt', width: 25 },
                 { header: LANG.EXPORT.ORDERS.STATUS, key: 'ordersStatus', width: 25 },
+
                 { header: LANG.EXPORT.ORDERS.RECIPIENT_NAME, key: 'recipientName', width: 25 },
                 { header: LANG.EXPORT.ORDERS.RECIPIENT_PHONE, key: 'recipientPhone', width: 20 },
-                { header: LANG.EXPORT.ORDERS.RECIPIENT_ADDRESS, key: 'recipientAddress', width: 60 }
+                { header: LANG.EXPORT.ORDERS.RECIPIENT_POST_CODE, key: 'recipientPostalCode', width: 30 },
+                { header: LANG.EXPORT.ORDERS.RECIPIENT_ADDRESS, key: 'recipientAddress', width: 60 },
+
+                { header: LANG.EXPORT.ORDERS.PICK_UP_NAME, key: 'pickupName', width: 25 },
+                { header: LANG.EXPORT.ORDERS.PICK_UP_PHONE, key: 'pickupPhone', width: 20 },
+                { header: LANG.EXPORT.ORDERS.PICK_UP_POST_CODE, key: 'pickupPostalCode', width: 30 },
+                { header: LANG.EXPORT.ORDERS.PICK_UP_ADDRESS, key: 'pickupAddress', width: 60 },
+
+                { header: LANG.EXPORT.ORDERS.ORDER_NAME, key: 'ordersName', width: 60 },
+                { header: LANG.EXPORT.ORDERS.WEIGHT, key: 'weight', width: 20 },
+                { header: LANG.EXPORT.ORDERS.QUANTITY, key: 'ordersQuantity', width: 20 },
+                { header: LANG.EXPORT.ORDERS.FEE, key: 'shippingFee', width: 20 },
+                { header: LANG.EXPORT.ORDERS.SHIPPING_FEE_PAYMENT, key: 'shippingFeePayment', width: 30 },
+                { header: LANG.EXPORT.ORDERS.TOTAL_VALUE, key: 'totalValue', width: 20 },
+                { header: LANG.EXPORT.ORDERS.RECIPIENT_AMOUNT_PAYMENT, key: 'recipientAmountPayment', width: 20 },
+                { header: LANG.EXPORT.ORDERS.SHIPPER_NAME, key: 'shipperName', width: 25 },
+
+                { header: LANG.EXPORT.ORDERS.CREATED_AT, key: 'createdAt', width: 25 },
             ]
             break;
         case EXPORT_TYPE.ORDERS_EVENTS:

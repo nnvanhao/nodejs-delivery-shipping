@@ -8,7 +8,7 @@ const { LANG } = require('../lang/vi');
 const { handleCreateExcelFile, getHeadingByExportType } = require("../helpers/exportExcel.helper");
 const { getUsersService } = require("./user.service");
 const { getOrdersService, getOrdersEventsService } = require("./orders.service");
-const { formatAddressString } = require("../helpers/common.helper");
+const { formatAddressString, VNDCurrencyFormatting } = require("../helpers/common.helper");
 
 const excelExportService = async (req, res) => {
     try {
@@ -107,7 +107,23 @@ const getOrdersData = async (req, exportType) => {
             recipientAddress,
             recipientProvinceInfo,
             recipientDistrictInfo,
-            recipientWardInfo
+            recipientWardInfo,
+            recipientPostalCode,
+            pickupName,
+            pickupPhone,
+            pickupProvinceInfo,
+            pickupWardInfo,
+            pickupDistrictInfo,
+            pickupAddress,
+            pickupPostalCode,
+            weight,
+            ordersName,
+            ordersQuantity,
+            shippingFee,
+            totalValue,
+            recipientAmountPayment,
+            shippingFeePayment,
+            shipperInfo
         } = orders;
         const { name: ordersStatusName } = statusInfo || {};
         return {
@@ -118,6 +134,19 @@ const getOrdersData = async (req, exportType) => {
             recipientName,
             recipientPhone,
             recipientAddress: formatAddressString(recipientProvinceInfo, recipientDistrictInfo, recipientWardInfo, recipientAddress),
+            recipientPostalCode,
+            pickupName,
+            pickupPhone,
+            pickupAddress: formatAddressString(pickupProvinceInfo, pickupDistrictInfo, pickupWardInfo, pickupAddress),
+            pickupPostalCode,
+            ordersName,
+            weight,
+            ordersQuantity,
+            shippingFee: VNDCurrencyFormatting(shippingFee),
+            totalValue: VNDCurrencyFormatting(totalValue),
+            recipientAmountPayment: VNDCurrencyFormatting(recipientAmountPayment),
+            shippingFeePayment: LANG.EXPORT.ORDERS[shippingFeePayment],
+            shipperName: shipperInfo.fullName ? shipperInfo.fullName : LANG.EXPORT.ORDERS.SHIPPER_NAME_EMPTY,
         }
     });
     const ordersFileName = `${ROLE_TYPE_LANG.ORDERS}_${dayjs().format("DD-MM-YYYY")}.xlsx`;
