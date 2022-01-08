@@ -296,7 +296,6 @@ const getOrdersService = async (req) => {
             ],
             attributes: {
                 exclude: [
-                    'shippingFee',
                     'isDeleted',
                     'pickupProvince',
                     'pickupDistrict',
