@@ -101,15 +101,6 @@ const totalReportService = async () => {
             },
             raw: true
         });
-        console.log({ ordersStatusData });
-        // const ordersByStatusReport = [];
-        // for (let i = 0; i < ordersStatusData.length; i++) {
-        //     const ordersStatusItem = ordersStatusData[i];
-        //     const { id, name, key, color } = ordersStatusItem;
-        //     const totalOrdersByStatus = await findAllOrdersByCondition({}, id);
-        //     ordersByStatusReport.push({ id, key, name, color, total: totalOrdersByStatus });
-        // }
-        // const totalOrders = await findAllOrdersByCondition();
         let initialValue = 0
         let shippingRevenue = ordersStatusData.reduce(function (previousValue, currentValue) {
             const { shippingFee = 0 } = currentValue || {};
@@ -125,7 +116,6 @@ const totalReportService = async () => {
         }
         return data;
     } catch (error) {
-        console.log({ error });
         return buildErrorItem(RESOURCES.REPORTS, null, HttpStatus.INTERNAL_SERVER_ERROR, Message.INTERNAL_SERVER_ERROR, {});
     }
 }
