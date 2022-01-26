@@ -7,7 +7,7 @@ module.exports = {
             {
                 id: uuidv4(),
                 key: 'WAITING_CONFIRM',
-                name: 'Chờ xác nhận',
+                name: 'Đơn hàng chưa được vận chuyển',
                 sortIndex: 0,
                 required: true,
                 isDeleted: false,

@@ -3,7 +3,8 @@ const { sendResponse } = require("./base.controller");
 const {
     employeeReportService,
     customerReportService,
-    ordersReportService
+    ordersReportService,
+    totalReportService
 } = require('../services/report.service');
 const { RESOURCES } = require("../constants/baseApiResource.constant");
 
@@ -22,8 +23,14 @@ const ordersReportController = async (req, res, next) => {
     sendResponse(result, RESOURCES.REPORTS, HttpStatus.OK, req, res, next);
 };
 
+const totalReportController = async (req, res, next) => {
+    const result = await totalReportService(req, res);
+    sendResponse(result, RESOURCES.REPORTS, HttpStatus.OK, req, res, next);
+};
+
 module.exports = {
     employeeReportController,
     customerReportController,
-    ordersReportController
+    ordersReportController,
+    totalReportController
 }
