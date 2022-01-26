@@ -52,3 +52,4 @@ exports.GET_SETTING_BY_KEY = '/setting';
 exports.GET_REPORTS_EMPLOYEE = '/reports/employee';
 exports.GET_REPORTS_CUSTOMER = '/reports/customer';
 exports.GET_REPORTS_ORDERS = '/reports/orders';
+exports.GET_REPORTS_TOTAL = '/reports/total';

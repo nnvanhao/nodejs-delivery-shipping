@@ -3,7 +3,8 @@ const VerifyPermissionMiddleware = require('../middlewares/verify.permission.mid
 const {
     employeeReportController,
     customerReportController,
-    ordersReportController
+    ordersReportController,
+    totalReportController
 } = require('../controllers/report.controller');
 const ApiUtils = require('../api/api.router');
 const { ROLE_TYPE } = require('../constants/common.constant');
@@ -26,6 +27,12 @@ exports.routesConfig = function (app) {
         VerifyUserMiddleware.validJWTNeeded,
         VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN]),
         ordersReportController,
+    ]);
+
+    app.get(ApiUtils.GET_REPORTS_TOTAL, [
+        VerifyUserMiddleware.validJWTNeeded,
+        VerifyPermissionMiddleware.permissionRequired([ROLE_TYPE.ADMIN]),
+        totalReportController,
     ]);
 
 };

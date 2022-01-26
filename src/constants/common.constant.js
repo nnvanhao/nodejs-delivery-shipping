@@ -80,6 +80,10 @@ const SETTINGS_KEY = {
     TRANSPORT: 'TRANSPORT'
 }
 
+const ORDERS_STATUS_KEY = {
+    SUCCESS: 'SUCCESS'
+}
+
 module.exports = {
     LOGGER_TYPE,
     ROLE_TYPE,
@@ -93,5 +97,6 @@ module.exports = {
     EXPORT_TYPE,
     GHTK_API_URL,
     FOLDER_DRIVER_NAME,
-    SETTINGS_KEY
+    SETTINGS_KEY,
+    ORDERS_STATUS_KEY
 };
